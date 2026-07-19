@@ -17,6 +17,9 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// We will add more routes here later (e.g., auth, patients, appointments)
+// Route imports
+const authRoutes = require('./routes/authRoutes');
 
+// Mount routers
+app.use('/api/auth', authRoutes);
 module.exports = app;
