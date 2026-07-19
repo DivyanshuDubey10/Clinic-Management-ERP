@@ -31,12 +31,12 @@ const userSchema = new mongoose.Schema(
         role: {
             type: String,
             enum: ['admin', 'doctor', 'receptionist', 'pharmacist', 'patient'],
-            default: 'Patient'
+            default: 'patient'
         },
         specialization: {
             type: String,
             required: function() {
-                return this.role === 'Doctor';
+                return this.role === 'doctor';
             }
         },
         clinicId: {
