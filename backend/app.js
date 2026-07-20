@@ -19,7 +19,9 @@ app.get('/api/health', (req, res) => {
 
 // Route imports
 const authRoutes = require('./routes/authRoutes');
+const patientRoutes = require('./routes/patientRoutes');
 
 // Mount routers
 app.use('/api/auth', authRoutes);
+app.use('/api/patients', patientRoutes);
 module.exports = app;
