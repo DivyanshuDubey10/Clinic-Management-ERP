@@ -13,7 +13,7 @@ const generateToken = (id) => {
 // @access  Public
 exports.registerUser = async (req, res) => {
     try {
-        const { name, email, phone, password, role } = req.body;
+        const { name, email, phone, password, role, specialization } = req.body;
 
         // 1. Validate required fields
         if (!name || !email || !phone || !password) {
@@ -39,7 +39,8 @@ exports.registerUser = async (req, res) => {
             email,
             phone,
             password,
-            role // The model defaults to 'Patient' if not provided
+            role, // The model defaults to 'Patient' if not provided
+            specialization
         });
 
         // 5. Generate a JWT token
