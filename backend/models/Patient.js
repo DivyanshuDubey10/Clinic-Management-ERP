@@ -62,32 +62,32 @@ const patientSchema = new mongoose.Schema({
 });
 
 // Automatically generate patientId before saving
-patientSchema.pre('save', async function (next) {
+patientSchema.pre('save', async function () {
     // Only generate a new ID if the document is new
     if (!this.isNew) {
-        return next();
+        return;
     }
 
-    try {
-        // Find the patient with the highest patientId
-        const lastPatient = await this.constructor.findOne({}, {}, { sort: { patientId: -1 } });
+    const lastPatient = await this.constructor.findOne(
+        {},
+        {},
+        { sort: { patientId: -1 } }
+    );
 
-        let newIdNumber = 1;
-        if (lastPatient && lastPatient.patientId) {
-            // Extract the number part from PA0001
-            const lastId = lastPatient.patientId;
-            const lastNumber = parseInt(lastId.replace('PA', ''), 10);
-            if (!isNaN(lastNumber)) {
-                newIdNumber = lastNumber + 1;
-            }
+    let newIdNumber = 1;
+
+    if (lastPatient && lastPatient.patientId) {
+        const lastNumber = parseInt(
+            lastPatient.patientId.replace('PA', ''),
+            10
+        );
+
+        if (!isNaN(lastNumber)) {
+            newIdNumber = lastNumber + 1;
         }
-
-        // Format the new ID, e.g., PA0001
-        this.patientId = `PA${newIdNumber.toString().padStart(4, '0')}`;
-        next();
-    } catch (error) {
-        next(error);
     }
+
+    this.patientId = `PA${String(newIdNumber).padStart(4, '0')}`;
 });
 
 module.exports = mongoose.model('Patient', patientSchema);
