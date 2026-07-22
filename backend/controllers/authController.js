@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const sendEmail = require('../utils/sendEmail');
 
 // Helper function to generate JWT token
 const generateToken = (id) => {
@@ -155,6 +156,117 @@ exports.updateUserProfile = async (req, res) => {
             message: 'Profile updated successfully',
             user: updatedUser
         });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message || 'Server Error' });
+    }
+};
+
+// @desc    Forgot password
+// @route   POST /api/auth/forgot-password
+// @access  Public
+exports.forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({ success: false, message: 'Please provide an email address' });
+        }
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        // Generate 6-digit OTP
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+        // Set OTP and expire time (10 minutes)
+        user.resetPasswordOTP = otp;
+        user.resetPasswordOTPExpire = Date.now() + 10 * 60 * 1000;
+        
+        await user.save({ validateBeforeSave: false });
+
+        // Send email
+        const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please use the following OTP to reset your password:\n\n${otp}\n\nThis OTP is valid for 10 minutes.`;
+
+        try {
+            await sendEmail({
+                email: user.email,
+                subject: 'Password Reset OTP',
+                message
+            });
+
+            res.status(200).json({ success: true, message: 'OTP sent to email' });
+        } catch (err) {
+            user.resetPasswordOTP = undefined;
+            user.resetPasswordOTPExpire = undefined;
+            await user.save({ validateBeforeSave: false });
+
+            console.error('Email sending failed:', err);
+            return res.status(500).json({ success: false, message: 'Email could not be sent' });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message || 'Server Error' });
+    }
+};
+
+// @desc    Verify reset OTP
+// @route   POST /api/auth/verify-reset-otp
+// @access  Public
+exports.verifyResetOTP = async (req, res) => {
+    try {
+        const { email, otp } = req.body;
+
+        if (!email || !otp) {
+            return res.status(400).json({ success: false, message: 'Please provide email and OTP' });
+        }
+
+        const user = await User.findOne({ 
+            email,
+            resetPasswordOTP: otp,
+            resetPasswordOTPExpire: { $gt: Date.now() }
+        });
+
+        if (!user) {
+            return res.status(400).json({ success: false, message: 'Invalid or expired OTP' });
+        }
+
+        res.status(200).json({ success: true, message: 'OTP verified successfully' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message || 'Server Error' });
+    }
+};
+
+// @desc    Reset password
+// @route   POST /api/auth/reset-password
+// @access  Public
+exports.resetPassword = async (req, res) => {
+    try {
+        const { email, otp, newPassword } = req.body;
+
+        if (!email || !otp || !newPassword) {
+            return res.status(400).json({ success: false, message: 'Please provide email, OTP, and new password' });
+        }
+
+        // Verify OTP again for security
+        const user = await User.findOne({ 
+            email,
+            resetPasswordOTP: otp,
+            resetPasswordOTPExpire: { $gt: Date.now() }
+        });
+
+        if (!user) {
+            return res.status(400).json({ success: false, message: 'Invalid or expired OTP' });
+        }
+
+        // Set new password
+        user.password = newPassword;
+        user.resetPasswordOTP = undefined;
+        user.resetPasswordOTPExpire = undefined;
+
+        await user.save();
+
+        res.status(200).json({ success: true, message: 'Password reset successfully' });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message || 'Server Error' });
     }

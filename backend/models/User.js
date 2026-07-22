@@ -46,6 +46,12 @@ const userSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Clinic'
         },
+        resetPasswordOTP: {
+            type: String
+        },
+        resetPasswordOTPExpire: {
+            type: Date
+        },
         isActive: {
             type: Boolean,
             default: true
