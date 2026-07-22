@@ -27,6 +27,21 @@ const createAppointment = async (req, res) => {
             });
         }
 
+        // Check for duplicate booking (prevent same patient or same doctor at the exact same time)
+        const duplicateAppointment = await Appointment.findOne({
+            $or: [
+                { doctorId, appointmentDate, status: { $ne: 'cancelled' } },
+                { patientId, appointmentDate, status: { $ne: 'cancelled' } }
+            ]
+        });
+
+        if (duplicateAppointment) {
+            return res.status(400).json({
+                success: false,
+                message: 'A duplicate appointment exists. The doctor or patient is already booked for this time.'
+            });
+        }
+
         // Add createdBy from auth middleware
         const appointmentData = {
             ...req.body,
@@ -138,6 +153,28 @@ const updateAppointment = async (req, res) => {
                 success: false,
                 message: 'Appointment not found'
             });
+        }
+
+        // Check for duplicate booking if date, doctor, or patient is changing
+        if (req.body.appointmentDate || req.body.doctorId || req.body.patientId) {
+            const checkDoctorId = req.body.doctorId || appointment.doctorId;
+            const checkPatientId = req.body.patientId || appointment.patientId;
+            const checkDate = req.body.appointmentDate || appointment.appointmentDate;
+
+            const duplicateAppointment = await Appointment.findOne({
+                _id: { $ne: req.params.id }, // Exclude current appointment
+                $or: [
+                    { doctorId: checkDoctorId, appointmentDate: checkDate, status: { $ne: 'cancelled' } },
+                    { patientId: checkPatientId, appointmentDate: checkDate, status: { $ne: 'cancelled' } }
+                ]
+            });
+
+            if (duplicateAppointment) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'A duplicate appointment exists. The doctor or patient is already booked for this time.'
+                });
+            }
         }
 
         appointment = await Appointment.findByIdAndUpdate(

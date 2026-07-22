@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const { ROLES } = require('../constants/roles');
 
 const userSchema = new mongoose.Schema(
     {
@@ -30,13 +31,13 @@ const userSchema = new mongoose.Schema(
         },
         role: {
             type: String,
-            enum: ['admin', 'doctor', 'receptionist', 'pharmacist', 'patient'],
-            default: 'patient'
+            enum: Object.values(ROLES),
+            default: ROLES.PATIENT
         },
         specialization: {
             type: String,
             required: function() {
-                return this.role === 'doctor';
+                return this.role === ROLES.DOCTOR;
             }
         },
         consultationHours: {
@@ -45,6 +46,9 @@ const userSchema = new mongoose.Schema(
         clinicId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Clinic'
+        },
+        department: {
+            type: String
         },
         resetPasswordOTP: {
             type: String

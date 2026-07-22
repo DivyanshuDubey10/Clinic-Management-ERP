@@ -6,12 +6,14 @@ const {
     updatePatient,
     deletePatient
 } = require('../controllers/patientController');
-const { protect } = require('../middlewares/authMiddleware');
+const { protect, authorize } = require('../middlewares/authMiddleware');
+const { ROLES } = require('../constants/roles');
 
 const router = express.Router();
 
 // Apply auth middleware to all patient routes
 router.use(protect);
+router.use(authorize(ROLES.ADMIN, ROLES.DOCTOR, ROLES.RECEPTIONIST));
 
 router.route('/')
     .post(createPatient)

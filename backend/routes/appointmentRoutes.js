@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { protect } = require('../middlewares/authMiddleware');
+const { protect, authorize } = require('../middlewares/authMiddleware');
+const { ROLES } = require('../constants/roles');
 const {
     createAppointment,
     getAppointments,
@@ -11,6 +12,7 @@ const {
 
 // Apply protection to all routes
 router.use(protect);
+router.use(authorize(ROLES.ADMIN, ROLES.DOCTOR, ROLES.RECEPTIONIST));
 
 router.route('/')
     .post(createAppointment)

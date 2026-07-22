@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
+const { ROLES } = require('../constants/roles');
 
 // Helper function to generate JWT token
 const generateToken = (id) => {
@@ -84,6 +86,13 @@ exports.loginUser = async (req, res) => {
         if (!isMatch) {
             return res.status(401).json({ success: false, message: 'Invalid credentials' });
         }
+        // 4. Prevent inactive users from logging in
+        if (!user.isActive) {
+            return res.status(403).json({
+                success: false,
+                message: 'Your account has been deactivated. Please contact the administrator.'
+            });
+        }
 
         // 4. Generate JWT token
         const token = generateToken(user._id);
@@ -137,8 +146,8 @@ exports.updateUserProfile = async (req, res) => {
         user.name = req.body.name || user.name;
         user.phone = req.body.phone || user.phone;
         
-        // Only allow updating specialization and consultation hours if user is a doctor
-        if (user.role === 'doctor') {
+        // Only allow updating specialization and consultation hours if user is a Doctor
+        if (user.role === ROLES.DOCTOR) {
             user.specialization = req.body.specialization || user.specialization;
             user.consultationHours = req.body.consultationHours || user.consultationHours;
         }
