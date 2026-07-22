@@ -39,6 +39,9 @@ const userSchema = new mongoose.Schema(
                 return this.role === 'doctor';
             }
         },
+        consultationHours: {
+            type: String
+        },
         clinicId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Clinic'
@@ -54,10 +57,10 @@ const userSchema = new mongoose.Schema(
 );
 
 // Mongoose Pre-Save Hook: Encrypt password using bcrypt before saving to DB
-userSchema.pre('save', async function (next) {
+userSchema.pre('save', async function () {
     // If the password is not modified, skip hashing (useful when updating other fields)
     if (!this.isModified('password')) {
-        next();
+        return;
     }
 
     // Generate a salt (10 rounds is a good balance between security and speed)

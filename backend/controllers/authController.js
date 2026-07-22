@@ -121,3 +121,41 @@ exports.getUserProfile = async (req, res) => {
         res.status(500).json({ success: false, message: error.message || 'Server Error' });
     }
 };
+
+// @desc    Update user profile
+// @route   PUT /api/auth/profile
+// @access  Private
+exports.updateUserProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        user.name = req.body.name || user.name;
+        user.phone = req.body.phone || user.phone;
+        
+        // Only allow updating specialization and consultation hours if user is a doctor
+        if (user.role === 'doctor') {
+            user.specialization = req.body.specialization || user.specialization;
+            user.consultationHours = req.body.consultationHours || user.consultationHours;
+        }
+
+        // If user wants to update password
+        if (req.body.password) {
+            user.password = req.body.password;
+        }
+
+        const updatedUser = await user.save();
+        updatedUser.password = undefined; // Do not return password
+
+        res.status(200).json({
+            success: true,
+            message: 'Profile updated successfully',
+            user: updatedUser
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message || 'Server Error' });
+    }
+};
