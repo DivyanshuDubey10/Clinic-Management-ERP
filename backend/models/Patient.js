@@ -53,6 +53,23 @@ const patientSchema = new mongoose.Schema({
         phone: { type: String },
         relation: { type: String }
     },
+    payerType: {
+        type: String,
+        enum: ['Self', 'Family', 'Insurance', 'Other'],
+        default: 'Self'
+    },
+    insurance: {
+        provider: { type: String },
+        policyNumber: { 
+            type: String,
+            required: function() { return this.payerType === 'Insurance'; }
+        },
+        groupNumber: { type: String },
+        validTill: { 
+            type: Date,
+            required: function() { return this.payerType === 'Insurance'; }
+        }
+    },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
