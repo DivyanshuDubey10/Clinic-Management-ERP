@@ -71,7 +71,7 @@ const patientSchema = new mongoose.Schema({
         }
     },
     createdBy: {
-        type: String
+        type: mongoose.Schema.Types.ObjectId
     }
 }, {
     timestamps: true

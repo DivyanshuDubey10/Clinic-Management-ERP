@@ -6,11 +6,11 @@ const appointmentSchema = new mongoose.Schema({
         unique: true
     },
     patientId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: [true, 'Please provide a patient ID']
     },
     doctorId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: [true, 'Please provide a doctor ID']
     },
     appointmentDate: {
@@ -39,7 +39,7 @@ const appointmentSchema = new mongoose.Schema({
         type: String
     },
     createdBy: {
-        type: String
+        type: mongoose.Schema.Types.ObjectId
     }
 }, {
     timestamps: true
