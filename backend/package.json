@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/DivyanshuDubey10/Clinic-Management-ERP#readme",
   "dependencies": {
+    "@huggingface/inference": "^4.13.23",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
@@ -27,7 +28,10 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.7.4",
-    "nodemailer": "^9.0.3"
+    "multer": "^2.2.0",
+    "nodemailer": "^9.0.3",
+    "pdf-parse": "^2.4.5",
+    "pdfkit": "^0.19.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"

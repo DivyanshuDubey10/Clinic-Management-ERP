@@ -64,6 +64,58 @@ const getDashboardStats = async (req, res) => {
     }
 };
 
+// @desc    Get doctor specific dashboard (Today's queue)
+// @route   GET /api/dashboard/doctor
+// @access  Private (Doctor)
+const getDoctorDashboard = async (req, res) => {
+    try {
+        const doctorId = req.user._id;
+
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0);
+
+        const endOfDay = new Date();
+        endOfDay.setHours(23, 59, 59, 999);
+
+        // Fetch today's appointments for this doctor
+        const todayAppointments = await Appointment.find({
+            doctorId,
+            appointmentDate: {
+                $gte: startOfDay,
+                $lte: endOfDay
+            }
+        })
+        .populate({ path: 'patientId', model: 'Patient', select: 'firstName lastName patientId gender age phone email' })
+        .sort({ appointmentDate: 1 });
+
+        // Basic stats for the doctor today
+        const totalToday = todayAppointments.length;
+        const checkedIn = todayAppointments.filter(a => a.status === 'Checked-in').length;
+        const completed = todayAppointments.filter(a => a.status === 'Completed').length;
+        const waiting = todayAppointments.filter(a => ['Booked', 'Checked-in'].includes(a.status)).length;
+
+        res.status(200).json({
+            success: true,
+            data: {
+                queue: todayAppointments,
+                stats: {
+                    totalToday,
+                    checkedIn,
+                    completed,
+                    waiting
+                }
+            }
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Server Error'
+        });
+    }
+};
+
 module.exports = {
-    getDashboardStats
+    getDashboardStats,
+    getDoctorDashboard
 };
