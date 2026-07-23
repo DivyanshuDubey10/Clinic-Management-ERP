@@ -4,10 +4,17 @@ const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
 const { ROLES } = require('../constants/roles');
 
-// Helper function to generate JWT token
-const generateToken = (id) => {
+// Helper function to generate Access Token (short-lived)
+const generateAccessToken = (id, role) => {
+    return jwt.sign({ id, role }, process.env.JWT_SECRET, {
+        expiresIn: '15m' // 15 minutes
+    });
+};
+
+// Helper function to generate Refresh Token (long-lived)
+const generateRefreshToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRE || '30d'
+        expiresIn: '30d' // 30 days
     });
 };
 
@@ -46,8 +53,17 @@ exports.registerUser = async (req, res) => {
             specialization
         });
 
-        // 5. Generate a JWT token
-        const token = generateToken(user._id);
+        // 5. Generate tokens
+        const accessToken = generateAccessToken(user._id, user.role);
+        const refreshToken = generateRefreshToken(user._id);
+
+        // Set refresh token in HttpOnly cookie
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+        });
 
         // Remove password from the response object
         user.password = undefined;
@@ -55,7 +71,7 @@ exports.registerUser = async (req, res) => {
         res.status(201).json({
             success: true,
             message: 'User registered successfully',
-            token,
+            accessToken,
             user
         });
     } catch (error) {
@@ -94,8 +110,17 @@ exports.loginUser = async (req, res) => {
             });
         }
 
-        // 4. Generate JWT token
-        const token = generateToken(user._id);
+        // 4. Generate tokens
+        const accessToken = generateAccessToken(user._id, user.role);
+        const refreshToken = generateRefreshToken(user._id);
+
+        // Set refresh token in HttpOnly cookie
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+        });
 
         // Remove password from response
         user.password = undefined;
@@ -103,11 +128,50 @@ exports.loginUser = async (req, res) => {
         res.status(200).json({
             success: true,
             message: 'User logged in successfully',
-            token,
+            accessToken,
             user
         });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message || 'Server Error' });
+    }
+};
+
+// @desc    Logout user
+// @route   POST /api/auth/logout
+// @access  Public
+exports.logoutUser = (req, res) => {
+    res.clearCookie('refreshToken');
+    res.status(200).json({ success: true, message: 'User logged out successfully' });
+};
+
+// @desc    Refresh access token
+// @route   POST /api/auth/refresh
+// @access  Public
+exports.refreshToken = async (req, res) => {
+    try {
+        const token = req.cookies.refreshToken;
+        if (!token) {
+            return res.status(401).json({ success: false, message: 'No refresh token found' });
+        }
+
+        // Verify refresh token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        
+        // Find user to get current role (in case it changed)
+        const user = await User.findById(decoded.id);
+        if (!user || !user.isActive) {
+            return res.status(401).json({ success: false, message: 'Invalid refresh token or inactive user' });
+        }
+
+        // Generate new access token
+        const accessToken = generateAccessToken(user._id, user.role);
+
+        res.status(200).json({
+            success: true,
+            accessToken
+        });
+    } catch (error) {
+        res.status(401).json({ success: false, message: 'Invalid or expired refresh token' });
     }
 };
 

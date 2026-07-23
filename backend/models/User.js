@@ -44,8 +44,7 @@ const userSchema = new mongoose.Schema(
             type: String
         },
         clinicId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Clinic'
+            type: String
         },
         department: {
             type: String

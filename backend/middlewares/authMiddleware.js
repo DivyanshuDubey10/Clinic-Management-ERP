@@ -19,8 +19,11 @@ exports.protect = async (req, res, next) => {
         // Verify the token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        // Fetch the user from the database and attach it to the request object (req.user)
-        req.user = await User.findById(decoded.id);
+        // Attach user info directly from decoded token to avoid a database query on every request
+        req.user = {
+            _id: decoded.id,
+            role: decoded.role
+        };
 
         next();
     } catch (err) {
