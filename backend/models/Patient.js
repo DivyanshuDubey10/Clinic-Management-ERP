@@ -40,14 +40,36 @@ const patientSchema = new mongoose.Schema({
     bloodGroup: {
         type: String
     },
-    allergies: {
-        type: [String],
-        default: []
-    },
-    medicalHistory: {
-        type: [String],
-        default: []
-    },
+    allergies: [{
+        allergen: { type: String, required: true },
+        severity: { type: String, enum: ['Low', 'Medium', 'High', 'Severe'] },
+        reaction: { type: String }
+    }],
+    medicalHistory: [{
+        condition: { type: String, required: true },
+        diagnosedDate: { type: Date },
+        status: { type: String, enum: ['Active', 'Resolved', 'Managed'] }
+    }],
+    currentMedications: [{
+        medicationName: { type: String, required: true },
+        dosage: { type: String },
+        frequency: { type: String },
+        startDate: { type: Date }
+    }],
+    familyHistory: [{
+        relation: { type: String, required: true },
+        condition: { type: String, required: true },
+        notes: { type: String }
+    }],
+    vitals: [{
+        dateRecorded: { type: Date, default: Date.now },
+        height: { type: Number }, // in cm
+        weight: { type: Number }, // in kg
+        bloodPressure: { type: String }, // e.g., '120/80'
+        heartRate: { type: Number }, // bpm
+        temperature: { type: Number }, // Celsius or Fahrenheit
+        respiratoryRate: { type: Number }
+    }],
     emergencyContact: {
         name: { type: String },
         phone: { type: String },
