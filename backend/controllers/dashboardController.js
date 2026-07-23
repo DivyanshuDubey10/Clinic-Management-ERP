@@ -37,8 +37,8 @@ const getDashboardStats = async (req, res) => {
         const recentAppointments = await Appointment.find()
             .sort({ createdAt: -1 })
             .limit(5)
-            .populate('patientId', 'firstName lastName patientId')
-            .populate('doctorId', 'name specialization');
+            .populate({ path: 'patientId', model: 'Patient', select: 'firstName lastName patientId' })
+            .populate({ path: 'doctorId', model: 'User', select: 'name specialization' });
 
         res.status(200).json({
             success: true,

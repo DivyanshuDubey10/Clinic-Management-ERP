@@ -30,6 +30,7 @@ const patientRoutes = require('./routes/patientRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const staffRoutes = require('./routes/staffRoutes');
+const availabilityRoutes = require('./routes/availabilityRoutes');
 
 // Mount routers
 app.use('/api/auth', authRoutes);
@@ -37,4 +38,5 @@ app.use('/api/patients', patientRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/staff', staffRoutes);
+app.use('/api/availability', availabilityRoutes);
 module.exports = app;

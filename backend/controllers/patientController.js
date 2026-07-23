@@ -43,7 +43,7 @@ exports.createPatient = async (req, res) => {
 // @access  Private
 exports.getAllPatients = async (req, res) => {
     try {
-        const patients = await Patient.find().populate('createdBy', 'name email');
+        const patients = await Patient.find().populate({ path: 'createdBy', model: 'User', select: 'name email' });
         
         res.status(200).json({
             success: true,
@@ -63,7 +63,7 @@ exports.getAllPatients = async (req, res) => {
 // @access  Private
 exports.getPatientById = async (req, res) => {
     try {
-        const patient = await Patient.findById(req.params.id).populate('createdBy', 'name email');
+        const patient = await Patient.findById(req.params.id).populate({ path: 'createdBy', model: 'User', select: 'name email' });
         
         if (!patient) {
             return res.status(404).json({ 
