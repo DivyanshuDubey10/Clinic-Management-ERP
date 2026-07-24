@@ -18,10 +18,17 @@ const prescriptionSchema = new mongoose.Schema({
         dosage: { type: String, required: true }, // e.g. "500mg"
         frequency: { type: String, required: true }, // e.g. "1-0-1" or "Twice daily"
         duration: { type: String, required: true }, // e.g. "5 days"
-        instructions: { type: String } // e.g. "After meals"
+        instructions: {
+            type: String
+        }
     }],
     notes: {
         type: String
+    },
+    status: {
+        type: String,
+        enum: ['Pending', 'Dispensed'],
+        default: 'Pending'
     }
 }, {
     timestamps: true
