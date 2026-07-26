@@ -100,9 +100,9 @@ const invoiceSchema = new mongoose.Schema({
 });
 
 // Auto-generate invoiceNumber before save
-invoiceSchema.pre('save', async function (next) {
+invoiceSchema.pre('save', async function () {
     if (!this.isNew) {
-        return next();
+        return;
     }
 
     const lastInvoice = await this.constructor.findOne(
@@ -122,7 +122,6 @@ invoiceSchema.pre('save', async function (next) {
         }
     }
     this.invoiceNumber = `INV-${String(newIdNumber).padStart(5, '0')}`;
-    next();
 });
 
 module.exports = mongoose.model('Invoice', invoiceSchema);

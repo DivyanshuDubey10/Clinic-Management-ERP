@@ -10,6 +10,8 @@ const Patient = require('./models/Patient');
 const Medicine = require('./models/Medicine');
 const Appointment = require('./models/Appointment');
 const Consultation = require('./models/Consultation');
+const Prescription = require('./models/Prescription');
+const LabOrder = require('./models/LabOrder');
 const Invoice = require('./models/Invoice');
 const ClinicSetting = require('./models/ClinicSetting');
 const AuditLog = require('./models/AuditLog');
@@ -77,46 +79,65 @@ const usersData = [
     }
 ];
 
-// Sample Patients
+// Sample Patients (Matching Patient Schema: firstName, lastName, dateOfBirth, structured allergies & medicalHistory)
 const patientsData = [
     {
-        name: 'Amit Kumar',
+        firstName: 'Amit',
+        lastName: 'Kumar',
         email: 'patient@clinicerp.com',
         phone: '+919876543215',
-        dob: '1988-05-14',
+        dateOfBirth: '1988-05-14',
         gender: 'Male',
         bloodGroup: 'B+',
         address: '45 MG Road, Bangalore, Karnataka',
-        medicalHistory: ['Hypertension', 'Mild Asthma'],
-        allergies: ['Penicillin', 'Peanuts']
+        medicalHistory: [
+            { condition: 'Hypertension', diagnosedDate: '2020-01-15', status: 'Managed' },
+            { condition: 'Mild Asthma', diagnosedDate: '2016-08-10', status: 'Active' }
+        ],
+        allergies: [
+            { allergen: 'Penicillin', severity: 'High', reaction: 'Skin Rash & Hives' },
+            { allergen: 'Peanuts', severity: 'Severe', reaction: 'Anaphylaxis' }
+        ]
     },
     {
-        name: 'Priya Patel',
+        firstName: 'Priya',
+        lastName: 'Patel',
         email: 'priya.p@example.com',
         phone: '+919811122233',
-        dob: '1992-09-20',
+        dateOfBirth: '1992-09-20',
         gender: 'Female',
         bloodGroup: 'O+',
         address: '12 Park Street, Kolkata, West Bengal',
-        medicalHistory: ['Hypothyroidism'],
-        allergies: ['Dust', 'Pollen']
+        medicalHistory: [
+            { condition: 'Hypothyroidism', diagnosedDate: '2019-03-12', status: 'Managed' }
+        ],
+        allergies: [
+            { allergen: 'Dust Mites', severity: 'Medium', reaction: 'Allergic Rhinitis' }
+        ]
     },
     {
-        name: 'Rohan Gupta',
+        firstName: 'Rohan',
+        lastName: 'Gupta',
         email: 'rohan.g@example.com',
         phone: '+919822233344',
-        dob: '1975-11-03',
+        dateOfBirth: '1975-11-03',
         gender: 'Male',
         bloodGroup: 'A+',
         address: '88 Marine Drive, Mumbai, Maharashtra',
-        medicalHistory: ['Type 2 Diabetes', 'High Cholesterol'],
-        allergies: ['Sulfa drugs']
+        medicalHistory: [
+            { condition: 'Type 2 Diabetes', diagnosedDate: '2015-05-20', status: 'Active' },
+            { condition: 'Hypercholesterolemia', diagnosedDate: '2018-11-01', status: 'Managed' }
+        ],
+        allergies: [
+            { allergen: 'Sulfa drugs', severity: 'High', reaction: 'Severe itching and swelling' }
+        ]
     },
     {
-        name: 'Sneha Verma',
+        firstName: 'Sneha',
+        lastName: 'Verma',
         email: 'sneha.v@example.com',
         phone: '+919833344455',
-        dob: '2001-02-18',
+        dateOfBirth: '2001-02-18',
         gender: 'Female',
         bloodGroup: 'AB+',
         address: '34 Civil Lines, Delhi',
@@ -124,150 +145,308 @@ const patientsData = [
         allergies: []
     },
     {
-        name: 'Suresh Iyer',
+        firstName: 'Suresh',
+        lastName: 'Iyer',
         email: 'suresh.i@example.com',
         phone: '+919844455566',
-        dob: '1965-07-25',
+        dateOfBirth: '1965-07-25',
         gender: 'Male',
         bloodGroup: 'O-',
         address: '56 Anna Salai, Chennai, Tamil Nadu',
-        medicalHistory: ['Coronary Artery Disease'],
-        allergies: ['Aspirin']
+        medicalHistory: [
+            { condition: 'Coronary Artery Disease', diagnosedDate: '2017-09-14', status: 'Active' }
+        ],
+        allergies: [
+            { allergen: 'Aspirin', severity: 'Severe', reaction: 'GI Bleeding / Bronchospasm' }
+        ]
     },
     {
-        name: 'Kavita Nair',
+        firstName: 'Kavita',
+        lastName: 'Nair',
         email: 'kavita.n@example.com',
         phone: '+919855566677',
-        dob: '1995-12-11',
+        dateOfBirth: '1995-12-11',
         gender: 'Female',
         bloodGroup: 'B-',
         address: '19 MG Road, Pune, Maharashtra',
-        medicalHistory: ['Migraine'],
-        allergies: ['Shellfish']
+        medicalHistory: [
+            { condition: 'Migraine', diagnosedDate: '2021-02-10', status: 'Managed' }
+        ],
+        allergies: [
+            { allergen: 'Shellfish', severity: 'High', reaction: 'Facial swelling' }
+        ]
     },
     {
-        name: 'Arjun Das',
+        firstName: 'Arjun',
+        lastName: 'Das',
         email: 'arjun.d@example.com',
         phone: '+919866677788',
-        dob: '2010-04-05',
+        dateOfBirth: '2015-04-05',
         gender: 'Male',
         bloodGroup: 'A+',
         address: '77 Sector 18, Noida, UP',
-        medicalHistory: ['Childhood Asthma'],
+        medicalHistory: [
+            { condition: 'Childhood Asthma', diagnosedDate: '2019-10-12', status: 'Active' }
+        ],
         allergies: []
     },
     {
-        name: 'Meera Chopra',
+        firstName: 'Meera',
+        lastName: 'Chopra',
         email: 'meera.c@example.com',
         phone: '+919877788899',
-        dob: '1982-08-30',
+        dateOfBirth: '1982-08-30',
         gender: 'Female',
         bloodGroup: 'O+',
         address: '102 Jubilee Hills, Hyderabad, Telangana',
-        medicalHistory: ['Anemia'],
-        allergies: ['Latex']
+        medicalHistory: [
+            { condition: 'Iron Deficiency Anemia', diagnosedDate: '2022-01-20', status: 'Active' }
+        ],
+        allergies: [
+            { allergen: 'Latex', severity: 'Low', reaction: 'Contact dermatitis' }
+        ]
     },
     {
-        name: 'Alok Mishra',
+        firstName: 'Alok',
+        lastName: 'Mishra',
         email: 'alok.m@example.com',
         phone: '+919888899900',
-        dob: '1958-01-15',
+        dateOfBirth: '1958-01-15',
         gender: 'Male',
         bloodGroup: 'B+',
         address: '14 Hazratganj, Lucknow, UP',
-        medicalHistory: ['Osteoarthritis', 'Hypertension'],
+        medicalHistory: [
+            { condition: 'Osteoarthritis', diagnosedDate: '2014-06-11', status: 'Managed' },
+            { condition: 'Essential Hypertension', diagnosedDate: '2012-04-05', status: 'Managed' }
+        ],
         allergies: []
     },
     {
-        name: 'Neha Sharma',
+        firstName: 'Neha',
+        lastName: 'Sharma',
         email: 'neha.s@example.com',
         phone: '+919899900011',
-        dob: '1998-06-22',
+        dateOfBirth: '1998-06-22',
         gender: 'Female',
         bloodGroup: 'AB-',
         address: '65 Malviya Nagar, Jaipur, Rajasthan',
         medicalHistory: [],
-        allergies: ['Ibuprofen']
+        allergies: [
+            { allergen: 'Ibuprofen', severity: 'Medium', reaction: 'Stomach irritation & rash' }
+        ]
     },
     {
-        name: 'Deepak Joshi',
+        firstName: 'Deepak',
+        lastName: 'Joshi',
         email: 'deepak.j@example.com',
         phone: '+919900011122',
-        dob: '1985-10-09',
+        dateOfBirth: '1985-10-09',
         gender: 'Male',
         bloodGroup: 'A-',
         address: '23 Mall Road, Shimla, HP',
-        medicalHistory: ['Kidney Stones'],
+        medicalHistory: [
+            { condition: 'Recurrent Renal Calculi', diagnosedDate: '2018-07-22', status: 'Resolved' }
+        ],
         allergies: []
     },
     {
-        name: 'Anjali Desai',
+        firstName: 'Anjali',
+        lastName: 'Desai',
         email: 'anjali.d@example.com',
         phone: '+919911122233',
-        dob: '1990-03-27',
+        dateOfBirth: '1990-03-27',
         gender: 'Female',
         bloodGroup: 'O+',
         address: '89 SG Highway, Ahmedabad, Gujarat',
-        medicalHistory: ['PCOS'],
-        allergies: ['Sulfa drugs']
+        medicalHistory: [
+            { condition: 'Polycystic Ovary Syndrome (PCOS)', diagnosedDate: '2016-09-18', status: 'Managed' }
+        ],
+        allergies: [
+            { allergen: 'Sulfa drugs', severity: 'Medium', reaction: 'Hives' }
+        ]
     },
     {
-        name: 'Manoj Tiwari',
+        firstName: 'Manoj',
+        lastName: 'Tiwari',
         email: 'manoj.t@example.com',
         phone: '+919922233344',
-        dob: '1972-12-01',
+        dateOfBirth: '1972-12-01',
         gender: 'Male',
         bloodGroup: 'B+',
         address: '31 Station Road, Patna, Bihar',
-        medicalHistory: ['Type 2 Diabetes'],
+        medicalHistory: [
+            { condition: 'Type 2 Diabetes Mellitus', diagnosedDate: '2016-11-15', status: 'Active' }
+        ],
         allergies: []
     },
     {
-        name: 'Pooja Bhatt',
+        firstName: 'Pooja',
+        lastName: 'Bhatt',
         email: 'pooja.b@example.com',
         phone: '+919933344455',
-        dob: '2005-09-17',
+        dateOfBirth: '2005-09-17',
         gender: 'Female',
         bloodGroup: 'A+',
         address: '50 Ring Road, Surat, Gujarat',
         medicalHistory: [],
-        allergies: ['Peanuts']
+        allergies: [
+            { allergen: 'Peanuts', severity: 'High', reaction: 'Facial swelling & difficulty breathing' }
+        ]
     },
     {
-        name: 'Rajeshwar Singh',
+        firstName: 'Rajeshwar',
+        lastName: 'Singh',
         email: 'rajeshwar.s@example.com',
         phone: '+919944455566',
-        dob: '1960-05-05',
+        dateOfBirth: '1960-05-05',
         gender: 'Male',
         bloodGroup: 'O+',
         address: '15 Civil Lines, Allahabad, UP',
-        medicalHistory: ['Hypertension', 'Glaucoma'],
+        medicalHistory: [
+            { condition: 'Hypertension', diagnosedDate: '2010-02-14', status: 'Managed' },
+            { condition: 'Open-angle Glaucoma', diagnosedDate: '2015-08-19', status: 'Managed' }
+        ],
         allergies: []
     }
 ];
 
-// Sample Pharmacy Inventory (Medicines)
+// Sample Pharmacy Inventory (Medicines matching batches schema)
 const medicinesData = [
-    { name: 'Paracetamol 500mg', genericName: 'Acetaminophen', category: 'Tablet', manufacturer: 'Cipla Ltd', batchNumber: 'BATCH-P501', expiryDate: '2027-12-31', stockQuantity: 500, reorderThreshold: 50, unitPrice: 2, sellingPrice: 3 },
-    { name: 'Amoxicillin 500mg', genericName: 'Amoxicillin Trihydrate', category: 'Capsule', manufacturer: 'Sun Pharma', batchNumber: 'BATCH-A502', expiryDate: '2028-06-30', stockQuantity: 300, reorderThreshold: 40, unitPrice: 8, sellingPrice: 12 },
-    { name: 'Metformin 500mg', genericName: 'Metformin Hydrochloride', category: 'Tablet', manufacturer: 'USV Ltd', batchNumber: 'BATCH-M503', expiryDate: '2027-10-31', stockQuantity: 450, reorderThreshold: 60, unitPrice: 3, sellingPrice: 5 },
-    { name: 'Atorvastatin 10mg', genericName: 'Atorvastatin Calcium', category: 'Tablet', manufacturer: 'Zydus Cadila', batchNumber: 'BATCH-AT10', expiryDate: '2028-03-31', stockQuantity: 250, reorderThreshold: 30, unitPrice: 10, sellingPrice: 15 },
-    { name: 'Azithromycin 500mg', genericName: 'Azithromycin Dihydrate', category: 'Tablet', manufacturer: 'Alkem Labs', batchNumber: 'BATCH-AZ50', expiryDate: '2027-08-31', stockQuantity: 180, reorderThreshold: 25, unitPrice: 18, sellingPrice: 25 },
-    { name: 'Ibuprofen 400mg', genericName: 'Ibuprofen', category: 'Tablet', manufacturer: 'Abbott India', batchNumber: 'BATCH-IB40', expiryDate: '2028-11-30', stockQuantity: 350, reorderThreshold: 50, unitPrice: 4, sellingPrice: 6 },
-    { name: 'Omeprazole 20mg', genericName: 'Omeprazole', category: 'Capsule', manufacturer: 'Dr. Reddys', batchNumber: 'BATCH-OM20', expiryDate: '2027-09-30', stockQuantity: 400, reorderThreshold: 45, unitPrice: 6, sellingPrice: 9 },
-    { name: 'Cetirizine 10mg', genericName: 'Cetirizine Hydrochloride', category: 'Tablet', manufacturer: 'GlaxoSmithKline', batchNumber: 'BATCH-CE10', expiryDate: '2028-05-31', stockQuantity: 600, reorderThreshold: 80, unitPrice: 2, sellingPrice: 4 },
-    { name: 'Losartan 50mg', genericName: 'Losartan Potassium', category: 'Tablet', manufacturer: 'Torrent Pharma', batchNumber: 'BATCH-LO50', expiryDate: '2027-07-31', stockQuantity: 220, reorderThreshold: 30, unitPrice: 7, sellingPrice: 11 },
-    { name: 'Pantoprazole 40mg', genericName: 'Pantoprazole Sodium', category: 'Tablet', manufacturer: 'Aristo Pharma', batchNumber: 'BATCH-PA40', expiryDate: '2028-01-31', stockQuantity: 320, reorderThreshold: 40, unitPrice: 8, sellingPrice: 12 },
-    { name: 'Doxycycline 100mg', genericName: 'Doxycycline Hyclate', category: 'Capsule', manufacturer: 'Lupin Ltd', batchNumber: 'BATCH-DO10', expiryDate: '2027-11-30', stockQuantity: 200, reorderThreshold: 30, unitPrice: 9, sellingPrice: 14 },
-    { name: 'Ciprofloxacin 500mg', genericName: 'Ciprofloxacin Hydrochloride', category: 'Tablet', manufacturer: 'Bayer Pharmaceuticals', batchNumber: 'BATCH-CI50', expiryDate: '2028-04-30', stockQuantity: 150, reorderThreshold: 20, unitPrice: 12, sellingPrice: 18 },
-    { name: 'Aspirin 75mg', genericName: 'Acetylsalicylic Acid', category: 'Tablet', manufacturer: 'USV Ltd', batchNumber: 'BATCH-AS75', expiryDate: '2029-01-31', stockQuantity: 550, reorderThreshold: 70, unitPrice: 1, sellingPrice: 2 },
-    { name: 'Levothyroxine 50mcg', genericName: 'Levothyroxine Sodium', category: 'Tablet', manufacturer: 'Abbott India', batchNumber: 'BATCH-LE50', expiryDate: '2028-08-31', stockQuantity: 280, reorderThreshold: 35, unitPrice: 5, sellingPrice: 8 },
-    { name: 'Amlodipine 5mg', genericName: 'Amlodipine Besylate', category: 'Tablet', manufacturer: 'Pfizer', batchNumber: 'BATCH-AM05', expiryDate: '2027-05-31', stockQuantity: 420, reorderThreshold: 50, unitPrice: 3, sellingPrice: 5 },
-    { name: 'Gabapentin 300mg', genericName: 'Gabapentin', category: 'Capsule', manufacturer: 'Sun Pharma', batchNumber: 'BATCH-GA30', expiryDate: '2028-09-30', stockQuantity: 160, reorderThreshold: 25, unitPrice: 15, sellingPrice: 22 },
-    { name: 'Metoprolol 25mg', genericName: 'Metoprolol Succinate', category: 'Tablet', manufacturer: 'AstraZeneca', batchNumber: 'BATCH-ME25', expiryDate: '2027-10-31', stockQuantity: 310, reorderThreshold: 40, unitPrice: 6, sellingPrice: 10 },
-    { name: 'Prednisone 10mg', genericName: 'Prednisone', category: 'Tablet', manufacturer: 'Wyeth', batchNumber: 'BATCH-PR10', expiryDate: '2028-02-28', stockQuantity: 190, reorderThreshold: 30, unitPrice: 4, sellingPrice: 7 },
-    { name: 'Sertraline 50mg', genericName: 'Sertraline Hydrochloride', category: 'Tablet', manufacturer: 'Pfizer', batchNumber: 'BATCH-SE50', expiryDate: '2028-07-31', stockQuantity: 140, reorderThreshold: 20, unitPrice: 14, sellingPrice: 20 },
-    { name: 'Montelukast 10mg', genericName: 'Montelukast Sodium', category: 'Tablet', manufacturer: 'Cipla Ltd', batchNumber: 'BATCH-MO10', expiryDate: '2027-12-31', stockQuantity: 360, reorderThreshold: 50, unitPrice: 7, sellingPrice: 11 }
+    {
+        name: 'Paracetamol 500mg',
+        genericName: 'Acetaminophen',
+        category: 'Tablet',
+        manufacturer: 'Cipla Ltd',
+        unitPrice: 3,
+        reorderThreshold: 50,
+        batches: [{ batchNumber: 'BATCH-P501', quantity: 500, expiryDate: new Date('2027-12-31'), purchasePrice: 2 }]
+    },
+    {
+        name: 'Amoxicillin 500mg',
+        genericName: 'Amoxicillin Trihydrate',
+        category: 'Capsule',
+        manufacturer: 'Sun Pharma',
+        unitPrice: 12,
+        reorderThreshold: 40,
+        batches: [{ batchNumber: 'BATCH-A502', quantity: 300, expiryDate: new Date('2028-06-30'), purchasePrice: 8 }]
+    },
+    {
+        name: 'Metformin 500mg',
+        genericName: 'Metformin Hydrochloride',
+        category: 'Tablet',
+        manufacturer: 'USV Ltd',
+        unitPrice: 5,
+        reorderThreshold: 60,
+        batches: [{ batchNumber: 'BATCH-M503', quantity: 450, expiryDate: new Date('2027-10-31'), purchasePrice: 3 }]
+    },
+    {
+        name: 'Atorvastatin 10mg',
+        genericName: 'Atorvastatin Calcium',
+        category: 'Tablet',
+        manufacturer: 'Zydus Cadila',
+        unitPrice: 15,
+        reorderThreshold: 30,
+        batches: [{ batchNumber: 'BATCH-AT10', quantity: 250, expiryDate: new Date('2028-03-31'), purchasePrice: 10 }]
+    },
+    {
+        name: 'Azithromycin 500mg',
+        genericName: 'Azithromycin Dihydrate',
+        category: 'Tablet',
+        manufacturer: 'Alkem Labs',
+        unitPrice: 25,
+        reorderThreshold: 25,
+        batches: [{ batchNumber: 'BATCH-AZ50', quantity: 180, expiryDate: new Date('2027-08-31'), purchasePrice: 18 }]
+    },
+    {
+        name: 'Ibuprofen 400mg',
+        genericName: 'Ibuprofen',
+        category: 'Tablet',
+        manufacturer: 'Abbott India',
+        unitPrice: 6,
+        reorderThreshold: 50,
+        batches: [{ batchNumber: 'BATCH-IB40', quantity: 350, expiryDate: new Date('2028-11-30'), purchasePrice: 4 }]
+    },
+    {
+        name: 'Omeprazole 20mg',
+        genericName: 'Omeprazole',
+        category: 'Capsule',
+        manufacturer: 'Dr. Reddys',
+        unitPrice: 9,
+        reorderThreshold: 45,
+        batches: [{ batchNumber: 'BATCH-OM20', quantity: 400, expiryDate: new Date('2027-09-30'), purchasePrice: 6 }]
+    },
+    {
+        name: 'Cetirizine 10mg',
+        genericName: 'Cetirizine Hydrochloride',
+        category: 'Tablet',
+        manufacturer: 'GlaxoSmithKline',
+        unitPrice: 4,
+        reorderThreshold: 80,
+        batches: [{ batchNumber: 'BATCH-CE10', quantity: 600, expiryDate: new Date('2028-05-31'), purchasePrice: 2 }]
+    },
+    {
+        name: 'Losartan 50mg',
+        genericName: 'Losartan Potassium',
+        category: 'Tablet',
+        manufacturer: 'Torrent Pharma',
+        unitPrice: 11,
+        reorderThreshold: 30,
+        batches: [{ batchNumber: 'BATCH-LO50', quantity: 220, expiryDate: new Date('2027-07-31'), purchasePrice: 7 }]
+    },
+    {
+        name: 'Pantoprazole 40mg',
+        genericName: 'Pantoprazole Sodium',
+        category: 'Tablet',
+        manufacturer: 'Aristo Pharma',
+        unitPrice: 12,
+        reorderThreshold: 40,
+        batches: [{ batchNumber: 'BATCH-PA40', quantity: 320, expiryDate: new Date('2028-01-31'), purchasePrice: 8 }]
+    },
+    {
+        name: 'Doxycycline 100mg',
+        genericName: 'Doxycycline Hyclate',
+        category: 'Capsule',
+        manufacturer: 'Lupin Ltd',
+        unitPrice: 14,
+        reorderThreshold: 30,
+        batches: [{ batchNumber: 'BATCH-DO10', quantity: 200, expiryDate: new Date('2027-11-30'), purchasePrice: 9 }]
+    },
+    {
+        name: 'Ciprofloxacin 500mg',
+        genericName: 'Ciprofloxacin Hydrochloride',
+        category: 'Tablet',
+        manufacturer: 'Bayer Pharmaceuticals',
+        unitPrice: 18,
+        reorderThreshold: 20,
+        batches: [{ batchNumber: 'BATCH-CI50', quantity: 150, expiryDate: new Date('2028-04-30'), purchasePrice: 12 }]
+    },
+    {
+        name: 'Aspirin 75mg',
+        genericName: 'Acetylsalicylic Acid',
+        category: 'Tablet',
+        manufacturer: 'USV Ltd',
+        unitPrice: 2,
+        reorderThreshold: 70,
+        batches: [{ batchNumber: 'BATCH-AS75', quantity: 550, expiryDate: new Date('2029-01-31'), purchasePrice: 1 }]
+    },
+    {
+        name: 'Levothyroxine 50mcg',
+        genericName: 'Levothyroxine Sodium',
+        category: 'Tablet',
+        manufacturer: 'Abbott India',
+        unitPrice: 8,
+        reorderThreshold: 35,
+        batches: [{ batchNumber: 'BATCH-LE50', quantity: 280, expiryDate: new Date('2028-08-31'), purchasePrice: 5 }]
+    },
+    {
+        name: 'Amlodipine 5mg',
+        genericName: 'Amlodipine Besylate',
+        category: 'Tablet',
+        manufacturer: 'Pfizer',
+        unitPrice: 5,
+        reorderThreshold: 50,
+        batches: [{ batchNumber: 'BATCH-AM05', quantity: 420, expiryDate: new Date('2027-05-31'), purchasePrice: 3 }]
+    }
 ];
 
 // Main Seeder Function
@@ -288,12 +467,14 @@ const importData = async () => {
         await Medicine.deleteMany({});
         await Appointment.deleteMany({});
         await Consultation.deleteMany({});
+        await Prescription.deleteMany({});
+        await LabOrder.deleteMany({});
         await Invoice.deleteMany({});
         await ClinicSetting.deleteMany({});
         await AuditLog.deleteMany({});
         await DoctorAvailability.deleteMany({});
 
-        // 2. Seed Users (Looping to ensure pre-save bcrypt hashing works smoothly)
+        // 2. Seed Users
         console.log('🌱 Seeding Users (Admin, Doctors, Receptionist, Patient)...');
         const createdUsers = [];
         for (const u of usersData) {
@@ -307,47 +488,45 @@ const importData = async () => {
         const adminUser = createdUsers.find(u => u.email === 'admin@clinicerp.com');
         const patientLoginUser = createdUsers.find(u => u.email === 'patient@clinicerp.com');
 
-        // 3. Seed Doctor Availability
+        // 3. Seed Doctor Availability (Matching DoctorAvailability schema)
         console.log('🌱 Seeding Doctor Schedules & Availability...');
         const doctorsList = [drSharma, drSingh, drMehta];
         for (const doc of doctorsList) {
             if (!doc) continue;
             await DoctorAvailability.create({
                 doctorId: doc._id,
-                weeklySchedule: [
-                    { dayOfWeek: 1, isAvailable: true, slots: [{ startTime: '09:00', endTime: '13:00' }, { startTime: '14:00', endTime: '17:00' }] },
-                    { dayOfWeek: 2, isAvailable: true, slots: [{ startTime: '09:00', endTime: '13:00' }, { startTime: '14:00', endTime: '17:00' }] },
-                    { dayOfWeek: 3, isAvailable: true, slots: [{ startTime: '09:00', endTime: '13:00' }, { startTime: '14:00', endTime: '17:00' }] },
-                    { dayOfWeek: 4, isAvailable: true, slots: [{ startTime: '09:00', endTime: '13:00' }, { startTime: '14:00', endTime: '17:00' }] },
-                    { dayOfWeek: 5, isAvailable: true, slots: [{ startTime: '09:00', endTime: '13:00' }, { startTime: '14:00', endTime: '17:00' }] },
-                    { dayOfWeek: 6, isAvailable: true, slots: [{ startTime: '09:00', endTime: '13:00' }] },
-                    { dayOfWeek: 0, isAvailable: false, slots: [] }
+                workingHours: [
+                    { dayOfWeek: 1, startTime: '09:00', endTime: '17:00', isOffDay: false },
+                    { dayOfWeek: 2, startTime: '09:00', endTime: '17:00', isOffDay: false },
+                    { dayOfWeek: 3, startTime: '09:00', endTime: '17:00', isOffDay: false },
+                    { dayOfWeek: 4, startTime: '09:00', endTime: '17:00', isOffDay: false },
+                    { dayOfWeek: 5, startTime: '09:00', endTime: '17:00', isOffDay: false },
+                    { dayOfWeek: 6, startTime: '09:00', endTime: '13:00', isOffDay: false },
+                    { dayOfWeek: 0, startTime: '00:00', endTime: '00:00', isOffDay: true }
                 ],
-                slotDuration: 15,
-                maxDailyAppointments: 30
+                slotDuration: 15
             });
         }
 
-        // 4. Seed Patients
-        console.log('🌱 Seeding 15 Patient Records...');
+        // 4. Seed Patients (Letting Mongoose auto-generate patientId PA0001, PA0002...)
+        console.log('🌱 Seeding 15 Patient Profiles...');
         const createdPatients = [];
         for (let i = 0; i < patientsData.length; i++) {
             const pData = patientsData[i];
             const pObj = {
                 ...pData,
-                patientId: `PAT-2026-${String(i + 101).padStart(4, '0')}`,
-                user: pData.email === 'patient@clinicerp.com' && patientLoginUser ? patientLoginUser._id : undefined
+                createdBy: adminUser ? adminUser._id : undefined
             };
             const pDoc = await Patient.create(pObj);
             createdPatients.push(pDoc);
         }
 
         // 5. Seed Pharmacy Inventory
-        console.log('🌱 Seeding 20 Pharmacy Medicines...');
+        console.log('🌱 Seeding Pharmacy Medicines & Stock Batches...');
         const createdMedicines = await Medicine.insertMany(medicinesData);
 
-        // 6. Seed Appointments, Consultations & Invoices (Past & Upcoming)
-        console.log('🌱 Seeding Appointments, SOAP Consultations & Invoices...');
+        // 6. Seed Appointments, Consultations, Prescriptions, Lab Orders & Invoices
+        console.log('🌱 Seeding Appointments, SOAP Consultations, Prescriptions & Invoices...');
         const today = new Date();
         const pastDate1 = new Date(today); pastDate1.setDate(today.getDate() - 5);
         const pastDate2 = new Date(today); pastDate2.setDate(today.getDate() - 2);
@@ -359,62 +538,86 @@ const importData = async () => {
             patientId: createdPatients[0]._id,
             doctorId: drSharma._id,
             appointmentDate: pastDate1,
-            timeSlot: '10:00 - 10:15',
+            duration: 15,
+            appointmentType: 'Follow-up',
             status: 'completed',
-            type: 'General Consultation',
-            reason: 'High blood pressure checkup',
-            queueNumber: 1,
-            duration: 15
+            reasonForVisit: 'High blood pressure checkup and routine ECG monitoring',
+            consultationRoom: 'Room 101 (Cardiology)',
+            createdBy: adminUser ? adminUser._id : undefined
         });
 
         const consult1 = await Consultation.create({
             appointmentId: appt1._id,
             patientId: createdPatients[0]._id,
             doctorId: drSharma._id,
-            soapNotes: {
-                subjective: 'Patient reports mild headache and occasional dizziness over the last 3 days.',
-                objective: 'BP 150/95 mmHg, Heart rate 78 bpm. Lungs clear to auscultation.',
-                assessment: 'Stage 2 Hypertension with mild tension headaches.',
-                plan: 'Prescribed Amlodipine 5mg once daily. Recommended sodium reduction and daily 30-min brisk walk. Follow-up in 2 weeks.'
-            },
-            diagnosis: [
-                { icdCode: 'I10', description: 'Essential (primary) hypertension', severity: 'Moderate' },
-                { icdCode: 'R51', description: 'Headache', severity: 'Mild' }
-            ],
-            prescriptions: [
+            symptoms: 'Patient reports mild headache and occasional dizziness over the last 3 days.',
+            examinationFindings: 'BP 150/95 mmHg, Heart rate 78 bpm. Lungs clear to auscultation.',
+            diagnosis: 'Stage 2 Essential Hypertension with mild tension headaches (ICD-10: I10, R51)',
+            treatmentPlan: 'Prescribed Amlodipine 5mg once daily. Recommended sodium reduction and daily 30-min brisk walk. Follow-up in 2 weeks.',
+            followUpDate: new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000),
+            status: 'Completed'
+        });
+
+        await Prescription.create({
+            consultationId: consult1._id,
+            patientId: createdPatients[0]._id,
+            doctorId: drSharma._id,
+            medications: [
                 {
-                    medicineId: createdMedicines.find(m => m.name.includes('Amlodipine'))._id,
-                    medicineName: 'Amlodipine 5mg',
+                    drugName: 'Amlodipine 5mg',
                     dosage: '1 Tablet',
                     frequency: 'Once Daily (Morning after breakfast)',
                     duration: '14 Days',
-                    quantity: 14,
                     instructions: 'Do not skip dose'
                 },
                 {
-                    medicineId: createdMedicines.find(m => m.name.includes('Paracetamol'))._id,
-                    medicineName: 'Paracetamol 500mg',
+                    drugName: 'Paracetamol 500mg',
                     dosage: '1 Tablet',
                     frequency: 'As needed for severe headache (Max 3/day)',
                     duration: '5 Days',
-                    quantity: 10,
                     instructions: 'Take after food'
+                }
+            ],
+            notes: 'Take medications regularly after meals and monitor BP daily.',
+            status: 'Dispensed'
+        });
+
+        await LabOrder.create({
+            consultationId: consult1._id,
+            patientId: createdPatients[0]._id,
+            doctorId: drSharma._id,
+            tests: ['Complete Blood Count (CBC)', 'Lipid Profile', 'HbA1c'],
+            status: 'Completed',
+            results: [
+                {
+                    documentUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+                    parsedText: 'Total Cholesterol: 210 mg/dL, HDL: 45 mg/dL, LDL: 135 mg/dL, HbA1c: 6.2%',
+                    notes: 'Borderline high LDL and prediabetes.'
                 }
             ]
         });
 
         await Invoice.create({
             patientId: createdPatients[0]._id,
-            appointmentId: appt1._id,
             consultationId: consult1._id,
             items: [
-                { type: 'Consultation', description: 'Cardiology Consultation Fee - Dr. Rajesh Sharma', quantity: 1, unitPrice: 800, total: 800 },
-                { type: 'Pharmacy', description: 'Amlodipine 5mg (14 Tabs)', quantity: 14, unitPrice: 5, total: 70 },
-                { type: 'Pharmacy', description: 'Paracetamol 500mg (10 Tabs)', quantity: 10, unitPrice: 3, total: 30 }
+                { description: 'Cardiology Consultation Fee - Dr. Rajesh Sharma', type: 'Consultation', quantity: 1, unitPrice: 800, total: 800 },
+                { description: 'ECG Diagnostic Test', type: 'Procedure', quantity: 1, unitPrice: 300, total: 300 },
+                { description: 'Amlodipine 5mg & Paracetamol Pack', type: 'Pharmacy', quantity: 1, unitPrice: 100, total: 100 }
             ],
-            billingDetails: { subtotal: 900, discount: 50, tax: 45, grandTotal: 895, amountPaid: 895, amountDue: 0 },
+            billingDetails: {
+                subTotal: 1200,
+                tax: 60,
+                discount: 50,
+                grandTotal: 1210,
+                amountPaid: 1210,
+                amountDue: 0
+            },
             status: 'Paid',
-            paymentHistory: [{ date: pastDate1, amount: 895, method: 'Card', transactionId: 'TXN-CARD-9001' }]
+            paymentHistory: [
+                { date: pastDate1, amount: 1210, method: 'Card', transactionId: 'TXN-CARD-9001', receiptNumber: 'REC-2026-0001' }
+            ],
+            createdBy: adminUser ? adminUser._id : undefined
         });
 
         // Past Completed Appointment 2 -> Dr. Singh (Pediatrics)
@@ -422,123 +625,132 @@ const importData = async () => {
             patientId: createdPatients[6]._id, // Arjun Das (child)
             doctorId: drSingh._id,
             appointmentDate: pastDate2,
-            timeSlot: '11:30 - 11:45',
+            duration: 15,
+            appointmentType: 'Walk-in',
             status: 'completed',
-            type: 'General Consultation',
-            reason: 'Fever and seasonal cough',
-            queueNumber: 3,
-            duration: 15
+            reasonForVisit: 'High fever and seasonal dry cough',
+            consultationRoom: 'Room 102 (Pediatrics)',
+            createdBy: adminUser ? adminUser._id : undefined
         });
 
         const consult2 = await Consultation.create({
             appointmentId: appt2._id,
             patientId: createdPatients[6]._id,
             doctorId: drSingh._id,
-            soapNotes: {
-                subjective: 'Mother reports child has had low-grade fever (100.4 F) and dry cough since yesterday evening.',
-                objective: 'Temp 100.2 F, Throat slightly erythemic. Chest auscultation bilateral clear.',
-                assessment: 'Acute upper respiratory tract infection (Viral pharyngitis).',
-                plan: 'Prescribed Paracetamol syrup/tablet and Cetirizine for allergic cough relief. Plenty of warm fluids.'
-            },
-            diagnosis: [
-                { icdCode: 'J06.9', description: 'Acute upper respiratory infection, unspecified', severity: 'Mild' }
-            ],
-            prescriptions: [
+            symptoms: 'Mother reports child has had low-grade fever (100.4 F) and dry cough since yesterday evening.',
+            examinationFindings: 'Temp 100.2 F, Throat slightly erythemic. Chest auscultation bilateral clear.',
+            diagnosis: 'Acute upper respiratory tract infection / Viral pharyngitis (ICD-10: J06.9)',
+            treatmentPlan: 'Prescribed Paracetamol syrup/tablet and Cetirizine for allergic cough relief. Plenty of warm fluids.',
+            status: 'Completed'
+        });
+
+        await Prescription.create({
+            consultationId: consult2._id,
+            patientId: createdPatients[6]._id,
+            doctorId: drSingh._id,
+            medications: [
                 {
-                    medicineId: createdMedicines.find(m => m.name.includes('Paracetamol'))._id,
-                    medicineName: 'Paracetamol 500mg (Half tablet or Syrup equivalent)',
+                    drugName: 'Paracetamol 500mg (Half tablet or Syrup equivalent)',
                     dosage: '0.5 Tablet / 5ml',
                     frequency: 'Three times daily after food',
                     duration: '3 Days',
-                    quantity: 5,
                     instructions: 'Only if temperature exceeds 100 F'
                 },
                 {
-                    medicineId: createdMedicines.find(m => m.name.includes('Cetirizine'))._id,
-                    medicineName: 'Cetirizine 10mg',
+                    drugName: 'Cetirizine 10mg',
                     dosage: '0.5 Tablet',
                     frequency: 'Once at bedtime',
                     duration: '5 Days',
-                    quantity: 5,
                     instructions: 'May cause mild drowsiness'
                 }
-            ]
+            ],
+            notes: 'Give plenty of warm fluids and rest.',
+            status: 'Dispensed'
         });
 
         await Invoice.create({
             patientId: createdPatients[6]._id,
-            appointmentId: appt2._id,
             consultationId: consult2._id,
             items: [
-                { type: 'Consultation', description: 'Pediatric Consultation Fee - Dr. Ananya Singh', quantity: 1, unitPrice: 600, total: 600 },
-                { type: 'Procedure', description: 'Nebulization Support (Saline)', quantity: 1, unitPrice: 200, total: 200 },
-                { type: 'Pharmacy', description: 'Cetirizine & Paracetamol pack', quantity: 1, unitPrice: 50, total: 50 }
+                { description: 'Pediatric Consultation Fee - Dr. Ananya Singh', type: 'Consultation', quantity: 1, unitPrice: 600, total: 600 },
+                { description: 'Nebulization Support (Saline)', type: 'Procedure', quantity: 1, unitPrice: 200, total: 200 },
+                { description: 'Cetirizine & Paracetamol pack', type: 'Pharmacy', quantity: 1, unitPrice: 50, total: 50 }
             ],
-            billingDetails: { subtotal: 850, discount: 0, tax: 42.5, grandTotal: 892.5, amountPaid: 500, amountDue: 392.5 },
+            billingDetails: {
+                subTotal: 850,
+                tax: 42.5,
+                discount: 0,
+                grandTotal: 892.5,
+                amountPaid: 500,
+                amountDue: 392.5
+            },
             status: 'Partial',
-            paymentHistory: [{ date: pastDate2, amount: 500, method: 'UPI', transactionId: 'TXN-UPI-7712' }]
+            paymentHistory: [
+                { date: pastDate2, amount: 500, method: 'UPI', transactionId: 'TXN-UPI-7712', receiptNumber: 'REC-2026-0002' }
+            ],
+            createdBy: adminUser ? adminUser._id : undefined
         });
 
         // Upcoming Live Queue Appointments (Today & Tomorrow)
-        await Appointment.create([
+        for (const upcomingAppt of [
             {
                 patientId: createdPatients[1]._id,
                 doctorId: drSharma._id,
                 appointmentDate: today,
-                timeSlot: '10:00 - 10:15',
+                duration: 15,
+                appointmentType: 'Follow-up',
                 status: 'checked-in',
-                type: 'Follow-up',
-                reason: 'Routine ECG and cardiac checkup',
-                queueNumber: 1,
-                duration: 15
+                reasonForVisit: 'Routine ECG and cardiac checkup',
+                consultationRoom: 'Room 101 (Cardiology)'
             },
             {
                 patientId: createdPatients[2]._id,
                 doctorId: drMehta._id,
                 appointmentDate: today,
-                timeSlot: '10:15 - 10:30',
+                duration: 15,
+                appointmentType: 'Walk-in',
                 status: 'booked',
-                type: 'General Consultation',
-                reason: 'Uncontrolled diabetes management',
-                queueNumber: 1,
-                duration: 15
+                reasonForVisit: 'Uncontrolled diabetes management and blood sugar review',
+                consultationRoom: 'Room 103 (General Medicine)'
             },
             {
                 patientId: createdPatients[4]._id,
                 doctorId: drSharma._id,
                 appointmentDate: today,
-                timeSlot: '11:00 - 11:15',
+                duration: 15,
+                appointmentType: 'Online',
                 status: 'booked',
-                type: 'General Consultation',
-                reason: 'Chest discomfort evaluation',
-                queueNumber: 2,
-                duration: 15
+                reasonForVisit: 'Chest discomfort evaluation after exercise',
+                consultationRoom: 'Online Consultation Video Link'
             },
             {
                 patientId: createdPatients[3]._id,
                 doctorId: drSingh._id,
                 appointmentDate: futureDate1,
-                timeSlot: '10:00 - 10:15',
+                duration: 15,
+                appointmentType: 'Walk-in',
                 status: 'booked',
-                type: 'General Consultation',
-                reason: 'Annual health checkup',
-                queueNumber: 1,
-                duration: 15
+                reasonForVisit: 'Annual health checkup and vaccination counseling',
+                consultationRoom: 'Room 102 (Pediatrics)'
             },
             {
                 patientId: createdPatients[5]._id,
                 doctorId: drMehta._id,
                 appointmentDate: futureDate2,
-                timeSlot: '12:00 - 12:15',
+                duration: 15,
+                appointmentType: 'Follow-up',
                 status: 'booked',
-                type: 'General Consultation',
-                reason: 'Severe migraine headache consultation',
-                queueNumber: 1,
-                duration: 15
+                reasonForVisit: 'Severe migraine headache consultation',
+                consultationRoom: 'Room 103 (General Medicine)'
             }
-        ]);
+        ]) {
+            await Appointment.create({
+                ...upcomingAppt,
+                createdBy: adminUser ? adminUser._id : undefined
+            });
+        }
 
-        // 7. Seed Clinic Branch Settings
+        // 7. Seed Clinic Branch Settings (Matching ClinicSetting schema)
         console.log('🌱 Seeding Clinic Branch Configuration...');
         await ClinicSetting.create({
             clinicName: 'Healthcare Excellence Clinic ERP',
@@ -570,7 +782,7 @@ const importData = async () => {
             }
         });
 
-        // 8. Seed Sample Audit Logs
+        // 8. Seed Sample Audit Logs (Matching AuditLog schema)
         console.log('🌱 Seeding Sample HIPAA Compliance Audit Logs...');
         if (adminUser) {
             await AuditLog.create([
@@ -591,7 +803,7 @@ const importData = async () => {
                     action: 'VIEW_PATIENT_RECORD',
                     resourceType: 'Patient',
                     resourceId: createdPatients[0]._id.toString(),
-                    details: `Doctor accessed medical history for patient ${createdPatients[0].name}`,
+                    details: `Doctor accessed medical history for patient ${createdPatients[0].firstName} ${createdPatients[0].lastName}`,
                     ipAddress: '192.168.1.45',
                     userAgent: 'Mozilla/5.0 Safari/605.1.15'
                 },
@@ -643,6 +855,8 @@ const destroyData = async () => {
         await Medicine.deleteMany({});
         await Appointment.deleteMany({});
         await Consultation.deleteMany({});
+        await Prescription.deleteMany({});
+        await LabOrder.deleteMany({});
         await Invoice.deleteMany({});
         await ClinicSetting.deleteMany({});
         await AuditLog.deleteMany({});
