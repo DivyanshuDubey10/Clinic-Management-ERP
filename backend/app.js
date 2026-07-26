@@ -35,6 +35,7 @@ const consultationRoutes = require('./routes/consultationRoutes');
 const pharmacyRoutes = require('./routes/pharmacyRoutes');
 const billingRoutes = require('./routes/billingRoutes');
 const patientPortalRoutes = require('./routes/patientPortalRoutes');
+const reportingRoutes = require('./routes/reportingRoutes');
 
 // Mount routers
 app.use('/api/auth', authRoutes);
@@ -47,5 +48,7 @@ app.use('/api/consultations', consultationRoutes);
 app.use('/api/pharmacy', pharmacyRoutes);
 app.use('/api/billing', billingRoutes);
 app.use('/api/portal', patientPortalRoutes);
+app.use('/api/reports', reportingRoutes);
 
 module.exports = app;
+
