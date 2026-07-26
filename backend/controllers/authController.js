@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Patient = require('../models/Patient');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
@@ -52,6 +53,21 @@ exports.registerUser = async (req, res) => {
             role, // The model defaults to 'Patient' if not provided
             specialization
         });
+
+        // 4.1 If registering as a Patient, provision their clinical profile cleanly during registration
+        if (!user.role || user.role === ROLES.PATIENT || user.role === 'Patient') {
+            const nameParts = name.trim().split(' ');
+            const firstName = nameParts[0] || 'Patient';
+            const lastName = nameParts.slice(1).join(' ') || 'User';
+
+            await Patient.create({
+                firstName,
+                lastName,
+                email: user.email,
+                phone: user.phone,
+                createdBy: user._id
+            });
+        }
 
         // 5. Generate tokens
         const accessToken = generateAccessToken(user._id, user.role);
