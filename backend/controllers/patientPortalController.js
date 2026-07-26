@@ -15,8 +15,15 @@ const razorpay = new Razorpay({
     key_secret: process.env.RAZORPAY_KEY_SECRET || 'secret_placeholder'
 });
 
-// Helper: Match Patient Record for Logged-in User (without auto-creation)
-const getPatientRecord = async (user) => {
+// Helper: Match Patient Record for Logged-in User
+const getPatientRecord = async (userObj) => {
+    const user = await User.findById(userObj._id);
+    if (!user) {
+        const error = new Error('User account not found.');
+        error.statusCode = 404;
+        throw error;
+    }
+
     const patient = await Patient.findOne({
         $or: [
             { email: user.email },

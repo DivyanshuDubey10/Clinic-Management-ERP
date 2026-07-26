@@ -452,8 +452,10 @@ exports.getFinancialSummaryReport = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            invoiceStatus,
-            insuranceClaims
+            data: {
+                invoiceStatus,
+                insuranceClaims
+            }
         });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message || 'Server Error' });
@@ -534,9 +536,11 @@ exports.getPatientDemographicsReport = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            genderDistribution,
-            bloodGroupDistribution,
-            acquisitionTrend
+            data: {
+                genderDistribution,
+                bloodGroupDistribution,
+                acquisitionTrend
+            }
         });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message || 'Server Error' });
