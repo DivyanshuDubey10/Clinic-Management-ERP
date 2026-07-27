@@ -1,0 +1,800 @@
+{
+  "info": {
+    "_postman_id": "c71e21b0-2b1d-4876-92b1-5e9e0837f6a2",
+    "name": "Clinic Management ERP - Full API Suite (9 Modules)",
+    "description": "Comprehensive Postman Collection for the 9-Module Healthcare ERP System.\n\n### Quick Start Guide for Frontend Developer:\n1. **Environment Setup**: The collection uses `{{baseUrl}}` (defaults to `http://localhost:5000` or your deployed Atlas URL) and `{{token}}` for authentication.\n2. **Authenticate First**: Run the **Admin Login** or **Doctor Login** request under Module 1. The test script automatically saves the returned JWT token to your `{{token}}` variable!\n3. **Seed Data**: Run `npm run seed` in the backend terminal to populate 15 sample patients, inventory medicines, appointments, and billing records.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "patientId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "doctorId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "appointmentId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "0. System Health Check",
+      "item": [
+        {
+          "name": "Check Server & DB Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Module 1: Auth & User Management",
+      "item": [
+        {
+          "name": "Admin Login (Auto-saves Token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.accessToken) {",
+                  "    pm.collectionVariables.set('token', jsonData.accessToken);",
+                  "    console.log('Saved Admin Token to collection variables');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@clinicerp.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Doctor Login (Auto-saves Token & DoctorId)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.accessToken) {",
+                  "    pm.collectionVariables.set('token', jsonData.accessToken);",
+                  "    pm.collectionVariables.set('doctorId', jsonData.user._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"dr.sharma@clinicerp.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Receptionist Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.accessToken) {",
+                  "    pm.collectionVariables.set('token', jsonData.accessToken);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"reception@clinicerp.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Patient Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.accessToken) {",
+                  "    pm.collectionVariables.set('token', jsonData.accessToken);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"patient@clinicerp.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Current Logged-In User Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "profile"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Module 2: Patient Management",
+      "item": [
+        {
+          "name": "Get All Patients (Paginated & Filterable)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.length > 0) {",
+                  "    pm.collectionVariables.set('patientId', jsonData.data[0]._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/patients?page=1&limit=10&search=Amit",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "patients"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "search", "value": "Amit" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Patient Profile by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/patients/{{patientId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "patients", "{{patientId}}"]
+            }
+          }
+        },
+        {
+          "name": "Register New Patient Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Rajesh\",\n  \"lastName\": \"Khanna\",\n  \"email\": \"rajesh.k@example.com\",\n  \"phone\": \"+919811223344\",\n  \"dateOfBirth\": \"1985-06-20\",\n  \"gender\": \"Male\",\n  \"bloodGroup\": \"O+\",\n  \"address\": \"78 Residency Road, Bangalore\",\n  \"medicalHistory\": [\n    { \"condition\": \"Type 2 Diabetes\", \"diagnosedDate\": \"2018-05-10\", \"status\": \"Managed\" }\n  ],\n  \"allergies\": [\n    { \"allergen\": \"Sulfa Drugs\", \"severity\": \"High\", \"reaction\": \"Skin Hives\" }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/patients",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "patients"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Module 3: Appointments & Live Queue",
+      "item": [
+        {
+          "name": "Get Doctor Availability Schedule",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/availability/{{doctorId}}?date=2026-07-26",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "availability", "{{doctorId}}"],
+              "query": [
+                { "key": "date", "value": "2026-07-26" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get All Appointments List",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.length > 0) {",
+                  "    pm.collectionVariables.set('appointmentId', jsonData.data[0]._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments?status=booked",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "appointments"],
+              "query": [
+                { "key": "status", "value": "booked" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Doctor's Live OPD Queue",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments/queue/{{doctorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "appointments", "queue", "{{doctorId}}"]
+            }
+          }
+        },
+        {
+          "name": "Book New Appointment",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"doctorId\": \"{{doctorId}}\",\n  \"appointmentDate\": \"2026-07-28T10:30:00.000Z\",\n  \"duration\": 30,\n  \"appointmentType\": \"OPD\",\n  \"reasonForVisit\": \"Severe headache and fever checkup\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "appointments"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Module 4: Consultations & E-Prescriptions",
+      "item": [
+        {
+          "name": "Get SOAP Consultation by Appointment ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/consultations/{{appointmentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "consultations", "{{appointmentId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create SOAP Consultation & E-Prescription",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appointmentId\": \"{{appointmentId}}\",\n  \"soapNotes\": {\n    \"subjective\": \"Patient complains of frontal headache for 3 days.\",\n    \"objective\": \"BP 120/80, Temp 98.6 F, Pulse 74 bpm.\",\n    \"assessment\": \"Tension Headache / Fatigue.\",\n    \"plan\": \"Rest, hydration, and prescribed analgesics.\"\n  },\n  \"diagnosis\": [\"Tension Headache\", \"Mild Dehydration\"],\n  \"vitals\": {\n    \"bloodPressure\": \"120/80\",\n    \"pulseRate\": 74,\n    \"temperature\": 98.6,\n    \"respiratoryRate\": 16,\n    \"oxygenSaturation\": 99,\n    \"weight\": 68,\n    \"height\": 172\n  },\n  \"medications\": [\n    {\n      \"drugName\": \"Paracetamol 500mg\",\n      \"dosage\": \"1 Tablet\",\n      \"frequency\": \"TID (Three times a day)\",\n      \"duration\": \"5 Days\",\n      \"instructions\": \"After meals\"\n    }\n  ],\n  \"followUpDate\": \"2026-08-05T00:00:00.000Z\",\n  \"labOrders\": [\"Complete Blood Count (CBC)\", \"Lipid Profile\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/consultations",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "consultations"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Module 5: Pharmacy & Inventory",
+      "item": [
+        {
+          "name": "Get All Inventory Medicines",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/pharmacy/medicines",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pharmacy", "medicines"]
+            }
+          }
+        },
+        {
+          "name": "Get Low Stock & Expiry Alerts",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/pharmacy/alerts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pharmacy", "alerts"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Module 6: Billing & Invoicing",
+      "item": [
+        {
+          "name": "Get All Generated Invoices",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/billing/invoices",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "billing", "invoices"]
+            }
+          }
+        },
+        {
+          "name": "Create New OPD/Pharmacy Invoice",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"lineItems\": [\n    { \"description\": \"Consultation Fee - Dr. Sharma\", \"category\": \"Consultation\", \"quantity\": 1, \"unitPrice\": 800, \"totalPrice\": 800 },\n    { \"description\": \"Complete Blood Count (CBC) Lab Test\", \"category\": \"Laboratory\", \"quantity\": 1, \"unitPrice\": 450, \"totalPrice\": 450 }\n  ],\n  \"billingDetails\": {\n    \"subtotal\": 1250,\n    \"discountAmount\": 50,\n    \"taxAmount\": 60,\n    \"grandTotal\": 1260,\n    \"amountPaid\": 1260,\n    \"amountDue\": 0,\n    \"paymentMethod\": \"UPI\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/billing/invoices",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "billing", "invoices"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Module 7: Patient Self-Service Portal",
+      "item": [
+        {
+          "name": "Get Patient Portal Dashboard Overview",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/portal/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "portal", "dashboard"]
+            }
+          }
+        },
+        {
+          "name": "Get Patient's Prescriptions List",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/portal/prescriptions",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "portal", "prescriptions"]
+            }
+          }
+        },
+        {
+          "name": "Get Patient's Lab Reports List",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/portal/lab-orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "portal", "lab-orders"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Module 8: Reporting & Analytics",
+      "item": [
+        {
+          "name": "Get Clinic Performance Overview",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/performance",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reports", "performance"]
+            }
+          }
+        },
+        {
+          "name": "Get Patient Demographics Trends",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/demographics",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reports", "demographics"]
+            }
+          }
+        },
+        {
+          "name": "Get Financial Summary & Revenue Chart",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/financials",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reports", "financials"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Module 9: System Administration",
+      "item": [
+        {
+          "name": "Get Multi-Branch Clinic Settings",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/settings",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "settings"]
+            }
+          }
+        },
+        {
+          "name": "Get HIPAA Compliance Audit Logs",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/audit-logs",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "audit-logs"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
