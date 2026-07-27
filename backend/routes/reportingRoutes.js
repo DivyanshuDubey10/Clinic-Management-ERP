@@ -9,6 +9,7 @@ const {
     getFinancialSummaryReport,
     getPatientDemographicsReport
 } = require('../controllers/reportingController');
+const { validateObjectId } = require('../middlewares/validationMiddleware');
 
 // All reporting routes require authentication
 router.use(protect);
@@ -21,7 +22,7 @@ router.get('/performance', authorize(ROLES.ADMIN, ROLES.RECEPTIONIST), getClinic
 // @route   GET /api/reports/doctor-wise
 // @desc    8.2 Doctor-wise Filterable Performance Report
 // @access  Private (Admin, Receptionist, Doctor)
-router.get('/doctor-wise', authorize(ROLES.ADMIN, ROLES.RECEPTIONIST, ROLES.DOCTOR), getDoctorWiseReport);
+router.get('/doctor-wise', authorize(ROLES.ADMIN, ROLES.RECEPTIONIST, ROLES.DOCTOR), validateObjectId('doctorId'), getDoctorWiseReport);
 
 // @route   GET /api/reports/service-wise
 // @desc    8.2 Service-wise / Item-wise Revenue & Volume Report

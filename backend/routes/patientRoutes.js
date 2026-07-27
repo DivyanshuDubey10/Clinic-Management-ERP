@@ -8,6 +8,7 @@ const {
 } = require('../controllers/patientController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
 const { ROLES } = require('../constants/roles');
+const { validateObjectId, validateBody } = require('../middlewares/validationMiddleware');
 
 const router = express.Router();
 
@@ -16,12 +17,12 @@ router.use(protect);
 router.use(authorize(ROLES.ADMIN, ROLES.DOCTOR, ROLES.RECEPTIONIST));
 
 router.route('/')
-    .post(createPatient)
+    .post(validateBody('firstName', 'lastName', 'phone'), createPatient)
     .get(getAllPatients);
 
 router.route('/:id')
-    .get(getPatientById)
-    .put(updatePatient)
-    .delete(deletePatient);
+    .get(validateObjectId('id'), getPatientById)
+    .put(validateObjectId('id'), updatePatient)
+    .delete(validateObjectId('id'), deletePatient);
 
 module.exports = router;

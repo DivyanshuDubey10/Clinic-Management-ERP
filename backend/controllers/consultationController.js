@@ -242,7 +242,9 @@ const downloadPrescriptionPDF = async (req, res) => {
         doc.moveDown();
         
         // Doctor & Patient Info
-        doc.fontSize(12).text(`Doctor: Dr. ${doctor.firstName} ${doctor.lastName} (${doctor.specialization || 'General'})`);
+        const doctorName = doctor ? doctor.name : 'Attending Physician';
+        const doctorSpec = doctor ? (doctor.specialization || 'General') : 'General';
+        doc.fontSize(12).text(`Doctor: Dr. ${doctorName} (${doctorSpec})`);
         doc.text(`Date: ${prescription.updatedAt.toLocaleDateString()}`);
         doc.moveDown();
         doc.text(`Patient: ${patient.firstName} ${patient.lastName}`);

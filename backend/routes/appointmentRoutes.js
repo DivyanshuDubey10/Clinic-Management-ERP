@@ -15,26 +15,28 @@ const {
     getWaitlist
 } = require('../controllers/appointmentController');
 
+const { validateObjectId, validateBody, validateQuery } = require('../middlewares/validationMiddleware');
+
 // Apply protection to all routes
 router.use(protect);
 router.use(authorize(ROLES.ADMIN, ROLES.DOCTOR, ROLES.RECEPTIONIST));
 
 router.route('/')
-    .post(createAppointment)
+    .post(validateBody('patientId', 'doctorId', 'appointmentDate', 'reasonForVisit'), validateObjectId('patientId', 'doctorId'), createAppointment)
     .get(getAppointments);
 
 router.post('/reminders', authorize(ROLES.ADMIN), triggerReminders);
-router.get('/available-slots', getAvailableSlots);
+router.get('/available-slots', validateQuery('doctorId', 'date'), validateObjectId('doctorId'), getAvailableSlots);
 
-router.get('/queue/:doctorId', getLiveQueue);
+router.get('/queue/:doctorId', validateObjectId('doctorId'), getLiveQueue);
 
 router.route('/waitlist')
-    .post(addToWaitlist)
+    .post(validateBody('patientId', 'doctorId', 'requestedDate'), validateObjectId('patientId', 'doctorId'), addToWaitlist)
     .get(getWaitlist);
 
 router.route('/:id')
-    .get(getAppointmentById)
-    .put(updateAppointment)
-    .delete(deleteAppointment);
+    .get(validateObjectId('id'), getAppointmentById)
+    .put(validateObjectId('id'), updateAppointment)
+    .delete(validateObjectId('id'), deleteAppointment);
 
 module.exports = router;

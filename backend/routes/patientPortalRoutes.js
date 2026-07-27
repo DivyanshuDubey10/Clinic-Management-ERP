@@ -15,6 +15,7 @@ const {
 } = require('../controllers/patientPortalController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
 const { ROLES } = require('../constants/roles');
+const { validateObjectId, validateBody, validatePaymentSignature } = require('../middlewares/validationMiddleware');
 
 const router = express.Router();
 
@@ -29,23 +30,23 @@ router.get('/dashboard', getPatientDashboard);
 
 // 7.2 Self-Service Appointments
 router.route('/appointments')
-    .post(bookAppointment)
+    .post(validateBody('doctorId', 'appointmentDate', 'reasonForVisit'), validateObjectId('doctorId'), bookAppointment)
     .get(getMyAppointments);
 
-router.put('/appointments/:id/cancel', cancelMyAppointment);
+router.put('/appointments/:id/cancel', validateObjectId('id'), cancelMyAppointment);
 
 // 7.3 Prescriptions & PDF Download
 router.get('/prescriptions', getMyPrescriptions);
-router.get('/prescriptions/:id/download', downloadPrescriptionPDF);
+router.get('/prescriptions/:id/download', validateObjectId('id'), downloadPrescriptionPDF);
 
 // 7.3 Lab Orders & PDF Download
 router.get('/lab-orders', getMyLabOrders);
-router.get('/lab-orders/:id/download', downloadLabOrderPDF);
+router.get('/lab-orders/:id/download', validateObjectId('id'), downloadLabOrderPDF);
 
 // 7.4 Bill Payment & Invoices
 router.get('/invoices', getMyInvoices);
-router.get('/invoices/:id', getMyInvoiceById);
-router.post('/invoices/:id/razorpay-order', createPortalRazorpayOrder);
-router.post('/invoices/:id/verify-payment', verifyPortalPayment);
+router.get('/invoices/:id', validateObjectId('id'), getMyInvoiceById);
+router.post('/invoices/:id/razorpay-order', validateObjectId('id'), createPortalRazorpayOrder);
+router.post('/invoices/:id/verify-payment', validateObjectId('id'), validatePaymentSignature, verifyPortalPayment);
 
 module.exports = router;

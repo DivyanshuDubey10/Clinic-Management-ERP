@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const ClinicSetting = require('../models/ClinicSetting');
 const AuditLog = require('../models/AuditLog');
 const logAudit = require('../utils/auditLogger');
