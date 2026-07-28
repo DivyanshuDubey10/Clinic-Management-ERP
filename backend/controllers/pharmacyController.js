@@ -226,6 +226,40 @@ const getPurchaseById = async (req, res) => {
     }
 };
 
+// @desc    Get all pending prescriptions for pharmacy to dispense
+// @route   GET /api/pharmacy/prescriptions/pending
+// @access  Private (Admin, Receptionist)
+const getPendingPrescriptions = async (req, res) => {
+    try {
+        const prescriptions = await Prescription.find({ status: 'Pending' })
+            .populate('patientId', 'firstName lastName')
+            .populate('doctorId', 'firstName lastName')
+            .sort({ createdAt: 1 });
+            
+        res.status(200).json({ success: true, count: prescriptions.length, data: prescriptions });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+// @desc    Get single prescription by ID
+// @route   GET /api/pharmacy/prescriptions/:id
+// @access  Private (Admin, Receptionist)
+const getPrescriptionById = async (req, res) => {
+    try {
+        const prescription = await Prescription.findById(req.params.id)
+            .populate('patientId', 'firstName lastName phone')
+            .populate('doctorId', 'firstName lastName specialization');
+            
+        if (!prescription) {
+            return res.status(404).json({ success: false, message: 'Prescription not found' });
+        }
+        res.status(200).json({ success: true, data: prescription });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 module.exports = {
     addMedicine,
     getMedicines,
@@ -233,5 +267,7 @@ module.exports = {
     dispensePrescription,
     getAlerts,
     getPurchases,
-    getPurchaseById
+    getPurchaseById,
+    getPendingPrescriptions,
+    getPrescriptionById
 };

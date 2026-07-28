@@ -9,7 +9,9 @@ const {
     dispensePrescription,
     getAlerts,
     getPurchases,
-    getPurchaseById
+    getPurchaseById,
+    getPendingPrescriptions,
+    getPrescriptionById
 } = require('../controllers/pharmacyController');
 const { validateObjectId, validateBody, validateArray } = require('../middlewares/validationMiddleware');
 
@@ -27,6 +29,10 @@ router.route('/purchases')
     .post(validateBody('supplierName', 'invoiceNumber', 'items'), validateArray('items'), recordPurchase)
     .get(getPurchases);
 router.get('/purchases/:id', validateObjectId('id'), getPurchaseById);
+
+// Prescriptions for Dispensing
+router.get('/prescriptions/pending', getPendingPrescriptions);
+router.get('/prescriptions/:id', validateObjectId('id'), getPrescriptionById);
 
 // Dispense
 router.post('/dispense/:prescriptionId', validateObjectId('prescriptionId'), validateBody('items'), validateArray('items'), dispensePrescription);
