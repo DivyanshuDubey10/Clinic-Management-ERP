@@ -143,35 +143,12 @@ Modern clinics struggle with fragmented systems—using one software for billing
 
 ## SYSTEM ARCHITECTURE
 
-### Overall Architecture
-The application follows a standard Client-Server architecture utilizing the MERN stack. The React frontend acts as the client, communicating via RESTful JSON APIs to the Express Node.js backend. The backend manages business logic, AI integrations, payment processing, and interfaces with the MongoDB Atlas cluster.
+The application uses a straightforward layout:
 
-```mermaid
-graph TD
-    Client[React Frontend] -->|REST API over HTTPS| API[Express Backend]
-    API -->|Mongoose ODM| DB[(MongoDB Atlas)]
-    
-    API -->|OCR API Call| HF[Hugging Face AI]
-    API -->|Payment Verification| RZ[Razorpay Gateway]
-    
-    Client -->|Online Payment| RZ
-```
-
-### Request Flow
-1. **Client**: Initiates an HTTP request (e.g., `POST /api/appointments`).
-2. **Middleware (Auth)**: Validates session cookie. Extracts `req.user`.
-3. **Middleware (RBAC)**: Checks if `req.user.role` is authorized for the endpoint.
-4. **Middleware (Validation)**: Validates `req.body` against required schemas.
-5. **Controller**: Executes business logic (e.g., slot validation, database insertion).
-6. **Database**: Executes queries.
-7. **Response**: JSON payload sent back to the client.
-
-### Role Flow
-- **Admin**: Full access to all endpoints, configuration, and reporting.
-- **Doctor**: Access to schedules, patient EMRs, ability to create consultations, prescribe medications, and order labs.
-- **Receptionist**: Access to patient registration, appointment booking, billing, and invoice generation.
-- **Pharmacist**: Access to pharmacy inventory, stock purchases, and prescription dispensing.
-- **Patient**: Read-only access to their specific records via the Patient Portal endpoints.
+1. **Frontend (React)**: This is what the users see. It runs in the web browser and allows doctors, receptionists, and patients to interact with the system.
+2. **Backend (Node.js & Express)**: This is the brain of the system. It receives requests from the frontend, securely processes the data (like checking available appointment slots or calculating bills), and then talks to the database.
+3. **Database (MongoDB)**: This is where all the data is securely stored, including patient records, appointments, and billing histories.
+4. **External Services**: We securely connect to Razorpay to process online payments and Hugging Face to extract text from scanned lab reports.
 
 ---
 
