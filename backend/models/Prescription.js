@@ -14,10 +14,15 @@ const prescriptionSchema = new mongoose.Schema({
         required: [true, 'Doctor ID is required']
     },
     medications: [{
+        medicineId: { 
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'Medicine' 
+        },
         drugName: { type: String, required: true },
         dosage: { type: String, required: true }, // e.g. "500mg"
         frequency: { type: String, required: true }, // e.g. "1-0-1" or "Twice daily"
         duration: { type: String, required: true }, // e.g. "5 days"
+        requestedQuantity: { type: Number },
         instructions: {
             type: String
         }
