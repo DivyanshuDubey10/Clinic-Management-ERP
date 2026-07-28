@@ -202,10 +202,36 @@ const getAlerts = async (req, res) => {
     }
 };
 
+const getPurchases = async (req, res) => {
+    try {
+        const purchases = await Purchase.find().populate('items.medicineId', 'name genericName').sort({ purchaseDate: -1 });
+        res.status(200).json({ success: true, count: purchases.length, data: purchases });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+// @desc    Get single purchase by ID
+// @route   GET /api/pharmacy/purchases/:id
+// @access  Private (Admin, Receptionist)
+const getPurchaseById = async (req, res) => {
+    try {
+        const purchase = await Purchase.findById(req.params.id).populate('items.medicineId', 'name genericName category');
+        if (!purchase) {
+            return res.status(404).json({ success: false, message: 'Purchase not found' });
+        }
+        res.status(200).json({ success: true, data: purchase });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 module.exports = {
     addMedicine,
     getMedicines,
     recordPurchase,
     dispensePrescription,
-    getAlerts
+    getAlerts,
+    getPurchases,
+    getPurchaseById
 };
