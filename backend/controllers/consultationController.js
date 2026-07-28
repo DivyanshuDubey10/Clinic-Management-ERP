@@ -83,6 +83,67 @@ const getConsultationByAppointment = async (req, res) => {
     }
 };
 
+// @desc    Get all consultations
+// @route   GET /api/consultations
+// @access  Private
+const getConsultations = async (req, res) => {
+    try {
+        const { patientId, doctorId, status, search } = req.query;
+        let query = {};
+
+        if (patientId) query.patientId = patientId;
+        if (doctorId) query.doctorId = doctorId;
+        if (status) query.status = status;
+
+        // If search is provided, we might want to search by symptoms or diagnosis,
+        // or join with patient/doctor. For simplicity, we filter by diagnosis here.
+        if (search) {
+            query.$or = [
+                { diagnosis: { $regex: search, $options: 'i' } },
+                { symptoms: { $regex: search, $options: 'i' } }
+            ];
+        }
+
+        const consultations = await Consultation.find(query)
+            .populate('patientId', 'firstName lastName')
+            .populate('doctorId', 'firstName lastName specialization')
+            .sort({ createdAt: -1 });
+
+        res.status(200).json({ success: true, count: consultations.length, data: consultations });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+// @desc    Get consultation by ID
+// @route   GET /api/consultations/:id
+// @access  Private
+const getConsultationById = async (req, res) => {
+    try {
+        const consultation = await Consultation.findById(req.params.id)
+            .populate('patientId', 'firstName lastName email phone gender dateOfBirth')
+            .populate('doctorId', 'firstName lastName specialization');
+        
+        if (!consultation) {
+            return res.status(404).json({ success: false, message: 'Consultation not found' });
+        }
+
+        const prescription = await Prescription.findOne({ consultationId: consultation._id });
+        const labOrders = await LabOrder.find({ consultationId: consultation._id });
+
+        res.status(200).json({
+            success: true,
+            data: {
+                consultation,
+                prescription,
+                labOrders
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 // @desc    Add Prescription to Consultation
 // @route   POST /api/consultations/:id/prescription
 // @access  Private (Doctor)
@@ -279,6 +340,8 @@ const downloadPrescriptionPDF = async (req, res) => {
 
 module.exports = {
     createConsultation,
+    getConsultations,
+    getConsultationById,
     getConsultationByAppointment,
     addPrescription,
     createLabOrder,

@@ -90,16 +90,25 @@ const dispensePrescription = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Prescription already dispensed' });
         }
 
-        const { dispenseItems } = req.body; 
-        // Array of { medicineId, requestedQuantity }
+        let itemsToDispense = req.body.dispenseItems;
 
-        if (!dispenseItems || dispenseItems.length === 0) {
-            return res.status(400).json({ success: false, message: 'Please provide items to dispense' });
+        if (!itemsToDispense || itemsToDispense.length === 0) {
+            // Derive items from prescription
+            itemsToDispense = prescription.medications
+                .filter(med => med.medicineId) // Only medications linked to item master
+                .map(med => ({
+                    medicineId: med.medicineId,
+                    requestedQuantity: med.requestedQuantity || 1 // default to 1 if not specified
+                }));
+        }
+
+        if (!itemsToDispense || itemsToDispense.length === 0) {
+            return res.status(400).json({ success: false, message: 'Please provide items to dispense or ensure prescription has valid medicines linked.' });
         }
 
         // Validate stock availability before deducting anything
         const now = new Date();
-        for (const item of dispenseItems) {
+        for (const item of itemsToDispense) {
             const medicine = await Medicine.findById(item.medicineId);
             if (!medicine) {
                 return res.status(404).json({ success: false, message: `Medicine ${item.medicineId} not found` });
@@ -114,7 +123,7 @@ const dispensePrescription = async (req, res) => {
         }
 
         // Perform auto-deduction (FIFO - oldest expiry first)
-        for (const item of dispenseItems) {
+        for (const item of itemsToDispense) {
             const medicine = await Medicine.findById(item.medicineId);
             let remainingToDeduct = item.requestedQuantity;
 

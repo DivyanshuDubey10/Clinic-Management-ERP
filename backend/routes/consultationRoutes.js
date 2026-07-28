@@ -9,6 +9,8 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 const {
     createConsultation,
+    getConsultations,
+    getConsultationById,
     getConsultationByAppointment,
     addPrescription,
     createLabOrder,
@@ -21,11 +23,17 @@ const { validateObjectId, validateBody, validateArray } = require('../middleware
 // All consultation routes require authentication
 router.use(protect);
 
+// Get all consultations
+router.get('/', authorize(ROLES.DOCTOR, ROLES.ADMIN, ROLES.RECEPTIONIST), getConsultations);
+
 // Create a new consultation note (SOAP)
 router.post('/', authorize(ROLES.DOCTOR, ROLES.ADMIN), validateBody('appointmentId', 'symptoms', 'diagnosis', 'treatmentPlan'), validateObjectId('appointmentId'), createConsultation);
 
-// Get complete consultation details
-router.get('/:appointmentId', validateObjectId('appointmentId'), getConsultationByAppointment); // Patients can also view their own (handled in frontend logic for now)
+// Get complete consultation details by ID
+router.get('/:id', validateObjectId('id'), getConsultationById);
+
+// Get complete consultation details by appointment ID
+router.get('/appointment/:appointmentId', validateObjectId('appointmentId'), getConsultationByAppointment); // Patients can also view their own (handled in frontend logic for now)
 
 // Add a prescription to a consultation
 router.post('/:id/prescription', authorize(ROLES.DOCTOR), validateObjectId('id'), validateArray('medications'), addPrescription);

@@ -37,6 +37,8 @@ const billingRoutes = require('./routes/billingRoutes');
 const patientPortalRoutes = require('./routes/patientPortalRoutes');
 const reportingRoutes = require('./routes/reportingRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const prescriptionRoutes = require('./routes/prescriptionRoutes');
+const labOrderRoutes = require('./routes/labOrderRoutes');
 
 // Mount routers
 app.use('/api/auth', authRoutes);
@@ -51,6 +53,8 @@ app.use('/api/billing', billingRoutes);
 app.use('/api/portal', patientPortalRoutes);
 app.use('/api/reports', reportingRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/prescriptions', prescriptionRoutes);
+app.use('/api/lab-orders', labOrderRoutes);
 
 module.exports = app;
 

@@ -35,7 +35,7 @@ router.get('/prescriptions/pending', getPendingPrescriptions);
 router.get('/prescriptions/:id', validateObjectId('id'), getPrescriptionById);
 
 // Dispense
-router.post('/dispense/:prescriptionId', validateObjectId('prescriptionId'), validateBody('items'), validateArray('items'), dispensePrescription);
+router.post('/dispense/:prescriptionId', validateObjectId('prescriptionId'), dispensePrescription);
 
 // Alerts
 router.get('/alerts', getAlerts);

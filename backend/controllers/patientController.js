@@ -43,7 +43,30 @@ exports.createPatient = async (req, res) => {
 // @access  Private
 exports.getAllPatients = async (req, res) => {
     try {
-        const patients = await Patient.find().populate({ path: 'createdBy', model: 'User', select: 'name email' });
+        const { search, gender, ageMin, ageMax } = req.query;
+        let query = {};
+
+        if (search) {
+            query.$or = [
+                { firstName: { $regex: search, $options: 'i' } },
+                { lastName: { $regex: search, $options: 'i' } },
+                { email: { $regex: search, $options: 'i' } },
+                { phone: { $regex: search, $options: 'i' } },
+                { patientId: { $regex: search, $options: 'i' } }
+            ];
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (ageMin || ageMax) {
+            query.age = {};
+            if (ageMin) query.age.$gte = Number(ageMin);
+            if (ageMax) query.age.$lte = Number(ageMax);
+        }
+
+        const patients = await Patient.find(query).populate({ path: 'createdBy', model: 'User', select: 'name email' });
         
         res.status(200).json({
             success: true,

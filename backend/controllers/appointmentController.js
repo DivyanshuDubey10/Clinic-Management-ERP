@@ -41,7 +41,40 @@ const createAppointment = async (req, res) => {
         if (duplicateAppointment) {
             return res.status(400).json({
                 success: false,
-                message: 'A duplicate appointment exists. The doctor or patient is already booked for this time.'
+                message: 'A duplicate appointment exists. The doctor or patient is already booked for this exact time.'
+            });
+        }
+
+        // Validate slot availability (overlap check)
+        const appointmentStart = new Date(req.body.appointmentDate);
+        const duration = req.body.duration || 30; // default 30 mins
+        
+        // Find appointments on the same day to check for overlaps
+        const startOfDay = new Date(appointmentStart);
+        startOfDay.setHours(0, 0, 0, 0);
+        const endOfDay = new Date(appointmentStart);
+        endOfDay.setHours(23, 59, 59, 999);
+
+        const overlappingAppointments = await Appointment.find({
+            doctorId,
+            status: { $ne: 'cancelled' },
+            appointmentDate: { $gte: startOfDay, $lte: endOfDay }
+        });
+
+        const isOverlap = overlappingAppointments.some(appt => {
+            const apptStart = new Date(appt.appointmentDate).getTime();
+            const apptEnd = apptStart + (appt.duration || 30) * 60000;
+            const newStart = appointmentStart.getTime();
+            const newEnd = newStart + duration * 60000;
+
+            // Overlap condition: (StartA < EndB) and (EndA > StartB)
+            return (newStart < apptEnd && newEnd > apptStart);
+        });
+
+        if (isOverlap) {
+            return res.status(400).json({
+                success: false,
+                message: 'The selected time slot overlaps with an existing appointment for this doctor.'
             });
         }
 

@@ -18,8 +18,22 @@ const router = express.Router();
 router.use(protect);
 
 // Routes
+/**
+ * @route   POST /api/billing/invoices
+ * @desc    Create a new invoice
+ * @access  Private (Admin, Receptionist)
+ * @body    { patientId: String, items: Array<{description: String, type: String, quantity: Number, unitPrice: Number, total: Number}> }
+ * @returns { success: Boolean, data: InvoiceObject }
+ */
 router.route('/invoices')
     .post(authorize(ROLES.ADMIN, ROLES.RECEPTIONIST), validateBody('patientId', 'items'), validateArray('items'), validateObjectId('patientId'), createInvoice)
+    
+/**
+ * @route   GET /api/billing/invoices
+ * @desc    Get all invoices
+ * @access  Private (Admin, Receptionist)
+ * @returns { success: Boolean, count: Number, data: Array<InvoiceObject> }
+ */
     .get(authorize(ROLES.ADMIN, ROLES.RECEPTIONIST), getAllInvoices);
 
 router.route('/invoices/:id')

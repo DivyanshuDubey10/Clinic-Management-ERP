@@ -10,8 +10,19 @@ const razorpay = new Razorpay({
 });
 
 // @desc    Create a new invoice
-// @route   POST /api/billing/invoices
-// @access  Private (Admin, Receptionist)
+/**
+ * Create a new invoice
+ * @route   POST /api/billing/invoices
+ * @access  Private (Admin, Receptionist)
+ * @param {Object} req.body - The request payload
+ * @param {string} req.body.patientId - ID of the patient
+ * @param {string} [req.body.consultationId] - Optional ID of the consultation
+ * @param {Array<{description: string, type: string, quantity: number, unitPrice: number}>} req.body.items - Invoice items
+ * @param {number} [req.body.tax=0] - Tax percentage
+ * @param {number} [req.body.discount=0] - Discount amount
+ * @param {Object} [req.body.insuranceDetails] - Optional insurance claim details
+ * @returns {Object} 201 - success and invoice data
+ */
 exports.createInvoice = async (req, res) => {
     try {
         const { patientId, consultationId, items, tax = 0, discount = 0, insuranceDetails } = req.body;
@@ -60,8 +71,17 @@ exports.createInvoice = async (req, res) => {
 };
 
 // @desc    Get all invoices
-// @route   GET /api/billing/invoices
-// @access  Private (Admin, Receptionist)
+/**
+ * Get all invoices with pagination and filtering
+ * @route   GET /api/billing/invoices
+ * @access  Private (Admin, Receptionist)
+ * @param {Object} req.query
+ * @param {string} [req.query.patientId] - Filter by patient
+ * @param {string} [req.query.status] - Filter by status (Pending, Partial, Paid, Cancelled)
+ * @param {number} [req.query.page=1]
+ * @param {number} [req.query.limit=10]
+ * @returns {Object} 200 - success, count, total, page, totalPages, and list of invoice data
+ */
 exports.getAllInvoices = async (req, res) => {
     try {
         const { patientId, status, page = 1, limit = 10 } = req.query;
