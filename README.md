@@ -1,27 +1,15 @@
 <div align="center">
-  <img src="https://via.placeholder.com/800x200.png?text=Clinic+Management+ERP" alt="Clinic Management ERP Banner">
-
-  <h1>🏥 Clinic Management ERP</h1>
+  <h1>Clinic Management ERP</h1>
 
   <p>
     <strong>A robust, enterprise-grade Clinic Management System built with the MERN stack.</strong>
   </p>
 
-  <p>
-    <img src="https://img.shields.io/badge/version-1.0.0-blue.svg" alt="Version">
-    <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License">
-    <img src="https://img.shields.io/badge/build-passing-success.svg" alt="Build Status">
-    <img src="https://img.shields.io/badge/node-%3E%3D%2018.0.0-brightgreen.svg" alt="Node Version">
-    <img src="https://img.shields.io/badge/express-4.x-lightgrey.svg" alt="Express">
-    <img src="https://img.shields.io/badge/react-18.x-blue.svg" alt="React">
-    <img src="https://img.shields.io/badge/database-MongoDB-green.svg" alt="MongoDB">
-    <img src="https://img.shields.io/badge/deployment-Render-purple.svg" alt="Render">
-  </p>
 </div>
 
 ---
 
-## 📑 TABLE OF CONTENTS
+## TABLE OF CONTENTS
 
 - [PROJECT HEADER](#-clinic-management-erp)
 - [PROJECT OVERVIEW](#project-overview)
@@ -52,7 +40,7 @@
 
 ---
 
-## 🚀 PROJECT OVERVIEW
+## PROJECT OVERVIEW
 
 ### Purpose
 The Clinic Management ERP is a comprehensive, centralized software solution designed to streamline the operations of medical clinics, healthcare centers, and independent medical practitioners. It bridges the gap between clinical care and administrative efficiency.
@@ -86,7 +74,7 @@ Modern clinics struggle with fragmented systems—using one software for billing
 
 ---
 
-## ✨ FEATURES
+## FEATURES
 
 | Module | Features |
 |--------|----------|
@@ -104,7 +92,7 @@ Modern clinics struggle with fragmented systems—using one software for billing
 
 ---
 
-## 🛠 TECHNOLOGY STACK
+## TECHNOLOGY STACK
 
 ### Frontend
 | Technology | Description |
@@ -153,7 +141,7 @@ Modern clinics struggle with fragmented systems—using one software for billing
 
 ---
 
-## 🏗 SYSTEM ARCHITECTURE
+## SYSTEM ARCHITECTURE
 
 ### Overall Architecture
 The application follows a standard Client-Server architecture utilizing the MERN stack. The React frontend acts as the client, communicating via RESTful JSON APIs to the Express Node.js backend. The backend manages business logic, AI integrations, payment processing, and interfaces with the MongoDB Atlas cluster.
@@ -187,7 +175,7 @@ graph TD
 
 ---
 
-## 📂 PROJECT STRUCTURE
+## PROJECT STRUCTURE
 
 ```text
 Clinic-Management-ERP/
@@ -252,7 +240,7 @@ Clinic-Management-ERP/
 
 ---
 
-## 🖥 FRONTEND DOCUMENTATION
+## FRONTEND DOCUMENTATION
 
 ### Layouts & Routing
 The frontend utilizes `react-router-dom` for Single Page Application (SPA) navigation. 
@@ -271,7 +259,7 @@ An Axios instance is configured in `src/services/api.js` to automatically attach
 
 ---
 
-## ⚙️ BACKEND DOCUMENTATION
+## BACKEND DOCUMENTATION
 
 ### Design Pattern
 The backend adheres strictly to the **MVC (Model-View-Controller)** pattern (sans Views, as it acts purely as an API).
@@ -287,7 +275,7 @@ Custom middleware in `validationMiddleware.js` checks for required `ObjectId` fo
 
 ---
 
-## 🗄 DATABASE
+## DATABASE
 
 The system uses a highly normalized MongoDB schema design optimized for fast reads while maintaining data integrity.
 
@@ -324,7 +312,7 @@ Performance is ensured by strategic indexes:
 
 ---
 
-## 🔌 COMPLETE API DOCUMENTATION
+## COMPLETE API DOCUMENTATION
 
 > **Note**: All API responses follow a standard format: `{ success: boolean, message?: string, data?: object | array, count?: number }`
 
@@ -407,7 +395,7 @@ Performance is ensured by strategic indexes:
 
 ---
 
-## 🔒 AUTHENTICATION
+## AUTHENTICATION
 
 The system relies on **Stateful Session Authentication** via `express-session` backed by a memory store (or Redis in production).
 - **Cookies**: Sessions are stored via `HttpOnly` cookies, making them immune to standard XSS attacks.
@@ -416,7 +404,7 @@ The system relies on **Stateful Session Authentication** via `express-session` b
 
 ---
 
-## ✅ VALIDATION
+## VALIDATION
 
 Custom validation middleware prevents malformed requests from reaching controllers.
 - `validateObjectId('paramName')`: Ensures MongoDB IDs passed in URLs are valid 24-character hex strings, preventing casting errors.
@@ -425,7 +413,7 @@ Custom validation middleware prevents malformed requests from reaching controlle
 
 ---
 
-## 💸 BILLING
+## BILLING
 
 The Billing module handles complex financial workflows:
 1. **Invoice Generation**: Accepts line items, calculates subtotal, applies percentage tax and flat discount, determining the `grandTotal` and `amountDue`.
@@ -437,7 +425,7 @@ The Billing module handles complex financial workflows:
 
 ---
 
-## 🤖 AI OCR (Optical Character Recognition)
+## AI OCR (Optical Character Recognition)
 
 A standout feature for Clinic Management ERP is the handling of legacy lab reports.
 - **Process**: When a Receptionist or Doctor uploads a scanned image (JPEG/PNG) of a lab result via `PUT /api/consultations/lab-orders/:orderId/results`.
@@ -447,7 +435,7 @@ A standout feature for Clinic Management ERP is the handling of legacy lab repor
 
 ---
 
-## 💊 PHARMACY
+## PHARMACY
 
 Inventory management relies on stringent tracking:
 - **Batches**: When medicines are purchased, they are saved as discrete `batches` featuring a `batchNumber`, `quantity`, and `expiryDate`.
@@ -456,7 +444,7 @@ Inventory management relies on stringent tracking:
 
 ---
 
-## 📊 REPORTING
+## REPORTING
 
 *(Module overview - Implementation specifics exist in `reportingController.js`)*
 Provides aggregate data endpoints:
@@ -467,7 +455,7 @@ Outputs can be consumed by Chart.js on the frontend for visual dashboards.
 
 ---
 
-## 🧪 API TESTING
+## API TESTING
 
 A comprehensive `postman_collection.json` is included in the project root.
 ### Test Coverage Includes:
@@ -477,7 +465,7 @@ A comprehensive `postman_collection.json` is included in the project root.
 
 ---
 
-## 💻 INSTALLATION
+## INSTALLATION
 
 ### Prerequisites
 - Node.js (v18 or higher)
@@ -518,7 +506,7 @@ A comprehensive `postman_collection.json` is included in the project root.
 
 ---
 
-## 🔐 ENVIRONMENT VARIABLES
+## ENVIRONMENT VARIABLES
 
 Create a `.env` file in the `backend/` directory.
 
@@ -550,7 +538,7 @@ SMTP_PASS=pass
 
 ---
 
-## ☁️ DEPLOYMENT
+## DEPLOYMENT
 
 ### Backend Deployment via Render
 1. Connect your GitHub repository to Render.
@@ -565,7 +553,7 @@ Ensure MongoDB Atlas Network Access is set to `0.0.0.0/0` (Allow from anywhere) 
 
 ---
 
-## 🛡 SECURITY
+## SECURITY
 
 - **NoSQL Injection**: Prevented by utilizing Mongoose schemas which cast variables to strict types (e.g., ObjectIds), and validation middlewares.
 - **CORS**: Configured to only accept requests from the specific Frontend origin, preventing unauthorized cross-origin requests.
@@ -577,7 +565,7 @@ Ensure MongoDB Atlas Network Access is set to `0.0.0.0/0` (Allow from anywhere) 
 
 ---
 
-## ⚡ PERFORMANCE
+## PERFORMANCE
 
 - **Indexes**: MongoDB compound indexes applied to `(doctorId, appointmentDate)` ensure slot validation queries remain fast even at scale.
 - **Lean Queries**: Use of `.select()` in Mongoose populations ensures only necessary fields (like `firstName`, `lastName`) are transmitted over the wire, saving bandwidth.
@@ -586,7 +574,7 @@ Ensure MongoDB Atlas Network Access is set to `0.0.0.0/0` (Allow from anywhere) 
 ---
 
 
-## 🧑‍💻 CONTRIBUTORS
+## CONTRIBUTORS
 
 ### **Divyanshu Dubey**
 - **Role:** Backend Developer
@@ -605,7 +593,7 @@ Ensure MongoDB Atlas Network Access is set to `0.0.0.0/0` (Allow from anywhere) 
 
 ---
 
-## ❓ FAQ
+## FAQ
 
 **Q1: How does the AI OCR feature work?**
 A: When a lab report image is uploaded, it is sent to Hugging Face's Inference API using an advanced OCR model. The extracted text is then saved in the database, allowing doctors to search historical lab metrics easily.
@@ -626,13 +614,13 @@ A: The pharmacy alert endpoint flags batches nearing expiry. During dispensing, 
 
 ---
 
-## 📄 LICENSE
+## LICENSE
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-## 🙏 ACKNOWLEDGEMENTS
+## ACKNOWLEDGEMENTS
 
 - [React](https://reactjs.org/)
 - [Express](https://expressjs.com/)
