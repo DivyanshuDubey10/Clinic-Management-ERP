@@ -457,18 +457,24 @@ const addToWaitlist = async (req, res) => {
 // @access  Private
 const getWaitlist = async (req, res) => {
     try {
-        const { doctorId, date } = req.query;
-        let query = { status: 'Waiting' };
+        const { doctorId, date, requestedDate, status } = req.query;
+        let query = { status: status || 'Waiting' };
         
         if (doctorId) query.doctorId = doctorId;
-        if (date) {
-            const targetDate = new Date(date);
-            const startOfDay = new Date(targetDate.setHours(0, 0, 0, 0));
-            const endOfDay = new Date(targetDate.setHours(23, 59, 59, 999));
+        
+        const queryDate = requestedDate || date;
+        if (queryDate) {
+            // Use UTC to safely cover the entire UTC day 
+            // since dates like '2026-07-31' are saved as UTC midnight in MongoDB
+            const targetDate = new Date(queryDate);
+            
+            const startOfDay = new Date(targetDate);
+            startOfDay.setUTCHours(0, 0, 0, 0);
+            
+            const endOfDay = new Date(targetDate);
+            endOfDay.setUTCHours(23, 59, 59, 999);
+            
             query.requestedDate = { $gte: startOfDay, $lte: endOfDay };
-        } else {
-            // Optional: If no date provided, you might want to remove the status filter 
-            // or just leave it to return all waiting. 
         }
 
         const waitlist = await Waitlist.find(query)
