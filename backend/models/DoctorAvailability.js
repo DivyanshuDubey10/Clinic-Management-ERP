@@ -21,6 +21,12 @@ const doctorAvailabilitySchema = new mongoose.Schema({
             type: String, // "17:00"
             required: true 
         },
+        lunchStart: {
+            type: String // "13:00"
+        },
+        lunchEnd: {
+            type: String // "14:00"
+        },
         isOffDay: {
             type: Boolean,
             default: false

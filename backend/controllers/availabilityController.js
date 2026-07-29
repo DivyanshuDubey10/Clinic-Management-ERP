@@ -6,7 +6,26 @@ const User = require('../models/User');
 // @access  Private (Admin, Doctor)
 const setAvailability = async (req, res) => {
     try {
-        let { doctorId, workingHours, slotDuration, leaveDates } = req.body;
+        let { doctorId, workingHours, slotDuration, leaveDates, startTime, endTime, lunchStart, lunchEnd, workingDays, leaves } = req.body;
+        
+        // Map frontend payload if provided
+        if (workingDays && Array.isArray(workingDays) && startTime && endTime) {
+            workingHours = [];
+            for (let i = 0; i < 7; i++) {
+                workingHours.push({
+                    dayOfWeek: i,
+                    startTime: startTime,
+                    endTime: endTime,
+                    lunchStart: lunchStart,
+                    lunchEnd: lunchEnd,
+                    isOffDay: !workingDays.includes(i)
+                });
+            }
+        }
+
+        if (leaves && Array.isArray(leaves)) {
+            leaveDates = leaves.map(date => ({ date: new Date(date), reason: 'Leave' }));
+        }
         
         // Fallback to logged-in user if doctorId not provided
         if (!doctorId && req.user && req.user.role?.toLowerCase() === 'doctor') {

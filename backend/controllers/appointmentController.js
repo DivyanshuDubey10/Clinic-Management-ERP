@@ -325,7 +325,29 @@ const getAvailableSlots = async (req, res) => {
         const slotDurationMs = availability.slotDuration * 60000;
 
         while (currentSlot.getTime() + slotDurationMs <= endSlot.getTime()) {
-            slots.push(new Date(currentSlot));
+            const slotStartMs = currentSlot.getTime();
+            const slotEndMs = slotStartMs + slotDurationMs;
+            let isLunch = false;
+
+            if (daySchedule.lunchStart && daySchedule.lunchEnd) {
+                const [lStartH, lStartM] = daySchedule.lunchStart.split(':').map(Number);
+                const [lEndH, lEndM] = daySchedule.lunchEnd.split(':').map(Number);
+                
+                const lunchStartSlot = new Date(targetDate);
+                lunchStartSlot.setHours(lStartH, lStartM, 0, 0);
+                
+                const lunchEndSlot = new Date(targetDate);
+                lunchEndSlot.setHours(lEndH, lEndM, 0, 0);
+                
+                // If slot overlaps with lunch (SlotStart < LunchEnd && SlotEnd > LunchStart)
+                if (slotStartMs < lunchEndSlot.getTime() && slotEndMs > lunchStartSlot.getTime()) {
+                    isLunch = true;
+                }
+            }
+
+            if (!isLunch) {
+                slots.push(new Date(currentSlot));
+            }
             currentSlot = new Date(currentSlot.getTime() + slotDurationMs);
         }
 
