@@ -15,7 +15,7 @@ const getPrescriptions = async (req, res) => {
 
         const prescriptions = await Prescription.find(query)
             .populate('patientId', 'firstName lastName phone')
-            .populate('doctorId', 'firstName lastName specialization')
+            .populate('doctorId', 'name specialization')
             .sort({ createdAt: -1 });
 
         res.status(200).json({ success: true, count: prescriptions.length, data: prescriptions });
@@ -31,7 +31,7 @@ const getPrescriptionById = async (req, res) => {
     try {
         const prescription = await Prescription.findById(req.params.id)
             .populate('patientId', 'firstName lastName phone')
-            .populate('doctorId', 'firstName lastName specialization');
+            .populate('doctorId', 'name specialization');
             
         if (!prescription) {
             return res.status(404).json({ success: false, message: 'Prescription not found' });

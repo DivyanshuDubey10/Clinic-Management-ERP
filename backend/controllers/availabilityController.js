@@ -6,8 +6,13 @@ const User = require('../models/User');
 // @access  Private (Admin, Doctor)
 const setAvailability = async (req, res) => {
     try {
-        const { doctorId, workingHours, slotDuration, leaveDates } = req.body;
+        let { doctorId, workingHours, slotDuration, leaveDates } = req.body;
         
+        // Fallback to logged-in user if doctorId not provided
+        if (!doctorId && req.user && req.user.role === 'Doctor') {
+            doctorId = req.user._id.toString();
+        }
+
         // Ensure user is authorized to set this (Admin or the doctor themselves)
         if (req.user.role !== 'Admin' && req.user._id.toString() !== doctorId) {
             return res.status(403).json({

@@ -72,8 +72,8 @@ const getConsultationByAppointment = async (req, res) => {
             success: true,
             data: {
                 consultation,
-                patient,
-                doctor,
+                patientId: patient,
+                doctorId: doctor,
                 prescription,
                 labOrders
             }
@@ -106,7 +106,7 @@ const getConsultations = async (req, res) => {
 
         const consultations = await Consultation.find(query)
             .populate('patientId', 'firstName lastName')
-            .populate('doctorId', 'firstName lastName specialization')
+            .populate('doctorId', 'name specialization')
             .sort({ createdAt: -1 });
 
         res.status(200).json({ success: true, count: consultations.length, data: consultations });
@@ -122,7 +122,7 @@ const getConsultationById = async (req, res) => {
     try {
         const consultation = await Consultation.findById(req.params.id)
             .populate('patientId', 'firstName lastName email phone gender dateOfBirth')
-            .populate('doctorId', 'firstName lastName specialization');
+            .populate('doctorId', 'name specialization');
         
         if (!consultation) {
             return res.status(404).json({ success: false, message: 'Consultation not found' });

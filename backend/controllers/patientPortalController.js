@@ -26,7 +26,7 @@ const getPatientRecord = async (userObj) => {
 
     const patient = await Patient.findOne({
         $or: [
-            { email: user.email },
+            { email: { $regex: new RegExp(`^${user.email}$`, 'i') } },
             { phone: user.phone }
         ]
     });

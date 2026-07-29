@@ -1,5 +1,6 @@
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
+const mongoose = require('mongoose');
 const Invoice = require('../models/Invoice');
 const Patient = require('../models/Patient');
 
@@ -31,6 +32,11 @@ exports.createInvoice = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Patient ID and at least one item are required' });
         }
 
+        let parsedConsultationId = consultationId;
+        if (consultationId === "") {
+            parsedConsultationId = undefined;
+        }
+
         // Calculate totals
         let subTotal = 0;
         const processedItems = items.map(item => {
@@ -47,7 +53,7 @@ exports.createInvoice = async (req, res) => {
 
         const invoice = await Invoice.create({
             patientId,
-            consultationId,
+            consultationId: parsedConsultationId,
             items: processedItems,
             billingDetails: {
                 subTotal,
@@ -117,6 +123,10 @@ exports.getAllInvoices = async (req, res) => {
 // @access  Private (Admin, Receptionist, Patient)
 exports.getInvoiceById = async (req, res) => {
     try {
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({ success: false, message: 'Invalid Invoice ID format' });
+        }
+
         const invoice = await Invoice.findById(req.params.id)
             .populate({ path: 'patientId', select: 'firstName lastName patientId phone email' });
 

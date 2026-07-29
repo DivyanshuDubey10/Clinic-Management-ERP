@@ -21,7 +21,8 @@ const getMedicines = async (req, res) => {
     try {
         // Will include virtual 'totalStock'
         const medicines = await Medicine.find().sort({ name: 1 });
-        res.status(200).json({ success: true, count: medicines.length, data: medicines });
+        const data = medicines.map(m => m.toJSON());
+        res.status(200).json({ success: true, count: medicines.length, data });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
@@ -201,10 +202,7 @@ const getAlerts = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            data: {
-                lowStockAlerts,
-                expiryAlerts
-            }
+            data: [...lowStockAlerts, ...expiryAlerts]
         });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -242,7 +240,7 @@ const getPendingPrescriptions = async (req, res) => {
     try {
         const prescriptions = await Prescription.find({ status: 'Pending' })
             .populate('patientId', 'firstName lastName')
-            .populate('doctorId', 'firstName lastName')
+            .populate('doctorId', 'name')
             .sort({ createdAt: 1 });
             
         res.status(200).json({ success: true, count: prescriptions.length, data: prescriptions });
@@ -258,7 +256,7 @@ const getPrescriptionById = async (req, res) => {
     try {
         const prescription = await Prescription.findById(req.params.id)
             .populate('patientId', 'firstName lastName phone')
-            .populate('doctorId', 'firstName lastName specialization');
+            .populate('doctorId', 'name specialization');
             
         if (!prescription) {
             return res.status(404).json({ success: false, message: 'Prescription not found' });

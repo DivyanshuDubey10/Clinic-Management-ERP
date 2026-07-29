@@ -15,7 +15,7 @@ const getLabOrders = async (req, res) => {
 
         const labOrders = await LabOrder.find(query)
             .populate('patientId', 'firstName lastName phone')
-            .populate('doctorId', 'firstName lastName specialization')
+            .populate('doctorId', 'name specialization')
             .sort({ createdAt: -1 });
 
         res.status(200).json({ success: true, count: labOrders.length, data: labOrders });
@@ -31,7 +31,7 @@ const getLabOrderById = async (req, res) => {
     try {
         const labOrder = await LabOrder.findById(req.params.id)
             .populate('patientId', 'firstName lastName phone')
-            .populate('doctorId', 'firstName lastName specialization');
+            .populate('doctorId', 'name specialization');
             
         if (!labOrder) {
             return res.status(404).json({ success: false, message: 'Lab order not found' });

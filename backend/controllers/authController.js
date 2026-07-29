@@ -224,6 +224,7 @@ exports.updateUserProfile = async (req, res) => {
         }
 
         user.name = req.body.name || user.name;
+        user.email = req.body.email || user.email;
         user.phone = req.body.phone || user.phone;
         
         // Only allow updating specialization and consultation hours if user is a Doctor

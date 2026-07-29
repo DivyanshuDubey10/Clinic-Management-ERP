@@ -10,7 +10,7 @@ const sendEmail = require('../utils/sendEmail');
 // @access  Private
 const createAppointment = async (req, res) => {
     try {
-        const { patientId, doctorId } = req.body;
+        const { patientId, doctorId, appointmentDate } = req.body;
 
         // Validate patientId exists
         const patientExists = await Patient.findById(patientId);
@@ -426,7 +426,7 @@ const getLiveQueue = async (req, res) => {
         const queue = await Appointment.find({
             doctorId,
             appointmentDate: { $gte: startOfDay, $lte: endOfDay },
-            status: { $in: ['Checked-in', 'In-progress'] }
+            status: { $in: ['booked', 'checked-in', 'in-progress'] }
         })
             .populate({ path: 'patientId', model: 'Patient', select: 'firstName lastName patientId' })
             .sort({ appointmentDate: 1 });
@@ -466,6 +466,9 @@ const getWaitlist = async (req, res) => {
             const startOfDay = new Date(targetDate.setHours(0, 0, 0, 0));
             const endOfDay = new Date(targetDate.setHours(23, 59, 59, 999));
             query.requestedDate = { $gte: startOfDay, $lte: endOfDay };
+        } else {
+            // Optional: If no date provided, you might want to remove the status filter 
+            // or just leave it to return all waiting. 
         }
 
         const waitlist = await Waitlist.find(query)
