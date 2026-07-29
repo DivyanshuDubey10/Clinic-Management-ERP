@@ -9,12 +9,12 @@ const setAvailability = async (req, res) => {
         let { doctorId, workingHours, slotDuration, leaveDates } = req.body;
         
         // Fallback to logged-in user if doctorId not provided
-        if (!doctorId && req.user && req.user.role === 'Doctor') {
+        if (!doctorId && req.user && req.user.role?.toLowerCase() === 'doctor') {
             doctorId = req.user._id.toString();
         }
 
         // Ensure user is authorized to set this (Admin or the doctor themselves)
-        if (req.user.role !== 'Admin' && req.user._id.toString() !== doctorId) {
+        if (req.user.role?.toLowerCase() !== 'admin' && req.user._id.toString() !== doctorId) {
             return res.status(403).json({
                 success: false,
                 message: 'Not authorized to set availability for this doctor'
@@ -23,7 +23,7 @@ const setAvailability = async (req, res) => {
 
         // Verify doctor exists
         const doctorExists = await User.findById(doctorId);
-        if (!doctorExists || doctorExists.role !== 'Doctor') {
+        if (!doctorExists || doctorExists.role?.toLowerCase() !== 'doctor') {
             return res.status(404).json({
                 success: false,
                 message: 'Doctor not found'
