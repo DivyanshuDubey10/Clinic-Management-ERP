@@ -11,7 +11,8 @@ const {
     getMyInvoices,
     getMyInvoiceById,
     createPortalRazorpayOrder,
-    verifyPortalPayment
+    verifyPortalPayment,
+    getPortalDoctors
 } = require('../controllers/patientPortalController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
 const { ROLES } = require('../constants/roles');
@@ -27,6 +28,9 @@ router.use(authorize(ROLES.PATIENT, ROLES.ADMIN, ROLES.RECEPTIONIST));
 
 // 7.1 Dashboard
 router.get('/dashboard', getPatientDashboard);
+
+// 7.5 Get Doctors for booking
+router.get('/doctors', getPortalDoctors);
 
 // 7.2 Self-Service Appointments
 router.route('/appointments')

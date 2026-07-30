@@ -544,3 +544,19 @@ exports.verifyPortalPayment = async (req, res) => {
         res.status(error.statusCode || 500).json({ success: false, message: error.message || 'Server Error' });
     }
 };
+
+// @desc    7.5 Get Doctors for Portal
+// @route   GET /api/portal/doctors
+// @access  Private (Patient, Admin, Receptionist)
+exports.getPortalDoctors = async (req, res) => {
+    try {
+        const doctors = await User.find({ role: ROLES.DOCTOR, isActive: true })
+            .select('name specialization consultationHours');
+        res.status(200).json({
+            success: true,
+            data: doctors
+        });
+    } catch (error) {
+        res.status(error.statusCode || 500).json({ success: false, message: error.message || 'Server Error' });
+    }
+};
