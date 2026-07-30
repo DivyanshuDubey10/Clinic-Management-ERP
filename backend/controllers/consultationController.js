@@ -8,7 +8,7 @@ const PDFDocument = require('pdfkit');
 const { HfInference } = require('@huggingface/inference');
 const pdfParse = require('pdf-parse');
 
-// @desc    Create a new consultation note (SOAP)
+// @desc    Create a new consultation note (S.O.A.P)
 // @route   POST /api/consultations
 // @access  Private (Doctor)
 const createConsultation = async (req, res) => {
@@ -175,7 +175,8 @@ const addPrescription = async (req, res) => {
                 patientId: consultation.patientId,
                 doctorId: consultation.doctorId,
                 medications,
-                notes
+                notes,
+                status: 'Pending'
             });
         }
 

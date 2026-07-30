@@ -14,8 +14,8 @@ const getPrescriptions = async (req, res) => {
         if (consultationId) query.consultationId = consultationId;
 
         const prescriptions = await Prescription.find(query)
-            .populate('patientId', 'firstName lastName phone')
-            .populate('doctorId', 'name specialization')
+            .populate('patientId', 'firstName lastName patientId')
+            .populate('doctorId', 'firstName lastName')
             .sort({ createdAt: -1 });
 
         res.status(200).json({ success: true, count: prescriptions.length, data: prescriptions });

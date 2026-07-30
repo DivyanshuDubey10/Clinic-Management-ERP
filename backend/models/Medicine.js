@@ -67,16 +67,17 @@ const medicineSchema = new mongoose.Schema({
 
 // Virtual for calculating total available stock
 medicineSchema.virtual('totalStock').get(function() {
-    if (!this.batches) return 0;
-    
-    // Sum up quantities of all non-expired batches
-    const now = new Date();
-    return this.batches.reduce((total, batch) => {
-        if (batch.expiryDate > now) {
-            return total + batch.quantity;
-        }
-        return total;
-    }, 0);
+    let batchStock = 0;
+    if (this.batches && this.batches.length > 0) {
+        const now = new Date();
+        batchStock = this.batches.reduce((total, batch) => {
+            if (batch.expiryDate > now) {
+                return total + batch.quantity;
+            }
+            return total;
+        }, 0);
+    }
+    return batchStock > 0 ? batchStock : (this.stock || 0);
 });
 
 module.exports = mongoose.model('Medicine', medicineSchema);

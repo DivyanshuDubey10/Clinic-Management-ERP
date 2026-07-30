@@ -147,6 +147,12 @@ const dispensePrescription = async (req, res) => {
                 }
             }
 
+            // Also deduct from flat stock property since it's now exposed to frontend
+            if (medicine.stock !== undefined) {
+                medicine.stock -= item.requestedQuantity;
+                if (medicine.stock < 0) medicine.stock = 0;
+            }
+
             await medicine.save();
         }
 
