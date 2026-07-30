@@ -7,7 +7,9 @@ import { ShieldCheck } from "lucide-react";
 import { verifyResetOTP } from "@/lib/forgotPassword";
 
 
-export default function verifyOTPPage(){
+import { Suspense } from "react";
+
+function VerifyOTPForm(){
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -79,7 +81,7 @@ export default function verifyOTPPage(){
                         {email}
                     </p>
 
-                    <form className="space-y-5 mt-8">
+                    <form className="space-y-5 mt-8" onSubmit={handleSubmit}>
 
                         <div className="relative">
 
@@ -121,5 +123,13 @@ export default function verifyOTPPage(){
                 </div>
             </div>
         </div>
+    )
+}
+
+export default function verifyOTPPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <VerifyOTPForm />
+        </Suspense>
     )
 }
