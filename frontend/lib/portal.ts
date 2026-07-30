@@ -12,7 +12,7 @@ function authHeader(){
 
 
 export async function getPatientDashboard(){
-    const response = await api.get("/patient-portal/dashboard", authHeader())
+    const response = await api.get("/portal/dashboard", authHeader())
 
     return response.data
 }
@@ -21,7 +21,7 @@ export async function getPatientDashboard(){
 
 
 export async function getMyAppointment(){
-    const response = await api.get("/patient-portal/appointments", authHeader())
+    const response = await api.get("/portal/appointments", authHeader())
 
     return response.data
 }
@@ -29,7 +29,7 @@ export async function getMyAppointment(){
 
 export async function cancelAppointment(id:string) {
     const response = await api.put(
-        `/patient-portal/appointments/${id}/cancel`,
+        `/portal/appointments/${id}/cancel`,
         {},
         authHeader()
     )
@@ -40,7 +40,7 @@ export async function cancelAppointment(id:string) {
 
 
 export async function getMyPrescriptions(){
-    const response = await api.get("/patient-portal/prescriptions",
+    const response = await api.get("/portal/prescriptions",
         authHeader()
     )
 
@@ -51,7 +51,7 @@ export async function getMyPrescriptions(){
 
 export async function getMyLabOrders(){
     const response = await api.get(
-        "/patient-portal/lab-orders",
+        "/portal/lab-orders",
         authHeader()
     )
 
@@ -60,7 +60,7 @@ export async function getMyLabOrders(){
 
 
 export async function downloadPrescription(id: string){
-    const response = await api.get(`/patient-portal/prescriptions/${id}/download`, {
+    const response = await api.get(`/portal/prescriptions/${id}/download`, {
         ...authHeader(),
         responseType: 'blob'
     });
@@ -70,7 +70,7 @@ export async function downloadPrescription(id: string){
 
 
 export async function downloadLabReports(id:string){
-    const response = await api.get(`/patient-portal/lab-orders/${id}/download`, {
+    const response = await api.get(`/portal/lab-orders/${id}/download`, {
         ...authHeader(),
         responseType: 'blob'
     });
@@ -81,7 +81,7 @@ export async function downloadLabReports(id:string){
 
 export async function getMyInvoices(){
     const response = await api.get(
-        "/patient-portal/invoices",
+        "/portal/invoices",
         authHeader()
     )
 
@@ -91,7 +91,7 @@ export async function getMyInvoices(){
 
 export async function getInvoice(id:string) {
     const response = await api.get(
-        `/patient-portal/invoices/${id}`,
+        `/portal/invoices/${id}`,
         authHeader()
     );
 
@@ -101,7 +101,7 @@ export async function getInvoice(id:string) {
 
 export async function createRazorpayOrder(id:string){
     const response = await api.post(
-        `/patient-portal/invoices/${id}/razorpay-order`,
+        `/portal/invoices/${id}/razorpay-order`,
         {},
         authHeader()
     );
@@ -112,7 +112,7 @@ export async function createRazorpayOrder(id:string){
 
 export async function verifyPayment(id:string, data:any) {
     const response = await api.post(
-        `/patient-portal/invoices/${id}/verify-payment`,
+        `/portal/invoices/${id}/verify-payment`,
          data,
          authHeader()
     )

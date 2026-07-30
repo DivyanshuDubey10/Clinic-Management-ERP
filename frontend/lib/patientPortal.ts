@@ -11,18 +11,18 @@ function authHeader(){
 }
 
 export async function getPatientDashboard(){
-    const response = await api.get("/patient-portal/dashboard", authHeader())
+    const response = await api.get("/portal/dashboard", authHeader())
 
     return response.data
 }
 
 export async function getPortalDoctors(){
-    const response = await api.get("/patient-portal/doctors", authHeader());
+    const response = await api.get("/portal/doctors", authHeader());
     return response.data;
 }
 
 export async function getPortalAvailableSlots(doctorId: string, date: string) {
-    const response = await api.get("/patient-portal/appointments/available-slots", {
+    const response = await api.get("/portal/appointments/available-slots", {
         params: { doctorId, date },
         ...authHeader(),
     });
@@ -30,7 +30,7 @@ export async function getPortalAvailableSlots(doctorId: string, date: string) {
 }
 
 export async function bookPortalAppointment(data: any) {
-    const response = await api.post("/patient-portal/appointments", data, authHeader());
+    const response = await api.post("/portal/appointments", data, authHeader());
     return response.data;
 }
 
