@@ -86,12 +86,24 @@ export default function PersonalInfo() {
     loadProfile();
   }, []);
 
-  function handleChange(event: ChangeEvent<HTMLInputElement>) { setForm((current) => ({ ...current, [event.target.name]: event.target.value })); }
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+    if (name === "phone") {
+      const digitsOnly = value.replace(/\D/g, "").slice(0, 10);
+      setForm((current) => ({ ...current, phone: digitsOnly }));
+      return;
+    }
+    setForm((current) => ({ ...current, [name]: value }));
+  }
   function cancelEdit() { setForm(savedForm); setEditing(false); setMessage(null); }
   async function handleSave() {
+    if (form.phone.length !== 10) {
+      setMessage({ text: "Phone number must be exactly 10 digits.", success: false });
+      return;
+    }
     try {
       setLoading(true); setMessage(null);
-      await updateProfile({ name: form.name, email: form.email, phone: form.phone, specialization: form.specialization, consultationHours: form.consultationHours });
+      await updateProfile({ name: form.name, phone: form.phone, specialization: form.specialization, consultationHours: form.consultationHours });
       const cachedUser = JSON.parse(localStorage.getItem("user") || "{}");
       localStorage.setItem("user", JSON.stringify({ ...cachedUser, ...form }));
       setSavedForm(form); setEditing(false); setMessage({ text: "Profile updated successfully.", success: true });
@@ -109,8 +121,8 @@ export default function PersonalInfo() {
 
       <div className="grid gap-5 md:grid-cols-2">
         <Input label="Full name" name="name" value={form.name} onChange={handleChange} disabled={!editing} />
-        <Input label="Email address" name="email" type="email" value={form.email} onChange={handleChange} disabled={!editing} />
-        <Input label="Phone number" name="phone" type="tel" value={form.phone} onChange={handleChange} disabled={!editing} />
+        <Input label="Email address" name="email" type="email" value={form.email} disabled />
+        <Input label="Phone number" name="phone" type="tel" value={form.phone} onChange={handleChange} disabled={!editing} maxLength={10} inputMode="numeric" pattern="[0-9]{10}" />
         <Input label="Role" name="role" value={form.role} disabled />
         {form.role.toLowerCase() === "doctor" && <><Input label="Specialization" name="specialization" value={form.specialization} onChange={handleChange} disabled={!editing} /><Input label="Consultation hours" name="consultationHours" value={form.consultationHours} onChange={handleChange} disabled={!editing} /></>}
       </div>
@@ -118,6 +130,6 @@ export default function PersonalInfo() {
   );
 }
 
-function Input({ label, name, value, onChange, disabled, type = "text" }: { label: string; name: keyof ProfileForm; value: string; onChange?: (event: ChangeEvent<HTMLInputElement>) => void; disabled: boolean; type?: string }) {
-  return <label className="block"><span className="text-sm font-medium text-slate-700">{label}</span><input type={type} name={name} value={value} onChange={onChange} disabled={disabled} className={`mt-2 h-11 w-full rounded-xl border px-3.5 text-sm outline-none transition ${disabled ? "cursor-not-allowed border-slate-100 bg-slate-50 text-slate-500" : "border-slate-200 bg-white text-slate-800 hover:border-slate-300 focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"}`} /></label>;
+function Input({ label, name, value, onChange, disabled, type = "text", maxLength, inputMode, pattern }: { label: string; name: keyof ProfileForm; value: string; onChange?: (event: ChangeEvent<HTMLInputElement>) => void; disabled: boolean; type?: string; maxLength?: number; inputMode?: "numeric" | "text" | "tel" | "email"; pattern?: string }) {
+  return <label className="block"><span className="text-sm font-medium text-slate-700">{label}</span><input type={type} name={name} value={value} onChange={onChange} disabled={disabled} maxLength={maxLength} inputMode={inputMode} pattern={pattern} className={`mt-2 h-11 w-full rounded-xl border px-3.5 text-sm outline-none transition ${disabled ? "cursor-not-allowed border-slate-100 bg-slate-50 text-slate-500" : "border-slate-200 bg-white text-slate-800 hover:border-slate-300 focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"}`} /></label>;
 }

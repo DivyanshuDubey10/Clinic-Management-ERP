@@ -42,9 +42,15 @@ export default function RegisterPage() {
   const [success, setSuccess] = useState(false);
 
   function handleChange(event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) { 
+    const { name, value } = event.target;
+    if (name === "phone") {
+      const digitsOnly = value.replace(/\D/g, "").slice(0, 10);
+      setForm((current) => ({ ...current, phone: digitsOnly }));
+      return;
+    }
     setForm((current) => ({ 
       ...current,
-       [event.target.name]: event.target.value
+       [name]: value
 
        })
     ); 
@@ -56,6 +62,9 @@ export default function RegisterPage() {
     setError("");
     if (form.password.length < 8)
        return setError("Use a password with at least 8 characters.");
+
+    if (form.phone.length !== 10)
+       return setError("Phone number must be exactly 10 digits.");
 
 
     if (form.password !== form.confirmPassword) 
@@ -235,7 +244,10 @@ export default function RegisterPage() {
           name="phone" 
           value={form.phone} 
           onChange={handleChange} 
-          placeholder="Your phone number" 
+          placeholder="10 digit phone number" 
+          maxLength={10}
+          inputMode="numeric"
+          pattern="[0-9]{10}"
           className="h-12 w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-slate-800 outline-none 
           transition placeholder:text-slate-400 hover:border-slate-300 focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100" 
         />
