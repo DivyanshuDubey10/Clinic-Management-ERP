@@ -104,6 +104,7 @@ const dispensePrescription = async (req, res) => {
         }
 
         if (!itemsToDispense || itemsToDispense.length === 0) {
+            console.error("Dispense Error: No valid items to dispense. Frontend sent:", req.body.dispenseItems, "Prescription meds:", prescription.medications);
             return res.status(400).json({ success: false, message: 'Please provide items to dispense or ensure prescription has valid medicines linked.' });
         }
 
@@ -129,7 +130,7 @@ const dispensePrescription = async (req, res) => {
             let remainingToDeduct = item.requestedQuantity;
 
             // Sort batches by closest expiry date first (only non-expired)
-            const validBatches = medicine.batches
+            const validBatches = (medicine.batches || [])
                 .filter(b => b.expiryDate > now && b.quantity > 0)
                 .sort((a, b) => a.expiryDate - b.expiryDate);
 

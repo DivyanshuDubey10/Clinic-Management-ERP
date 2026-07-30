@@ -88,7 +88,10 @@ const getConsultationByAppointment = async (req, res) => {
 // @access  Private
 const getConsultations = async (req, res) => {
     try {
-        const { patientId, doctorId, status, search } = req.query;
+        const { doctorId, status, search } = req.query;
+        // Check for patientId in either query or params (for the /patient/:patientId route)
+        const patientId = req.query.patientId || req.params.patientId;
+        
         let query = {};
 
         if (patientId) {
@@ -117,8 +120,8 @@ const getConsultations = async (req, res) => {
         }
 
         const consultations = await Consultation.find(query)
-            .populate('patientId', 'firstName lastName')
-            .populate('doctorId', 'firstName lastName specialization')
+            .populate('patientId', 'firstName lastName patientId')
+            .populate('doctorId', 'name specialization')
             .sort({ createdAt: -1 })
             .lean();
 
@@ -252,7 +255,12 @@ const uploadLabResults = async (req, res) => {
             } else if (mimetype.startsWith('image/')) {
                 // Parse Image with HuggingFace Inference API
                 try {
-                    const hf = new HfInference(process.env.HF_ACCESS_TOKEN);
+                    const hfToken = process.env.HF_ACCESS_TOKEN;
+                    if (!hfToken || hfToken === 'your_hugging_face_token_here') {
+                        throw new Error('OCR Configuration Error: Hugging Face API token (HF_ACCESS_TOKEN) is missing in backend .env file.');
+                    }
+                    
+                    const hf = new HfInference(hfToken);
                     const modelId = process.env.HF_MODEL_ID || 'stepfun-ai/GOT-OCR2_0'; // Default to GOT-OCR2.0 or let admin override via ENV
 
                     // Image needs to be passed as Blob
@@ -266,6 +274,11 @@ const uploadLabResults = async (req, res) => {
                     parsedText = result.generated_text || '';
                 } catch (ocrErr) {
                     console.error("HuggingFace OCR error:", ocrErr);
+                    // Do not swallow the error. Send it to the frontend so they know exactly why it failed.
+                    return res.status(500).json({ 
+                        success: false, 
+                        message: `OCR Processing Failed: ${ocrErr.message}. Make sure you are using Node 18+ and have a valid HF_ACCESS_TOKEN.` 
+                    });
                 }
             }
         }

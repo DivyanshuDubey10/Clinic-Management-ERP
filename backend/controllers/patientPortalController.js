@@ -24,7 +24,7 @@ const getPatientRecord = async (userObj) => {
         throw error;
     }
 
-    const patient = await Patient.findOne({
+    let patient = await Patient.findOne({
         $or: [
             { email: { $regex: new RegExp(`^${user.email}$`, 'i') } },
             { phone: user.phone }
@@ -32,9 +32,24 @@ const getPatientRecord = async (userObj) => {
     });
 
     if (!patient) {
-        const error = new Error('Patient profile not found. Please complete your registration or contact clinic reception to link your profile.');
-        error.statusCode = 404;
-        throw error;
+        // Auto-heal: Create a patient profile if missing for older test accounts
+        if (user.role === ROLES.PATIENT || user.role === 'patient' || user.role === 'Patient') {
+            const nameParts = (user.name || '').trim().split(' ');
+            const firstName = nameParts[0] || 'Patient';
+            const lastName = nameParts.slice(1).join(' ') || 'User';
+
+            patient = await Patient.create({
+                firstName,
+                lastName,
+                email: user.email,
+                phone: user.phone,
+                createdBy: user._id
+            });
+        } else {
+            const error = new Error('Patient profile not found. Please complete your registration or contact clinic reception to link your profile.');
+            error.statusCode = 404;
+            throw error;
+        }
     }
 
     return patient;

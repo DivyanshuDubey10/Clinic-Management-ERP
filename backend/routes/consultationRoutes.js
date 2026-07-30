@@ -29,6 +29,9 @@ router.get('/', authorize(ROLES.DOCTOR, ROLES.ADMIN, ROLES.RECEPTIONIST), getCon
 // Create a new consultation note (SOAP)
 router.post('/', authorize(ROLES.DOCTOR, ROLES.ADMIN), validateBody('appointmentId', 'symptoms', 'diagnosis', 'treatmentPlan'), validateObjectId('appointmentId'), createConsultation);
 
+// Get consultations by patient ID specifically
+router.get('/patient/:patientId', authorize(ROLES.DOCTOR, ROLES.ADMIN, ROLES.RECEPTIONIST), getConsultations);
+
 // Get complete consultation details by ID
 router.get('/:id', validateObjectId('id'), getConsultationById);
 
