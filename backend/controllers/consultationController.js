@@ -106,8 +106,11 @@ const getConsultations = async (req, res) => {
 
         const consultations = await Consultation.find(query)
             .populate('patientId', 'firstName lastName')
-            .populate('doctorId', 'name specialization')
-            .sort({ createdAt: -1 });
+            .populate('doctorId', 'firstName lastName specialization')
+            .sort({ createdAt: -1 })
+            .lean();
+
+        console.log(consultations);
 
         res.status(200).json({ success: true, count: consultations.length, data: consultations });
     } catch (error) {
