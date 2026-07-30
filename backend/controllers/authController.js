@@ -19,6 +19,31 @@ const generateRefreshToken = (id) => {
     });
 };
 
+// Helper function to send token response
+const sendTokenResponse = (user, statusCode, res) => {
+    // Generate tokens
+    const accessToken = generateAccessToken(user._id, user.role);
+    const refreshToken = generateRefreshToken(user._id);
+
+    // Set refresh token in HttpOnly cookie
+    res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+    });
+
+    // Remove password from response
+    user.password = undefined;
+
+    res.status(statusCode).json({
+        success: true,
+        message: 'Success',
+        accessToken,
+        user
+    });
+};
+
 // @desc    Register user
 // @route   POST /api/auth/register
 // @access  Public
