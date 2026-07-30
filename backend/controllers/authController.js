@@ -43,7 +43,10 @@ exports.registerUser = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Phone number already exists' });
         }
 
-        // 4. Create new user
+        // 4. Generate OTP
+        const otp = crypto.randomInt(100000, 999999).toString();
+
+        // 5. Create new user
         // The password will automatically be hashed by the Mongoose pre-save hook in the User model
         const user = await User.create({
             name,
@@ -51,7 +54,10 @@ exports.registerUser = async (req, res) => {
             phone,
             password,
             role, // The model defaults to 'Patient' if not provided
-            specialization
+            specialization,
+            isVerified: false,
+            emailVerificationOTP: otp,
+            emailVerificationOTPExpire: Date.now() + 10 * 60 * 1000 // 10 mins
         });
 
         // 4.1 If registering as a Patient, provision their clinical profile cleanly during registration
@@ -69,25 +75,25 @@ exports.registerUser = async (req, res) => {
             });
         }
 
-        // 5. Generate tokens
-        const accessToken = generateAccessToken(user._id, user.role);
-        const refreshToken = generateRefreshToken(user._id);
-
-        // Set refresh token in HttpOnly cookie
-        res.cookie('refreshToken', refreshToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
-            maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
-        });
+        // 6. Send OTP Email
+        try {
+            await sendEmail({
+                email: user.email,
+                subject: 'Verify your Clinic ERP Account',
+                message: `Your account verification OTP is: ${otp}\n\nIt expires in 10 minutes.`
+            });
+        } catch (err) {
+            console.error('Email could not be sent', err);
+            // We don't fail registration if email fails (can print to console for local dev)
+        }
 
         // Remove password from the response object
         user.password = undefined;
 
         res.status(201).json({
             success: true,
-            message: 'User registered successfully',
-            accessToken,
+            message: 'OTP sent to email. Please verify.',
+            email: user.email,
             user
         });
     } catch (error) {
@@ -126,7 +132,17 @@ exports.loginUser = async (req, res) => {
             });
         }
 
-        // 4. Generate tokens
+        // 5. Prevent unverified users from logging in
+        if (user.isVerified === false) {
+            return res.status(401).json({
+                success: false,
+                message: 'Please verify your email first',
+                requiresVerification: true,
+                email: user.email
+            });
+        }
+
+        // 6. Generate tokens
         const accessToken = generateAccessToken(user._id, user.role);
         const refreshToken = generateRefreshToken(user._id);
 
@@ -364,6 +380,84 @@ exports.resetPassword = async (req, res) => {
         await user.save();
 
         res.status(200).json({ success: true, message: 'Password reset successfully' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message || 'Server Error' });
+    }
+};
+
+// @desc    Verify Email OTP
+// @route   POST /api/auth/verify-email
+// @access  Public
+exports.verifyEmailOTP = async (req, res) => {
+    try {
+        const { email, otp } = req.body;
+
+        if (!email || !otp) {
+            return res.status(400).json({ success: false, message: 'Please provide email and OTP' });
+        }
+
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        if (user.isVerified) {
+            return res.status(400).json({ success: false, message: 'Email already verified' });
+        }
+
+        if (user.emailVerificationOTP !== otp || user.emailVerificationOTPExpire < Date.now()) {
+            return res.status(400).json({ success: false, message: 'Invalid or expired OTP' });
+        }
+
+        user.isVerified = true;
+        user.emailVerificationOTP = undefined;
+        user.emailVerificationOTPExpire = undefined;
+        await user.save();
+
+        res.status(200).json({ success: true, message: 'Email verified successfully' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message || 'Server Error' });
+    }
+};
+
+// @desc    Resend Verification OTP
+// @route   POST /api/auth/resend-verification
+// @access  Public
+exports.resendVerificationOTP = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({ success: false, message: 'Please provide email' });
+        }
+
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        if (user.isVerified) {
+            return res.status(400).json({ success: false, message: 'Email already verified' });
+        }
+
+        const otp = crypto.randomInt(100000, 999999).toString();
+        user.emailVerificationOTP = otp;
+        user.emailVerificationOTPExpire = Date.now() + 10 * 60 * 1000;
+        await user.save();
+
+        try {
+            await sendEmail({
+                email: user.email,
+                subject: 'Verify your Clinic ERP Account',
+                message: `Your new account verification OTP is: ${otp}\n\nIt expires in 10 minutes.`
+            });
+        } catch (err) {
+            console.error('Email could not be sent', err);
+        }
+
+        res.status(200).json({ success: true, message: 'New OTP sent to email' });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message || 'Server Error' });
     }

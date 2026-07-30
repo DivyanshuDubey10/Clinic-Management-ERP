@@ -1,19 +1,16 @@
 import api from "./api";
 
-
 export async function registerUser(data :{
     name:string;
     email:string;
     password:string;
     phone:string;
     role:string;
+    specialization?:string;
 }){
-
     const response = await api.post("/auth/register",data);
     return response.data;
 }
-
-
 
 export async function loginUser(data:{
     email:string;
@@ -22,8 +19,6 @@ export async function loginUser(data:{
     const response = await api.post("/auth/login",data);
     return response.data
 }
-
-
 
 export async function getProfile(){
     const token = localStorage.getItem("accessToken")
@@ -36,8 +31,6 @@ export async function getProfile(){
 
     return response.data
 }
-
-
 
 export async function updateProfile(data:{
     name:string;
@@ -53,5 +46,20 @@ export async function updateProfile(data:{
         }
     });
 
+    return response.data;
+}
+
+export async function verifyEmailOTP(data: {
+    email: string;
+    otp: string;
+}) {
+    const response = await api.post("/auth/verify-email", data);
+    return response.data;
+}
+
+export async function resendVerificationOTP(data: {
+    email: string;
+}) {
+    const response = await api.post("/auth/resend-verification", data);
     return response.data;
 }
