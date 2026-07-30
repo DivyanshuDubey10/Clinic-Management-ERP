@@ -1,33 +1,45 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useParams } from "next/navigation"
 import { getPatientId } from "@/lib/patient"
 import Sidebar from "@/components/layout/Sidebar";
 import Navbar from "@/components/layout/Navbar";
 
-export default function PatientDetailsPage(){
-    const {id} = useParams();
+type Patient = {
+    firstName?: string;
+    lastName?: string;
+    gender?: string;
+    bloodGroup?: string;
+    phone?: string;
+    email?: string;
+    address?: string;
+    dateOfBirth?: string;
+    allergies?: Array<{ allergen?: string } | string>;
+    medicalHistory?: Array<{ condition?: string } | string>;
+    emergencyContact?: { name?: string; phone?: string; relation?: string };
+};
 
-    const [patient, setPatient] = useState<any>(null)
+export default function PatientDetailsPage(){
+    const {id} = useParams<{ id: string }>();
+
+    const [patient, setPatient] = useState<Patient | null>(null)
     const [loading, setLoading] = useState(true);
 
-    useEffect(()=>{
-        loadPatient();
-    },[])
-
-    async function loadPatient() {
+    const loadPatient = useCallback(async () => {
         try {
-
-            const response = await getPatientId(id as string);
+            const response = await getPatientId(id);
             setPatient(response.data)
-
         } catch (err) {
             console.error(err)
         }finally{
             setLoading(false)
         }
-    }
+    }, [id]);
+
+    useEffect(()=>{
+        loadPatient();
+    }, [loadPatient])
 
     if(loading)
         return(
@@ -40,6 +52,18 @@ export default function PatientDetailsPage(){
                 </div>
             </div>
         )
+
+    if (!patient) {
+        return (
+            <div className="flex bg-slate-100 min-h-screen">
+                <Sidebar/>
+                <div className="flex-1">
+                    <Navbar/>
+                    <main className="p-8">Patient record could not be found.</main>
+                </div>
+            </div>
+        );
+    }
     
 
     return(
@@ -75,10 +99,10 @@ export default function PatientDetailsPage(){
                             </h2>
 
                             <div className="flex flex-wrap gap-2">
-                                {patient.allergies?.map((item:string, index:number)=>(
+                                {patient.allergies?.map((item, index)=>(
                                     <span key={index}
                                     className="bg-red-100 text-red-700 px-3 py-1 rounded-full">
-                                        {item}
+                                        {typeof item === "string" ? item : item.allergen || "-"}
                                     </span>
                                 ))}
                             </div>
@@ -91,10 +115,10 @@ export default function PatientDetailsPage(){
                             </h2>
 
                             <div className="flex flex-wrap gap-2">
-                                {patient.medicalHistory?.map((item:string, index:number)=>(
+                                {patient.medicalHistory?.map((item, index)=>(
                                     <span key={index}
                                     className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
-                                        {item}
+                                        {typeof item === "string" ? item : item.condition || "-"}
                                     </span>
                                 ))}
                             </div>
@@ -133,7 +157,7 @@ function Info({
     value
 }:{
     title:string;
-    value:any
+    value?: string | number | null
 }){
     return(
         <div>
