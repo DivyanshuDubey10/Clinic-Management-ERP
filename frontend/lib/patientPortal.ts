@@ -16,6 +16,23 @@ export async function getPatientDashboard(){
     return response.data
 }
 
+export async function getPortalDoctors(){
+    const response = await api.get("/patient-portal/doctors", authHeader());
+    return response.data;
+}
+
+export async function getPortalAvailableSlots(doctorId: string, date: string) {
+    const response = await api.get("/patient-portal/appointments/available-slots", {
+        params: { doctorId, date },
+        ...authHeader(),
+    });
+    return response.data;
+}
+
+export async function bookPortalAppointment(data: any) {
+    const response = await api.post("/patient-portal/appointments", data, authHeader());
+    return response.data;
+}
 
 //consultation
 export async function getConsultations(params?:any) {
