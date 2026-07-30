@@ -89,12 +89,14 @@ export async function deleteAppointment(id:string){
 //Available slots
 export async function getAvailableSlots(
     doctorId: string,
-    date: string
+    date: string,
+    excludeAppointmentId?: string
 ){
     const response = await api.get("/appointments/available-slots",{
         params:{
             doctorId,
             date,
+            excludeAppointmentId,
         },
         headers: authHeader(),
     })

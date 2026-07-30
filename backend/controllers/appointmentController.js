@@ -280,7 +280,7 @@ const deleteAppointment = async (req, res) => {
 // @access  Private
 const getAvailableSlots = async (req, res) => {
     try {
-        const { doctorId, date } = req.query;
+        const { doctorId, date, excludeAppointmentId } = req.query;
 
         if (!doctorId || !date) {
             return res.status(400).json({ success: false, message: 'Please provide doctorId and date' });
@@ -360,7 +360,8 @@ const getAvailableSlots = async (req, res) => {
         const bookedAppointments = await Appointment.find({
             doctorId,
             appointmentDate: { $gte: startOfDay, $lte: endOfDay },
-            status: { $ne: 'Cancelled' }
+            status: { $ne: 'cancelled' },
+            ...(excludeAppointmentId ? { _id: { $ne: excludeAppointmentId } } : {})
         });
 
         // Filter out booked slots

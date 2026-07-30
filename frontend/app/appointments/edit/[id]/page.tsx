@@ -75,9 +75,9 @@ export default function EditAppointmentPage(){
             const appointment = res.data.data;
 
             setForm({
-                doctorId: appointment.doctor?._id || "",
-                date: appointment.date?.split("T")[0] || "",
-                timeslot: new Date(appointment.appointmentDate).toISOString().substring(11,16),
+                doctorId: appointment.doctorId?._id || appointment.doctorId || "",
+                date: appointment.appointmentDate?.split("T")[0] || "",
+                timeslot: appointment.appointmentDate || "",
                 duration: appointment.duration || 30,
                 appointmentType: appointment.appointmentType || "Walk-in",
                 reasonForVisit: appointment.reasonForVisit || "",
@@ -95,11 +95,12 @@ export default function EditAppointmentPage(){
         try {
             const res = await getAvailableSlots(
                 form.doctorId,
-                form.date
+                form.date,
+                id as string
             );
 
 
-            setSlots(res.data.data || []);
+            setSlots(res.data || []);
 
         } catch (error) {
             console.error(error)
@@ -125,7 +126,7 @@ export default function EditAppointmentPage(){
 
            await updateAppointment(id as string,{
                 doctorId:form.doctorId,
-                appointmentDate:`${form.date}T${form.timeslot}:00`,
+                appointmentDate: form.timeslot,
                 duration:form.duration,
                 appointmentType:form.appointmentType as
                     |"Walk-in"
@@ -175,12 +176,14 @@ export default function EditAppointmentPage(){
                            onSubmit={handleSubmit}
                            className="space-y-5"
                         >
+                            <label className="block text-sm font-medium text-slate-700">Doctor
                             <select
                                 name="doctorId"
                                 value={form.doctorId}
                                 onChange={handleChange}
                                 className="w-full border rounded-xl p-3"
                             >
+                                <option value="">Select doctor</option>
                                 {doctors.map((doctor) => (
 
                                 <option
@@ -191,7 +194,9 @@ export default function EditAppointmentPage(){
                                 </option>
                                 ))}
                             </select>
+                            </label>
 
+                           <label className="block text-sm font-medium text-slate-700">Date
                            <input
                                 type="date"
                                 name="date"
@@ -199,23 +204,26 @@ export default function EditAppointmentPage(){
                                 onChange={handleChange}
                                 className="w-full border rounded-xl p-3"
                             />
+                            </label>
 
+                            <label className="block text-sm font-medium text-slate-700">Time slot
                             <select
                                 name="timeslot"
                                 value={form.timeslot}
                                 onChange={handleChange}
                                 className="w-full border rounded-xl p-3"
                             >
-                                
+                                <option value="">Select time slot</option>
                                 {slots.map((slot) => (
                                 <option
                                     key={slot}
                                     value={slot}
                                 >
-                                    {slot}
+                                    {new Date(slot).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                                 </option>
                                 ))}
                             </select>
+                            </label>
 
                             <select
                                 name="duration"
