@@ -26,8 +26,7 @@ const seedAdmin = async () => {
             email: adminEmail,
             password: adminPassword,
             phone: '0000000000',
-            role: 'admin',
-            isVerified: true
+            role: 'admin'
         });
 
         console.log(`Admin user seeded successfully!`);

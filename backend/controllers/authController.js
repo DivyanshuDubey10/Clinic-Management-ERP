@@ -43,9 +43,6 @@ exports.registerUser = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Phone number already exists' });
         }
 
-        // 4. Generate OTP
-        const otp = crypto.randomInt(100000, 999999).toString();
-
         // 5. Create new user
         // The password will automatically be hashed by the Mongoose pre-save hook in the User model
         const user = await User.create({
@@ -53,10 +50,7 @@ exports.registerUser = async (req, res) => {
             email,
             phone,
             password,
-            role: ROLES.PATIENT,
-            isVerified: false,
-            emailVerificationOTP: otp,
-            emailVerificationOTPExpire: Date.now() + 10 * 60 * 1000 // 10 mins
+            role: ROLES.PATIENT
         });
 
         // 4.1 If registering as a Patient, provision their clinical profile cleanly during registration
@@ -74,27 +68,111 @@ exports.registerUser = async (req, res) => {
             });
         }
 
-        // 6. Send OTP Email
-        try {
-            await sendEmail({
-                email: user.email,
-                subject: 'Verify your Clinic ERP Account',
-                message: `Your account verification OTP is: ${otp}\n\nIt expires in 10 minutes.`
-            });
-        } catch (err) {
-            console.error('Email could not be sent', err);
-            // We don't fail registration if email fails (can print to console for local dev)
+        // 5. Instantly login the user after registration
+        sendTokenResponse(user, 201, res);
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message || 'Server Error' });
+    }
+};
+
+// @desc    Login user
+// @route   POST /api/auth/login
+// @access  Public
+exports.loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        // 1. Validate email & password
+        if (!email || !password) {
+            return res.status(400).json({ success: false, message: 'Please provide an email and password' });
         }
 
-        // Remove password from the response object
-        user.password = undefined;
+        // 2. Check for user and explicitly select the password field
+        const user = await User.findOne({ email }).select('+password');
+        if (!user) {
+            return res.status(401).json({ success: false, message: 'Invalid credentials' });
+        }
 
-        res.status(201).json({
-            success: true,
-            message: 'OTP sent to email. Please verify.',
-            email: user.email,
-            user
+        // 3. Check if password matches
+        const isMatch = await user.matchPassword(password);
+        if (!isMatch) {
+            return res.status(401).json({ success: false, message: 'Invalid credentials' });
+        }
+        // 4. Prevent inactive users from logging in
+        if (!user.isActive) {
+            return res.status(403).json({
+const User = require('../models/User');
+const Patient = require('../models/Patient');
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const sendEmail = require('../utils/sendEmail');
+const { ROLES } = require('../constants/roles');
+
+// Helper function to generate Access Token (short-lived)
+const generateAccessToken = (id, role) => {
+    return jwt.sign({ id, role }, process.env.JWT_SECRET, {
+        expiresIn: '15m' // 15 minutes
+    });
+};
+
+// Helper function to generate Refresh Token (long-lived)
+const generateRefreshToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: '30d' // 30 days
+    });
+};
+
+// @desc    Register user
+// @route   POST /api/auth/register
+// @access  Public
+exports.registerUser = async (req, res) => {
+    try {
+        const { name, email, phone, password } = req.body;
+
+        // 1. Validate required fields
+        if (!name || !email || !phone || !password) {
+            return res.status(400).json({ success: false, message: 'Please provide all required fields' });
+        }
+
+        // 2. Check if user already exists by email
+        const emailExists = await User.findOne({ email });
+        if (emailExists) {
+            return res.status(400).json({ success: false, message: 'Email already exists' });
+        }
+
+        // 3. Check if user already exists by phone
+        const phoneExists = await User.findOne({ phone });
+        if (phoneExists) {
+            return res.status(400).json({ success: false, message: 'Phone number already exists' });
+        }
+
+        // 5. Create new user
+        // The password will automatically be hashed by the Mongoose pre-save hook in the User model
+        const user = await User.create({
+            name,
+            email,
+            phone,
+            password,
+            role: ROLES.PATIENT
         });
+
+        // 4.1 If registering as a Patient, provision their clinical profile cleanly during registration
+        if (!user.role || user.role === ROLES.PATIENT || user.role === 'Patient') {
+            const nameParts = name.trim().split(' ');
+            const firstName = nameParts[0] || 'Patient';
+            const lastName = nameParts.slice(1).join(' ') || 'User';
+
+            await Patient.create({
+                firstName,
+                lastName,
+                email: user.email,
+                phone: user.phone,
+                createdBy: user._id
+            });
+        }
+
+        // 5. Instantly login the user after registration
+        sendTokenResponse(user, 201, res);
     } catch (error) {
         res.status(500).json({ success: false, message: error.message || 'Server Error' });
     }
@@ -128,16 +206,6 @@ exports.loginUser = async (req, res) => {
             return res.status(403).json({
                 success: false,
                 message: 'Your account has been deactivated. Please contact the administrator.'
-            });
-        }
-
-        // 5. Prevent unverified users from logging in
-        if (user.isVerified === false) {
-            return res.status(401).json({
-                success: false,
-                message: 'Please verify your email first',
-                requiresVerification: true,
-                email: user.email
             });
         }
 
@@ -379,84 +447,6 @@ exports.resetPassword = async (req, res) => {
         await user.save();
 
         res.status(200).json({ success: true, message: 'Password reset successfully' });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message || 'Server Error' });
-    }
-};
-
-// @desc    Verify Email OTP
-// @route   POST /api/auth/verify-email
-// @access  Public
-exports.verifyEmailOTP = async (req, res) => {
-    try {
-        const { email, otp } = req.body;
-
-        if (!email || !otp) {
-            return res.status(400).json({ success: false, message: 'Please provide email and OTP' });
-        }
-
-        const user = await User.findOne({ email });
-
-        if (!user) {
-            return res.status(404).json({ success: false, message: 'User not found' });
-        }
-
-        if (user.isVerified) {
-            return res.status(400).json({ success: false, message: 'Email already verified' });
-        }
-
-        if (user.emailVerificationOTP !== otp || user.emailVerificationOTPExpire < Date.now()) {
-            return res.status(400).json({ success: false, message: 'Invalid or expired OTP' });
-        }
-
-        user.isVerified = true;
-        user.emailVerificationOTP = undefined;
-        user.emailVerificationOTPExpire = undefined;
-        await user.save();
-
-        res.status(200).json({ success: true, message: 'Email verified successfully' });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message || 'Server Error' });
-    }
-};
-
-// @desc    Resend Verification OTP
-// @route   POST /api/auth/resend-verification
-// @access  Public
-exports.resendVerificationOTP = async (req, res) => {
-    try {
-        const { email } = req.body;
-
-        if (!email) {
-            return res.status(400).json({ success: false, message: 'Please provide email' });
-        }
-
-        const user = await User.findOne({ email });
-
-        if (!user) {
-            return res.status(404).json({ success: false, message: 'User not found' });
-        }
-
-        if (user.isVerified) {
-            return res.status(400).json({ success: false, message: 'Email already verified' });
-        }
-
-        const otp = crypto.randomInt(100000, 999999).toString();
-        user.emailVerificationOTP = otp;
-        user.emailVerificationOTPExpire = Date.now() + 10 * 60 * 1000;
-        await user.save();
-
-        try {
-            await sendEmail({
-                email: user.email,
-                subject: 'Verify your Clinic ERP Account',
-                message: `Your new account verification OTP is: ${otp}\n\nIt expires in 10 minutes.`
-            });
-        } catch (err) {
-            console.error('Email could not be sent', err);
-        }
-
-        res.status(200).json({ success: true, message: 'New OTP sent to email' });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message || 'Server Error' });
     }

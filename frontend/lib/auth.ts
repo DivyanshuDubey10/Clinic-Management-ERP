@@ -49,17 +49,4 @@ export async function updateProfile(data:{
     return response.data;
 }
 
-export async function verifyEmailOTP(data: {
-    email: string;
-    otp: string;
-}) {
-    const response = await api.post("/auth/verify-email", data);
-    return response.data;
-}
 
-export async function resendVerificationOTP(data: {
-    email: string;
-}) {
-    const response = await api.post("/auth/resend-verification", data);
-    return response.data;
-}

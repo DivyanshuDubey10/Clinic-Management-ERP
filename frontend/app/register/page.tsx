@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type ChangeEvent, type FormEvent, type ReactNode } from "react";
 import { CheckCircle2, Eye, EyeOff, HeartPulse, Lock, Mail, Phone, ShieldCheck, User, UsersRound } from "lucide-react";
-import { registerUser, verifyEmailOTP, resendVerificationOTP } from "@/lib/auth";
+import { registerUser } from "@/lib/auth";
 
 type Form = {
   name: string;
@@ -38,9 +38,6 @@ export default function RegisterPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [step, setStep] = useState<1 | 2>(1);
-  const [otp, setOtp] = useState("");
-  const [registeredEmail, setRegisteredEmail] = useState("");
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -87,11 +84,7 @@ export default function RegisterPage() {
       });
 
       setSuccess(true);
-      setRegisteredEmail(form.email);
-      setStep(2);
-      setSuccess(false); // Reset success to show OTP step cleanly
-      setError("");
-
+      window.setTimeout(() => router.push("/login"), 1500);
     } catch (caughtError: unknown) {
 
       const message = typeof caughtError === "object" && 
@@ -110,37 +103,6 @@ export default function RegisterPage() {
     }
   }
 
-  async function handleVerifyOTP(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setError("");
-    if (otp.length !== 6) return setError("OTP must be 6 digits.");
-
-    try {
-      setLoading(true);
-      await verifyEmailOTP({ email: registeredEmail, otp });
-      setSuccess(true);
-      window.setTimeout(() => router.push("/login"), 1500);
-    } catch (caughtError: unknown) {
-      const message = typeof caughtError === "object" && caughtError !== null && "response" in caughtError ?
-        (caughtError as any).response?.data?.message : undefined;
-      setError(message || "Invalid OTP. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function handleResendOTP() {
-    setError("");
-    try {
-      setLoading(true);
-      await resendVerificationOTP({ email: registeredEmail });
-      setError("New OTP sent to your email!");
-    } catch (caughtError: unknown) {
-      setError("Failed to resend OTP.");
-    } finally {
-      setLoading(false);
-    }
-  }
 
   return(
   <main className="relative grid min-h-screen overflow-hidden bg-slate-50 lg:grid-cols-[1.05fr_0.95fr]">
@@ -223,17 +185,16 @@ export default function RegisterPage() {
           </div>
           
           <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-            {step === 1 ? "Create your account" : "Verify your email"}
+            Create your account
             </h2>
             
             <p className="mt-2 text-sm text-slate-500">
-              {step === 1 ? "Enter your details to get started." : `Enter the 6-digit code sent to ${registeredEmail}`}
+              Enter your details to get started.
               </p>
               
               </div>
 
 
-      {step === 1 ? (
       <form onSubmit={handleSubmit} className="mt-7 space-y-4">
 
         <Field label="Full name" icon={<User size={18} />}>
@@ -380,39 +341,6 @@ export default function RegisterPage() {
           </motion.button>
 
       </form>
-      ) : (
-      <form onSubmit={handleVerifyOTP} className="mt-7 space-y-4">
-        <Field label="Verification Code" icon={<Lock size={18} />}>
-          <input
-            required
-            name="otp"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-            placeholder="6-digit code"
-            className="h-12 w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100 text-center tracking-widest text-lg font-semibold"
-          />
-        </Field>
-
-        <AnimatePresence>
-          {(error || success) && 
-          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden">
-            <p role={error ? "alert" : "status"} className={`flex items-center gap-2 rounded-xl border px-3.5 py-3 text-sm ${success ? "border-emerald-100 bg-emerald-50 text-emerald-700" : "border-rose-100 bg-rose-50 text-rose-700"}`}>
-              <CheckCircle2 size={17} />
-              {success ? "Email verified. Redirecting to sign in..." : error}
-            </p>
-          </motion.div>}
-        </AnimatePresence>
-
-        <motion.button whileHover={{ y: -1 }} whileTap={{ scale: 0.99 }} type="submit" disabled={loading || success} className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-slate-900 text-sm font-semibold text-white shadow-lg shadow-slate-900/15 transition hover:bg-cyan-600 focus:outline-none focus:ring-4 focus:ring-cyan-100 disabled:cursor-not-allowed disabled:opacity-70">
-          {loading && <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />}
-          {loading ? "Verifying..." : "Verify Code"}
-        </motion.button>
-        
-        <button type="button" onClick={handleResendOTP} disabled={loading} className="mt-4 w-full text-center text-sm font-medium text-cyan-700 transition hover:text-cyan-900 hover:underline">
-          Resend code
-        </button>
-      </form>
-      )}
 
       <p className="mt-7 text-center text-sm text-slate-500">
         Already have an account? 

@@ -31,8 +31,7 @@ exports.createStaff = async (req, res) => {
             password,
             role,
             department,
-            specialization,
-            isVerified: true
+            specialization
         });
 
         staff.password = undefined; // Hide password in response
