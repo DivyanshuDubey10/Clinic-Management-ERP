@@ -79,9 +79,9 @@ export default function Sidebar() {
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-cyan-500/10 to-transparent" />
 
-      <header className="relative flex h-24 items-center border-b border-slate-800 px-4">
-        <div className={`flex min-w-0 flex-1 items-center ${collapsed ? "justify-center" : "gap-3"}`}>
-          <div className={`overflow-hidden transition-all duration-200 ${collapsed ? "w-0 opacity-0" : "w-40 opacity-100"}`}>
+      <header className={`relative flex h-24 items-center border-b border-slate-800 transition-all duration-300 ${collapsed ? "justify-center" : "px-4"}`}>
+        <div className={`flex min-w-0 items-center gap-3 overflow-hidden transition-all duration-300 ${collapsed ? "w-0 opacity-0" : "flex-1 opacity-100"}`}>
+          <div>
             <h1 className="whitespace-nowrap font-semibold tracking-tight">Clinic ERP</h1>
             <p className="whitespace-nowrap text-xs text-slate-400">Management system</p>
           </div>
@@ -90,7 +90,7 @@ export default function Sidebar() {
           type="button"
           onClick={() => setCollapsed((value) => !value)}
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          className={`grid h-9 w-9 place-items-center rounded-lg text-slate-400 transition hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/70 ${collapsed ? "absolute right-[-13px] top-[35px] z-10 rounded-full border border-slate-700 bg-slate-900 shadow-lg" : ""}`}
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-lg text-slate-400 transition hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/70"
         >
           <Menu size={19} />
         </button>
