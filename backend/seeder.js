@@ -601,7 +601,7 @@ const importData = async () => {
             patientId: createdPatients[0]._id,
             consultationId: consult1._id,
             items: [
-                { description: 'Cardiology Consultation Fee - Dr. Rajesh Sharma', type: 'Consultation', quantity: 1, unitPrice: 800, total: 800 },
+                { description: 'Cardiology Consultation Fee - Dr. Rajesh Sharma', type: 'Consultation Fee', quantity: 1, unitPrice: 800, total: 800 },
                 { description: 'ECG Diagnostic Test', type: 'Procedure', quantity: 1, unitPrice: 300, total: 300 },
                 { description: 'Amlodipine 5mg & Paracetamol Pack', type: 'Pharmacy', quantity: 1, unitPrice: 100, total: 100 }
             ],
@@ -672,7 +672,7 @@ const importData = async () => {
             patientId: createdPatients[6]._id,
             consultationId: consult2._id,
             items: [
-                { description: 'Pediatric Consultation Fee - Dr. Ananya Singh', type: 'Consultation', quantity: 1, unitPrice: 600, total: 600 },
+                { description: 'Pediatric Consultation Fee - Dr. Ananya Singh', type: 'Consultation Fee', quantity: 1, unitPrice: 600, total: 600 },
                 { description: 'Nebulization Support (Saline)', type: 'Procedure', quantity: 1, unitPrice: 200, total: 200 },
                 { description: 'Cetirizine & Paracetamol pack', type: 'Pharmacy', quantity: 1, unitPrice: 50, total: 50 }
             ],
