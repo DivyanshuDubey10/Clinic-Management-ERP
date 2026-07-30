@@ -91,7 +91,19 @@ const getConsultations = async (req, res) => {
         const { patientId, doctorId, status, search } = req.query;
         let query = {};
 
-        if (patientId) query.patientId = patientId;
+        if (patientId) {
+            const mongoose = require('mongoose');
+            if (mongoose.Types.ObjectId.isValid(patientId)) {
+                query.patientId = patientId;
+            } else {
+                const patient = await Patient.findOne({ patientId });
+                if (patient) {
+                    query.patientId = patient._id;
+                } else {
+                    return res.status(200).json({ success: true, count: 0, data: [] });
+                }
+            }
+        }
         if (doctorId) query.doctorId = doctorId;
         if (status) query.status = status;
 
