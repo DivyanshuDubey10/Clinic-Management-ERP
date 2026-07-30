@@ -16,7 +16,7 @@ const {
 } = require('../controllers/patientPortalController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
 const { ROLES } = require('../constants/roles');
-const { validateObjectId, validateBody, validatePaymentSignature } = require('../middlewares/validationMiddleware');
+const { validateObjectId, validateBody, validateQuery, validatePaymentSignature } = require('../middlewares/validationMiddleware');
 
 const router = express.Router();
 
@@ -36,6 +36,8 @@ router.get('/doctors', getPortalDoctors);
 router.route('/appointments')
     .post(validateBody('doctorId', 'appointmentDate', 'reasonForVisit'), validateObjectId('doctorId'), bookAppointment)
     .get(getMyAppointments);
+
+router.get('/appointments/available-slots', validateQuery('doctorId', 'date'), validateObjectId('doctorId'), require('../controllers/appointmentController').getAvailableSlots);
 
 router.put('/appointments/:id/cancel', validateObjectId('id'), cancelMyAppointment);
 
