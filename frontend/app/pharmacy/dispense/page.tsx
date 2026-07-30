@@ -38,8 +38,8 @@ export default function DispenseMedicinePage() {
           prescription.status.toLowerCase() === "pending"
       );
 
-    console.log("All prescriptions:", prescriptionList);
-    console.log("Pending prescriptions:", pendingPrescriptions);
+    
+    
 
     setPrescriptions(pendingPrescriptions);
   } catch (err) {

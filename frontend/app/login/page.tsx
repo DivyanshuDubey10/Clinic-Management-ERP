@@ -38,9 +38,10 @@ export default function LoginPage() {
       switch (data.user.role?.toLowerCase()) {
 
         case "doctor": router.push("/dashboard/doctor"); break;
-
-        case "patient": router.push("/patient-portal/dashboard"); break;
-
+        case "pharmacist": router.push("/pharmacy"); break;
+        case "patient": router.push("/patient-portal"); break;
+        case "receptionist": router.push("/dashboard"); break;
+        case "admin": router.push("/dashboard"); break;
         default: router.push("/dashboard");
       }
 

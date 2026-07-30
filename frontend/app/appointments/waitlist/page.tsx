@@ -52,9 +52,9 @@ export default function WaitlistPage() {
         if(!form.doctorId || !form.requestedDate) return
 
       const response = await getWaitlist(form.doctorId, form.requestedDate);
-      console.log("Loading waitlist",form.doctorId, form.requestedDate)
+      
 
-      console.log("Waitlist response:", response)
+      
       
       setWaitlist(response.data || []);
 
@@ -68,7 +68,7 @@ export default function WaitlistPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    console.log("Form", form)
+    
 
     try {
       await addToWaitlist({
@@ -94,7 +94,7 @@ export default function WaitlistPage() {
     }  catch (error: any) {
 
       console.error("Waitlist Error:", error);
-      console.log(error.response?.data);
+      
 
       alert(
         error.response?.data?.message ||

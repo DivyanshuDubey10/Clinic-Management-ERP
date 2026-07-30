@@ -23,30 +23,51 @@ type MenuItem = {
   icon: ComponentType<{ size?: number; strokeWidth?: number; className?: string }>;
   href?: string;
   children?: { title: string; href: string }[];
+  roles?: string[]; // Array of roles allowed to see this item
 };
 
-const menuItems: MenuItem[] = [
-  { title: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
-  { title: "Patient Management", icon: Users, children: [{ title: "Patients", href: "/patients" }] },
-  { title: "Appointments", icon: CalendarDays, children: [{ title: "Appointments", href: "/appointments" }, { title: "Consultations", href: "/consultations" }] },
-  { title: "Pharmacy", icon: Pill, children: [{ title: "Medicine Inventory", href: "/pharmacy" }, { title: "Add Medicine", href: "/pharmacy/add" }, { title: "Dispense Medicine", href: "/pharmacy/dispense" }, { title: "Inventory Alerts", href: "/pharmacy/alerts" }] },
-  { title: "Laboratory", icon: FlaskConical, children: [{ title: "Lab Orders", href: "/lab" }, { title: "Create Lab Order", href: "/lab/create" }] },
-  { title: "Billing", icon: CreditCard, children: [{ title: "Generate Invoice", href: "/billing" }, { title: "Payment Collection", href: "/billing/payment" }, { title: "Invoice History", href: "/billing/history" }, { title: "Insurance", href: "/billing/insurance" }] },
-  { title: "Patient Portal", icon: User, children: [{ title: "Dashboard", href: "/patient-portal" }, { title: "Reports", href: "/patient-portal/reports" }, { title: "Billing Payment", href: "/patient-portal/payment" }] },
-  { title: "Reports", icon: BarChart3, href: "/dashboard/reports" },
-  { title: "Administration", icon: Settings, children: [{ title: "My Profile", href: "/settings/profile" }, { title: "System Settings", href: "/settings" }] },
+const allMenuItems: MenuItem[] = [
+  { title: "Dashboard", icon: LayoutDashboard, href: "/dashboard", roles: ["admin", "receptionist"] },
+  { title: "Doctor Dashboard", icon: LayoutDashboard, href: "/dashboard/doctor", roles: ["doctor"] },
+  { title: "Patient Management", icon: Users, children: [{ title: "Patients", href: "/patients" }], roles: ["admin", "receptionist", "doctor"] },
+  { title: "Appointments", icon: CalendarDays, children: [{ title: "Appointments", href: "/appointments" }, { title: "Consultations", href: "/consultations" }], roles: ["admin", "receptionist", "doctor"] },
+  { title: "Pharmacy", icon: Pill, children: [{ title: "Medicine Inventory", href: "/pharmacy" }, { title: "Add Medicine", href: "/pharmacy/add" }, { title: "Dispense Medicine", href: "/pharmacy/dispense" }, { title: "Inventory Alerts", href: "/pharmacy/alerts" }], roles: ["admin", "pharmacist"] },
+  { title: "Laboratory", icon: FlaskConical, children: [{ title: "Lab Orders", href: "/lab" }, { title: "Create Lab Order", href: "/lab/create" }], roles: ["admin", "doctor"] },
+  { title: "Billing", icon: CreditCard, children: [{ title: "Generate Invoice", href: "/billing" }, { title: "Payment Collection", href: "/billing/payment" }, { title: "Invoice History", href: "/billing/history" }, { title: "Insurance", href: "/billing/insurance" }], roles: ["admin", "receptionist"] },
+  { title: "Patient Portal", icon: User, children: [{ title: "Dashboard", href: "/patient-portal" }, { title: "Reports", href: "/patient-portal/reports" }, { title: "Billing Payment", href: "/patient-portal/payment" }], roles: ["admin", "patient"] },
+  { title: "Reports", icon: BarChart3, href: "/dashboard/reports", roles: ["admin"] },
+  { title: "Administration", icon: Settings, children: [{ title: "My Profile", href: "/settings/profile" }, { title: "System Settings", href: "/settings" }], roles: ["admin", "doctor", "receptionist", "pharmacist", "patient"] },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [userRole, setUserRole] = useState<string>("");
+
+  useEffect(() => {
+    const userStr = localStorage.getItem("user");
+    if (userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        setUserRole(user.role?.toLowerCase() || "");
+      } catch (e) {
+        console.error("Failed to parse user role");
+      }
+    }
+  }, []);
+
+  // Filter items based on user role
+  const menuItems = allMenuItems.filter(item => {
+    if (!item.roles || item.roles.length === 0) return true;
+    return item.roles.includes(userRole);
+  });
 
   // Keep the section that owns the current route visible after navigation/refresh.
   useEffect(() => {
     const activeGroup = menuItems.find((item) => item.children?.some((child) => pathname === child.href));
     if (activeGroup) setOpenMenu(activeGroup.title);
-  }, [pathname]);
+  }, [pathname, menuItems]);
 
   const isCurrentRoute = (href?: string) => href === pathname;
 

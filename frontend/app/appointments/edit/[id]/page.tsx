@@ -57,7 +57,7 @@ export default function EditAppointmentPage(){
 
             const res = await getDoctors()
 
-            console.log("response:",res)
+            
 
             setDoctors(res.data || [])
 

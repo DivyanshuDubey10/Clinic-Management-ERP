@@ -44,8 +44,8 @@ export default function PaymentCollectionPage() {
       });
     } catch (err: any) {
 
-        console.log(err.response?.data);
-        console.log(err.response?.status);
+        
+        
         console.error(err);
 
         alert("Unable to load Invoice")

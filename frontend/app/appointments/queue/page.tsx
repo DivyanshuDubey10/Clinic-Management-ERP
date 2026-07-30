@@ -18,7 +18,7 @@ export default function QueuePage(){
 
 
     useEffect(()=>{
-        console.log("DoctorId:", doctorId)
+        
 
         if(doctorId){
             loadQueue();
@@ -30,8 +30,8 @@ export default function QueuePage(){
         try {
             const res = await getDoctors();
              
-            console.log(res)
-            console.log("Dr structure",res.data[0])
+            
+            
 
 
             setDoctors(res.data || [])
@@ -44,13 +44,13 @@ export default function QueuePage(){
 
     async function loadQueue(){
         try {
-            console.log("Loading Queue for:", doctorId)
+            
             
             const res = await getQueue(doctorId)
 
-            console.log("Queue Res:", res)
-            console.log("queue data",res.data)
-            console.log("JSON:",JSON.stringify(res.data,null,2))
+            
+            
+            )
 
             setQueue(res.data || [])
 
@@ -78,7 +78,7 @@ export default function QueuePage(){
                         <select className="w-full border rounded-xl p-3 mb-8"
                         value={doctorId}
                         onChange={(e)=> {
-                            console.log("Selected Doctors:", e.target.value); 
+                             
                            setDoctorId(e.target.value)}}>
                             
                             <option value="">Select Doctor</option>

@@ -13,6 +13,8 @@ import { getDashboard } from "@/lib/dashboard";
 export default function Dashboard() {
   const router = useRouter();
 
+  const [userRole, setUserRole] = useState("");
+
   const [stats, setStats] = useState({
     totalPatients:0,
     totalDoctors:0,
@@ -22,16 +24,28 @@ export default function Dashboard() {
     cancelledAppointments:0
   });
 
+  const [isChecking, setIsChecking] = useState(true);
+
   //if someone types url of dashboard manually -> redirect em to login page
   useEffect(()=>{
-    const token = localStorage.getItem("accessToken")
-
+    const token = localStorage.getItem("accessToken");
+    const userStr = localStorage.getItem("user");
     
     if(!token){
       router.push("/login")
       return
     }
+
+    if (userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        setUserRole(user.role?.toLowerCase() || "");
+      } catch (e) {
+        console.error("Failed to parse user from local storage");
+      }
+    }
     
+    setIsChecking(false);
     loadDashboard();
 
   },[router]);
@@ -49,6 +63,9 @@ export default function Dashboard() {
     }
   }
 
+  if (isChecking) {
+    return null; // Prevent flash of protected content
+  }
 
   return (
     <div className="flex">
@@ -62,7 +79,7 @@ export default function Dashboard() {
             Dashboard
           </h1>
 
-            <StatCards stats={stats}/>
+            {userRole === "admin" && <StatCards stats={stats}/>}
 
             <RecentAppointments/>
 

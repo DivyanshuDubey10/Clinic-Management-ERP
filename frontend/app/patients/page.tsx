@@ -63,7 +63,7 @@ export default function patientPage(){
 
             loadPatients()
         } catch (error) {
-            console.log(error)
+            
         }
     } 
 

@@ -24,7 +24,7 @@ export default function ConsultationPage(){
     const handleSubmit = (e: React.FormEvent)=>{
         e.preventDefault();
 
-        console.log(form)
+        
     };
 
 

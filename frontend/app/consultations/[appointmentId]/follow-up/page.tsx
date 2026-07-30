@@ -24,7 +24,7 @@ export default function FollowUpPage(){
 
     const handleSubmit = (e: React.FormEvent) =>{
         e.preventDefault()
-        console.log(form)
+        
 
         //api
     }

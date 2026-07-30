@@ -27,7 +27,7 @@ export default function PaymentPage() {
     try {
       const response = await getMyInvoices();
 
-      console.log("response:",response)
+      
 
       setInvoices(response.data)
 

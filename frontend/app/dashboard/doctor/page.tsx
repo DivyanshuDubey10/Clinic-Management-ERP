@@ -20,11 +20,11 @@ export default function DoctorDashboard(){
         try {
             const res = await getDoctorDashboard();
 
-            console.log("Doctor Dashboard",res)
-            console.log("Stats:", res.data.stats)
-            console.log("Queue:", res.data.queue)
+            
+            
+            
 
-            console.log("Queue Length:", res.data.queue.length)
+            
 
             setDashboard(res.data);
 

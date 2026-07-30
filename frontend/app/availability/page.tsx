@@ -56,7 +56,7 @@ export default function AvailabilityPage() {
   async function loadAvailabilityList(){
     const res = await getAllAvailability();
 
-    console.log("Response",res.data)
+    
     
     setAvailabilityList(res.data)
   }

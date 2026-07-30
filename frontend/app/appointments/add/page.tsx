@@ -49,7 +49,7 @@ export default function AddAppointmentPage() {
     async function testDoctors() {
       try {
         const res = await getDoctors();
-        console.log("Doctors:", res)
+        
       } catch (error) {
         console.error(error)
       }
@@ -84,7 +84,7 @@ export default function AddAppointmentPage() {
         form.date
       );
 
-      console.log("Available SLots:", response)
+      
 
       setSlots(response.data || []);
 
@@ -121,8 +121,8 @@ export default function AddAppointmentPage() {
     try {
       setLoading(true);
 
-      console.log(form.date)
-      console.log(form.timeslot)
+      
+      
 
       await createAppointment({
         patientId: form.patientId,

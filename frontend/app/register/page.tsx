@@ -298,11 +298,11 @@ export default function RegisterPage() {
             className="h-12 w-full rounded-xl border border-slate-200 bg-white px-3.5 text-sm text-slate-800 outline-none 
             transition hover:border-slate-300 focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100">
               
-              <option value="patient">
-                Patient
-                </option>
-                
-                <option value="admin">Administrator</option>
+              <option value="patient">Patient</option>
+              <option value="doctor">Doctor</option>
+              <option value="receptionist">Receptionist</option>
+              <option value="pharmacist">Pharmacist</option>
+              <option value="admin">Administrator</option>
                 </select>
                 
                 </label>

@@ -24,8 +24,8 @@ export default function ReportPage(){
                 getMyLabOrders(),
             ]);
 
-            console.log("Prescription", PrescriptionRes.data)
-            console.log("Lab", labRes.data)
+            
+            
 
             setPrescription(PrescriptionRes.data);
 
@@ -33,7 +33,7 @@ export default function ReportPage(){
 
         } catch (error) {
 
-            console.log(error)
+            
         }finally{
 
             setLoading(false)

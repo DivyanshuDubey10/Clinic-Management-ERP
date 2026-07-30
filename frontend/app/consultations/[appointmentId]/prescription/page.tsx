@@ -54,7 +54,7 @@ export default function PrescriptionPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log(medicines);
+    
 
     // Backend later
   };

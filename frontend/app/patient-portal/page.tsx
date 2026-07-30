@@ -7,23 +7,23 @@ import { getPatientDashboard } from "@/lib/patientPortal";
 
 
 export default function PatientPortal(){
-  console.log("Patient Portal")
+  
 
     const [dashboard, setDashboard] = useState<any>(null)
     const [loading, setLoading] = useState(true)
 
 
     useEffect(()=>{
-      console.log("Use effect")
+      
         loadDashboard()
     },[])
 
     async function loadDashboard(){
-      console.log("LoadDashboard")
+      
         try{
             const response = await getPatientDashboard();
 
-            console.log("response:", response)
+            
             setDashboard(response.data)
 
         }catch(err){

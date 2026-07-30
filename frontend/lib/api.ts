@@ -21,4 +21,21 @@ api.interceptors.request.use(
      (error) => Promise.reject(error)
 );
 
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("user");
+            if (typeof window !== 'undefined') {
+                window.location.href = '/login';
+            }
+        }
+        
+        // Log cleanly for demo debugging without cluttering UI
+        console.error("API Error:", error.response?.data?.message || error.message);
+        return Promise.reject(error);
+    }
+);
+
 export default api;

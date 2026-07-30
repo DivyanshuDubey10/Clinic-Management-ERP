@@ -30,9 +30,9 @@ export default function appointmentPage(){
         try {
             const response = await getAppointments();
 
-            console.log("Appointments:",response);
+            
 
-            console.log(response.data[0])
+            
 
             setAppointments(response.data || []);
             setFilteredAppointments(response.data || []);

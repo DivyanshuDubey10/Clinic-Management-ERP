@@ -54,7 +54,7 @@ export default function LabOrdersPage(){
     const handleSubmit = (e: React.FormEvent)=>{
         e.preventDefault();
 
-        console.log(tests)
+        
     }
 
 

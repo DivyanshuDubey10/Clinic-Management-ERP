@@ -27,7 +27,7 @@ export default function LabResultPage(){
 
     const handleSubmit = (e: React.FormEvent)=>{
         e.preventDefault();
-        console.log(selectedFile)
+        
 
         //upload api
     }
