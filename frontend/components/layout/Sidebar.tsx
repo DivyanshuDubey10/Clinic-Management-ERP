@@ -29,6 +29,7 @@ type MenuItem = {
 const allMenuItems: MenuItem[] = [
   { title: "Dashboard", icon: LayoutDashboard, href: "/dashboard", roles: ["admin", "receptionist"] },
   { title: "Doctor Dashboard", icon: LayoutDashboard, href: "/dashboard/doctor", roles: ["doctor"] },
+  { title: "Staff Management", icon: Users, children: [{ title: "All Staff", href: "/staff" }, { title: "Add Staff", href: "/staff/add" }], roles: ["admin"] },
   { title: "Patient Management", icon: Users, children: [{ title: "Patients", href: "/patients" }], roles: ["admin", "receptionist", "doctor"] },
   { title: "Appointments", icon: CalendarDays, children: [{ title: "Appointments", href: "/appointments" }, { title: "Consultations", href: "/consultations" }], roles: ["admin", "receptionist", "doctor"] },
   { title: "Pharmacy", icon: Pill, children: [{ title: "Medicine Inventory", href: "/pharmacy" }, { title: "Add Medicine", href: "/pharmacy/add" }, { title: "Dispense Medicine", href: "/pharmacy/dispense" }, { title: "Inventory Alerts", href: "/pharmacy/alerts" }], roles: ["admin", "pharmacist"] },

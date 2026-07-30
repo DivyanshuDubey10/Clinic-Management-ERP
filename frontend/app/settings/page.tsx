@@ -93,11 +93,7 @@ export default function SettingsPage() {
 
               </div>
 
-              <div className="mt-6">
-                <span className="inline-block px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-sm">
-                  Coming Soon
-                </span>
-              </div>
+
 
             </div>
 
@@ -126,11 +122,7 @@ export default function SettingsPage() {
 
               </div>
 
-              <div className="mt-6">
-                <span className="inline-block px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-sm">
-                  Coming Soon
-                </span>
-              </div>
+
 
             </div>
 
