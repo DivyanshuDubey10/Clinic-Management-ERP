@@ -138,7 +138,7 @@ export default function PatientPortal(){
       {dashboard?.upcomingAppointments?.length ? (
         <div className="mt-6 rounded-2xl bg-slate-50 p-6 border">
           <h3 className="text-xl font-semibold">
-            Dr. {dashboard.upcomingAppointments[0].doctorId?.name}
+            {dashboard.upcomingAppointments[0].doctorId?.name}
           </h3>
 
           <p className="text-gray-500">

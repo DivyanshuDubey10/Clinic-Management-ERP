@@ -103,9 +103,7 @@ export default function BillingPage() {
 
       const payload = {
         patientId: formData.patientId,
-        consultationId: (formData.consultationId
-          ? { consultationId: formData.consultationId }
-          : {}),
+        ...(formData.consultationId ? { consultationId: formData.consultationId } : {}),
 
         items: [
           {
@@ -153,7 +151,7 @@ export default function BillingPage() {
 
       const res = await createInvoice(payload);
 
-      alert(res.message || "Invoice Created Successfully");
+      alert("Invoice Created Successfully! Invoice #" + (res.data?.invoiceNumber || ""));
 
       setFormData({
         patientId: "",
