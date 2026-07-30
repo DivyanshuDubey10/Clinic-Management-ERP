@@ -4,12 +4,16 @@ const { protect, authorize } = require('../middlewares/authMiddleware');
 const { ROLES } = require('../constants/roles');
 const {
     getLabOrders,
-    getLabOrderById
+    getLabOrderById,
+    createLabOrder
 } = require('../controllers/labOrderController');
 const { validateObjectId } = require('../middlewares/validationMiddleware');
 
 // All lab order routes require authentication
 router.use(protect);
+
+// Create a lab order
+router.post('/', authorize(ROLES.DOCTOR, ROLES.ADMIN), createLabOrder);
 
 // Get all lab orders
 router.get('/', authorize(ROLES.DOCTOR, ROLES.ADMIN, ROLES.RECEPTIONIST, ROLES.PATIENT), getLabOrders);

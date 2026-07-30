@@ -48,6 +48,16 @@ const medicineSchema = new mongoose.Schema({
         type: Number,
         default: 50 // Warn when total stock falls below this
     },
+    batchNumber: {
+        type: String
+    },
+    expiryDate: {
+        type: Date
+    },
+    stock: {
+        type: Number,
+        default: 0
+    },
     batches: [batchSchema]
 }, {
     timestamps: true,

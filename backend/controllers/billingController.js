@@ -32,9 +32,17 @@ exports.createInvoice = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Patient ID and at least one item are required' });
         }
 
+        if (!mongoose.Types.ObjectId.isValid(patientId)) {
+            return res.status(400).json({ success: false, message: 'Invalid patientId' });
+        }
+
         let parsedConsultationId = consultationId;
-        if (consultationId === "") {
-            parsedConsultationId = undefined;
+        if (consultationId) {
+            if (typeof consultationId === 'object' && Object.keys(consultationId).length === 0) {
+                parsedConsultationId = undefined;
+            } else if (!mongoose.Types.ObjectId.isValid(consultationId)) {
+                return res.status(400).json({ success: false, message: 'Invalid consultationId' });
+            }
         }
 
         // Calculate totals

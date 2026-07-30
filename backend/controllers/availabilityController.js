@@ -109,7 +109,23 @@ const getAvailability = async (req, res) => {
     }
 };
 
+const getAllAvailability = async (req, res) => {
+    try {
+        const data = await DoctorAvailability.find().populate("doctorId", "name specialization");
+        res.status(200).json({
+            success: true,
+            data
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Server Error'
+        });
+    }
+};
+
 module.exports = {
     setAvailability,
-    getAvailability
+    getAvailability,
+    getAllAvailability
 };

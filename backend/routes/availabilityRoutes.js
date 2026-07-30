@@ -4,11 +4,15 @@ const { protect, authorize } = require('../middlewares/authMiddleware');
 const { ROLES } = require('../constants/roles');
 const {
     setAvailability,
-    getAvailability
+    getAvailability,
+    getAllAvailability
 } = require('../controllers/availabilityController');
 const { validateObjectId, validateBody } = require('../middlewares/validationMiddleware');
 
 router.use(protect);
+
+// Get all availability records (Admin)
+router.get('/', authorize(ROLES.ADMIN), getAllAvailability);
 
 // Anyone logged in can view availability to book
 router.get('/:doctorId', validateObjectId('doctorId'), getAvailability);

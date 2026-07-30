@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const LabOrder = require('../models/LabOrder');
 
 // @desc    Get all lab orders (with filters)
@@ -42,7 +43,37 @@ const getLabOrderById = async (req, res) => {
     }
 };
 
+// @desc    Create new lab order
+// @route   POST /api/lab-orders
+// @access  Private
+const createLabOrder = async (req, res) => {
+    try {
+        const { patientId, doctorId, consultationId, tests } = req.body;
+
+        if (!patientId || !doctorId || !consultationId || !tests || tests.length === 0) {
+            return res.status(400).json({ success: false, message: 'patientId, doctorId, consultationId, and tests are required' });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(patientId) || !mongoose.Types.ObjectId.isValid(doctorId) || !mongoose.Types.ObjectId.isValid(consultationId)) {
+            return res.status(400).json({ success: false, message: 'Invalid ID format provided' });
+        }
+
+        const labOrder = await LabOrder.create({
+            patientId,
+            doctorId,
+            consultationId,
+            tests,
+            status: 'Pending'
+        });
+
+        res.status(201).json({ success: true, data: labOrder });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 module.exports = {
     getLabOrders,
-    getLabOrderById
+    getLabOrderById,
+    createLabOrder
 };
