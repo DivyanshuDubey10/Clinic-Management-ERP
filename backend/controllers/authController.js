@@ -24,7 +24,7 @@ const generateRefreshToken = (id) => {
 // @access  Public
 exports.registerUser = async (req, res) => {
     try {
-        const { name, email, phone, password, role, specialization } = req.body;
+        const { name, email, phone, password } = req.body;
 
         // 1. Validate required fields
         if (!name || !email || !phone || !password) {
@@ -53,8 +53,7 @@ exports.registerUser = async (req, res) => {
             email,
             phone,
             password,
-            role, // The model defaults to 'Patient' if not provided
-            specialization,
+            role: ROLES.PATIENT,
             isVerified: false,
             emailVerificationOTP: otp,
             emailVerificationOTPExpire: Date.now() + 10 * 60 * 1000 // 10 mins

@@ -74,9 +74,6 @@ export default function RegisterPage() {
     if (form.password !== form.confirmPassword) 
       return setError("The passwords do not match.");
 
-    if (form.role === "doctor" && !form.specialization.trim())
-      return setError("Please enter your specialization.");
-
 
     try {
       setLoading(true);
@@ -86,8 +83,7 @@ export default function RegisterPage() {
         email: form.email, 
         phone: form.phone, 
         password: form.password, 
-        role: form.role,
-        ...(form.role === "doctor" ? { specialization: form.specialization } : {})
+        role: "patient"
       });
 
       setSuccess(true);
@@ -343,42 +339,6 @@ export default function RegisterPage() {
                </div>
 
 
-        <label className="block">
-          <span className="mb-2 block text-sm font-medium text-slate-700">
-            Account type
-            </span>
-            
-            <select 
-            required 
-            name="role" 
-            value={form.role} 
-            onChange={handleChange} 
-            className="h-12 w-full rounded-xl border border-slate-200 bg-white px-3.5 text-sm text-slate-800 outline-none 
-            transition hover:border-slate-300 focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100">
-              
-              <option value="patient">Patient</option>
-              <option value="doctor">Doctor</option>
-              <option value="receptionist">Receptionist</option>
-              <option value="pharmacist">Pharmacist</option>
-              <option value="admin">Administrator</option>
-                </select>
-                
-                </label>
-
-        {form.role === "doctor" && (
-          <Field label="Specialization" icon={<HeartPulse size={18} />}>
-            <input 
-              required 
-              name="specialization" 
-              value={form.specialization} 
-              onChange={handleChange} 
-              placeholder="e.g. Cardiology, Pediatrics, General Medicine" 
-              className="h-12 w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm 
-              text-slate-800 outline-none transition placeholder:text-slate-400 hover:border-slate-300 
-              focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100" 
-            />
-          </Field>
-        )}
 
 
         <AnimatePresence>
