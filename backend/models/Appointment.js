@@ -7,10 +7,12 @@ const appointmentSchema = new mongoose.Schema({
     },
     patientId: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: 'Patient',
         required: [true, 'Please provide a patient ID']
     },
     doctorId: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: [true, 'Please provide a doctor ID']
     },
     appointmentDate: {
@@ -39,7 +41,8 @@ const appointmentSchema = new mongoose.Schema({
         type: String
     },
     createdBy: {
-        type: mongoose.Schema.Types.ObjectId
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 }, {
     timestamps: true
