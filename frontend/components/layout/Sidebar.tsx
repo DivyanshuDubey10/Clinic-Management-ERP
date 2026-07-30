@@ -65,10 +65,11 @@ export default function Sidebar() {
   });
 
   // Keep the section that owns the current route visible after navigation/refresh.
+  // We only want this to run when the pathname actually changes, not on every render.
   useEffect(() => {
-    const activeGroup = menuItems.find((item) => item.children?.some((child) => pathname === child.href));
+    const activeGroup = allMenuItems.find((item) => item.children?.some((child) => pathname === child.href));
     if (activeGroup) setOpenMenu(activeGroup.title);
-  }, [pathname, menuItems]);
+  }, [pathname]);
 
   const isCurrentRoute = (href?: string) => href === pathname;
 
