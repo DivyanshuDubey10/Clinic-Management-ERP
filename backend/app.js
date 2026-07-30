@@ -54,6 +54,7 @@ const reportingRoutes = require('./routes/reportingRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const prescriptionRoutes = require('./routes/prescriptionRoutes');
 const labOrderRoutes = require('./routes/labOrderRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
 
 // Mount routers
 app.use('/api/auth', authRoutes);
@@ -70,6 +71,7 @@ app.use('/api/reports', reportingRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/prescriptions', prescriptionRoutes);
 app.use('/api/lab-orders', labOrderRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Global Error Handler Middleware
 app.use((err, req, res, next) => {

@@ -1,0 +1,14 @@
+const express = require('express');
+const { getNotifications, markAsRead, markAllAsRead } = require('../controllers/notificationController');
+const { protect } = require('../middleware/authMiddleware');
+
+const router = express.Router();
+
+// Apply auth middleware to all notification routes
+router.use(protect);
+
+router.get('/', getNotifications);
+router.put('/read-all', markAllAsRead);
+router.put('/:id/read', markAsRead);
+
+module.exports = router;

@@ -2,16 +2,23 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Bell, ChevronDown, LogOut, Search, Settings, UserRound } from "lucide-react";
+import { Bell, ChevronDown, LogOut, Search, Settings, UserRound, CheckCircle2, Info, AlertTriangle, XCircle, Check } from "lucide-react";
 import { getProfile } from "@/lib/auth";
+import { getNotifications, markNotificationAsRead, markAllNotificationsAsRead, type Notification } from "@/lib/notification";
 
 type User = { name?: string; role?: string };
 
 export default function Navbar() {
   const router = useRouter();
   const profileMenuRef = useRef<HTMLDivElement>(null);
+  const notificationMenuRef = useRef<HTMLDivElement>(null);
+  
   const [user, setUser] = useState<User | null>(null);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [isNotificationMenuOpen, setIsNotificationMenuOpen] = useState(false);
+  
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     async function loadUser() {
@@ -29,6 +36,16 @@ export default function Navbar() {
         const data = await getProfile();
         setUser(data.user);
         localStorage.setItem("user", JSON.stringify(data.user));
+
+        // Load notifications
+        try {
+          const notifData = await getNotifications();
+          setNotifications(notifData.data);
+          setUnreadCount(notifData.unreadCount);
+        } catch (e) {
+          console.error("Failed to load notifications", e);
+        }
+
       } catch (error) {
         console.error(error);
         localStorage.removeItem("accessToken");
@@ -45,6 +62,9 @@ export default function Navbar() {
       if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
         setIsProfileMenuOpen(false);
       }
+      if (notificationMenuRef.current && !notificationMenuRef.current.contains(event.target as Node)) {
+        setIsNotificationMenuOpen(false);
+      }
     }
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -55,6 +75,49 @@ export default function Navbar() {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("user");
     router.push("/login");
+  }
+
+  async function handleNotificationClick(notif: Notification) {
+    if (!notif.isRead) {
+      try {
+        await markNotificationAsRead(notif._id);
+        setNotifications((prev) => prev.map((n) => (n._id === notif._id ? { ...n, isRead: true } : n)));
+        setUnreadCount((prev) => Math.max(0, prev - 1));
+      } catch (e) {
+        console.error("Failed to mark as read", e);
+      }
+    }
+
+    if (notif.link) {
+      setIsNotificationMenuOpen(false);
+      router.push(notif.link);
+    }
+  }
+
+  async function handleMarkAllAsRead(e: React.MouseEvent) {
+    e.stopPropagation();
+    try {
+      await markAllNotificationsAsRead();
+      setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+      setUnreadCount(0);
+    } catch (e) {
+      console.error("Failed to mark all as read", e);
+    }
+  }
+
+  function getNotificationIcon(type: string) {
+    switch (type) {
+      case "success": return <CheckCircle2 className="text-emerald-500" size={18} />;
+      case "warning": return <AlertTriangle className="text-amber-500" size={18} />;
+      case "error": return <XCircle className="text-rose-500" size={18} />;
+      case "info":
+      default: return <Info className="text-blue-500" size={18} />;
+    }
+  }
+
+  function formatDate(dateString: string) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
   }
 
   const initials = user?.name?.trim().charAt(0).toUpperCase() || "U";
@@ -84,11 +147,78 @@ export default function Navbar() {
           <Search size={20} />
         </button>
 
-        <button type="button" aria-label="Notifications, 3 unread" className="relative grid h-10 w-10 place-items-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-          <Bell size={20} />
-          <span className="absolute right-1.5 top-1.5 grid h-4 min-w-4 place-items-center rounded-full border-2 border-white bg-rose-500 px-0.5 text-[9px] font-bold leading-none text-white">3</span>
-        </button>
+        {/* Notifications Dropdown */}
+        <div className="relative" ref={notificationMenuRef}>
+          <button 
+            type="button" 
+            aria-label={`Notifications, ${unreadCount} unread`} 
+            onClick={() => setIsNotificationMenuOpen(!isNotificationMenuOpen)}
+            className={`relative grid h-10 w-10 place-items-center rounded-xl transition focus:outline-none focus:ring-2 focus:ring-cyan-400 ${isNotificationMenuOpen ? 'bg-slate-100 text-slate-800' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800'}`}
+          >
+            <Bell size={20} />
+            {unreadCount > 0 && (
+              <span className="absolute right-1.5 top-1.5 grid h-4 min-w-4 place-items-center rounded-full border-2 border-white bg-rose-500 px-0.5 text-[9px] font-bold leading-none text-white">
+                {unreadCount > 99 ? '99+' : unreadCount}
+              </span>
+            )}
+          </button>
 
+          <div 
+            className={`absolute right-0 top-[calc(100%+0.6rem)] w-80 sm:w-96 origin-top-right rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-900/10 transition-all duration-200 ${isNotificationMenuOpen ? "translate-y-0 scale-100 opacity-100" : "pointer-events-none -translate-y-2 scale-95 opacity-0"}`}
+          >
+            <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
+              <h3 className="font-semibold text-slate-800">Notifications</h3>
+              {unreadCount > 0 && (
+                <button 
+                  onClick={handleMarkAllAsRead} 
+                  className="flex items-center gap-1.5 text-xs font-medium text-cyan-600 transition hover:text-cyan-800"
+                >
+                  <Check size={14} />
+                  Mark all as read
+                </button>
+              )}
+            </div>
+            
+            <div className="max-h-96 overflow-y-auto overscroll-contain">
+              {notifications.length === 0 ? (
+                <div className="p-8 text-center">
+                  <Bell className="mx-auto mb-2 text-slate-300" size={32} />
+                  <p className="text-sm text-slate-500">No notifications yet.</p>
+                </div>
+              ) : (
+                <div className="flex flex-col">
+                  {notifications.map((notif) => (
+                    <button
+                      key={notif._id}
+                      onClick={() => handleNotificationClick(notif)}
+                      className={`flex w-full items-start gap-3 border-b border-slate-50 p-4 text-left transition hover:bg-slate-50 ${!notif.isRead ? 'bg-blue-50/40' : ''}`}
+                    >
+                      <div className="mt-0.5 shrink-0">
+                        {getNotificationIcon(notif.type)}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className={`text-sm ${!notif.isRead ? 'font-semibold text-slate-900' : 'font-medium text-slate-800'}`}>
+                          {notif.title}
+                        </p>
+                        <p className={`mt-0.5 text-xs leading-relaxed ${!notif.isRead ? 'text-slate-600' : 'text-slate-500'}`}>
+                          {notif.message}
+                        </p>
+                        <p className="mt-1.5 text-[11px] font-medium text-slate-400">
+                          {formatDate(notif.createdAt)}
+                        </p>
+                      </div>
+                      {!notif.isRead && (
+                        <div className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-blue-500" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Profile Dropdown */}
         <div className="relative ml-1" ref={profileMenuRef}>
           <button
             type="button"
