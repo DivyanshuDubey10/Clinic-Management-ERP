@@ -60,18 +60,22 @@ export async function getMyLabOrders(){
 
 
 export async function downloadPrescription(id: string){
-    window.open(
-        `${process.env.NEXT_PUBLIC_API_URL}/patient-portal/prescriptions/${id}/download`,
-        "_blank"
-    );
+    const response = await api.get(`/patient-portal/prescriptions/${id}/download`, {
+        ...authHeader(),
+        responseType: 'blob'
+    });
+    const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+    window.open(url, '_blank');
 }
 
 
 export async function downloadLabReports(id:string){
-    window.open(
-        `${process.env.NEXT_PUBLIC_API_URL}/patient-portal/lab-orders/${id}/download`,
-        "_blank"
-    )
+    const response = await api.get(`/patient-portal/lab-orders/${id}/download`, {
+        ...authHeader(),
+        responseType: 'blob'
+    });
+    const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+    window.open(url, '_blank');
 }
 
 

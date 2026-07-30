@@ -72,8 +72,40 @@ const createLabOrder = async (req, res) => {
     }
 };
 
+// @desc    Update lab order
+// @route   PUT /api/lab-orders/:id
+// @access  Private
+const updateLabOrder = async (req, res) => {
+    try {
+        const { status, result, notes } = req.body;
+        const labOrder = await LabOrder.findById(req.params.id);
+
+        if (!labOrder) {
+            return res.status(404).json({ success: false, message: 'Lab order not found' });
+        }
+
+        if (status) labOrder.status = status;
+
+        if (result || notes) {
+            // we will push to results array or update it
+            labOrder.results.push({
+                parsedText: result || '',
+                notes: notes || '',
+                uploadedAt: Date.now()
+            });
+        }
+
+        await labOrder.save();
+
+        res.status(200).json({ success: true, data: labOrder });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 module.exports = {
     getLabOrders,
     getLabOrderById,
-    createLabOrder
+    createLabOrder,
+    updateLabOrder
 };
