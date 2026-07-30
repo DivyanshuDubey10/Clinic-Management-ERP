@@ -57,7 +57,7 @@ export default function viewAppointmentPage(){
                             Appointment Details
                         </h1>
 
-                        <div className="grid grid:colds-2 gap-6">
+                        <div className="grid gap-6 md:grid-cols-2">
 
                             <div>
                                 <p className="text-gray-500">
@@ -65,8 +65,8 @@ export default function viewAppointmentPage(){
                                 </p>
 
                                 <h2 className="font-semibold text-lg">
-                                    {appointment.patient?.firstName}{" "}
-                                    {appointment.patient?.lastName}
+                                    {appointment.patientId?.firstName || "-"}{" "}
+                                    {appointment.patientId?.lastName || ""}
                                 </h2>
                             </div>
 
@@ -75,7 +75,7 @@ export default function viewAppointmentPage(){
                                 <p className="text-gray-500">Doctor</p>
 
                                 <h2 className="font-semibold text-lg">
-                                    {appointment.doctor?.name}
+                                    {appointment.doctorId?.name || "-"}
                                 </h2>
                             </div>
 
@@ -84,7 +84,9 @@ export default function viewAppointmentPage(){
                                 <p className="text-gray-500">Date</p>
                                 
                                 <h2 className="font-semibold text-lg">
-                                    {new Date(appointment.date).toLocaleDateString()}
+                                    {appointment.appointmentDate
+                                        ? new Date(appointment.appointmentDate).toLocaleDateString()
+                                        : "-"}
                                 </h2>
                             </div>
 
@@ -92,7 +94,12 @@ export default function viewAppointmentPage(){
                                 <p className="text-gray-500">Time Slot</p>
 
                                 <h2 className="font-semibold text-lg">
-                                    {appointment.timeslot}
+                                    {appointment.appointmentDate
+                                        ? new Date(appointment.appointmentDate).toLocaleTimeString([], {
+                                            hour: "2-digit",
+                                            minute: "2-digit"
+                                        })
+                                        : "-"}
                                 </h2>
                             </div>
 

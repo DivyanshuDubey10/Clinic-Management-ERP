@@ -185,8 +185,12 @@ export default function appointmentPage(){
                                                 </td>
 
                                                 <td>
-                                                    {/* {appointment.timeSlot} */}
-                                                    {appointment.appointmentTime}
+                                                    {appointment.appointmentDate
+                                                        ? new Date(appointment.appointmentDate).toLocaleTimeString([], {
+                                                            hour: "2-digit",
+                                                            minute: "2-digit"
+                                                        })
+                                                        : "-"}
                                                 </td>
 
                                                 <td>
@@ -297,4 +301,4 @@ export default function appointmentPage(){
             </div>
         </div>
     )
-} 
+}
