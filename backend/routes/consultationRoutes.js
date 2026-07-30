@@ -9,6 +9,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 const {
     createConsultation,
+    updateConsultation,
     getConsultations,
     getConsultationById,
     getConsultationByAppointment,
@@ -28,6 +29,8 @@ router.get('/', authorize(ROLES.DOCTOR, ROLES.ADMIN, ROLES.RECEPTIONIST), getCon
 
 // Create a new consultation note (SOAP)
 router.post('/', authorize(ROLES.DOCTOR, ROLES.ADMIN), validateBody('appointmentId', 'symptoms', 'diagnosis', 'treatmentPlan'), validateObjectId('appointmentId'), createConsultation);
+
+router.put('/:id', authorize(ROLES.DOCTOR, ROLES.ADMIN), validateObjectId('id'), updateConsultation);
 
 // Get consultations by patient ID specifically
 router.get('/patient/:patientId', authorize(ROLES.DOCTOR, ROLES.ADMIN, ROLES.RECEPTIONIST), getConsultations);

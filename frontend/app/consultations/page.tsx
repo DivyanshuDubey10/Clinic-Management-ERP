@@ -110,12 +110,11 @@ export default function ConsultationsPage() {
 
               <select
                 value={status}
-                onChange={(e)=>setSearch(e.target.value)}
+                onChange={(e)=>setStatus(e.target.value)}
                 className="border rounded-lg px-4 py-3"
               >
                 <option value="">All Status</option>
-                <option value="Scheduled">Scheduled</option>
-                <option value="In Progress">In Progress</option>
+                <option value="Draft">Draft</option>
                 <option value="Completed">Completed</option>
               </select>
 
@@ -127,11 +126,11 @@ export default function ConsultationsPage() {
             <table className="w-full">
               <thead className="bg-slate-800 text-white">
                 <tr>
-                  <th className="px-6 py-4 text-left">Consulatation ID</th>
+                  <th className="px-6 py-4 text-left">Consultation ID</th>
                   <th className="px-6 py-4 text-left">Patient</th>
                   <th className="px-6 py-4 text-left">Doctor</th>
-                  <th className="px-6 py-4 text-left">Prescription</th>
-                  <th className="px-6 py-4 text-left">Lab Order</th>
+                  <th className="px-6 py-4 text-left">Diagnosis</th>
+                  <th className="px-6 py-4 text-left">Follow-up</th>
                   <th className="px-6 py-4 text-left">Status</th>
                   <th className="px-6 py-4 text-center">Action</th>
                 </tr>
@@ -156,28 +155,14 @@ export default function ConsultationsPage() {
                     </td>
 
                     <td className="px-6 py-4">
-                      <span
-                        className={`px-3 py-1 rounded-full text-sm font-medium ${
-                          consultation.symptoms === "Added"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-yellow-100 text-yellow-700"
-                        }`}
-                      >
-                        {consultation.symptoms}
+                      <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700">
+                        {consultation.diagnosis || "Not recorded"}
                       </span>
                     </td>
 
                     <td className="px-6 py-4">
-                      <span
-                        className={`px-3 py-1 rounded-full text-sm font-medium ${
-                          consultation.status === "Completed"
-                            ? "bg-green-100 text-green-700"
-                            : consultation.status === "Pending"
-                            ? "bg-orange-100 text-orange-700"
-                            : "bg-slate-100 text-slate-700"
-                        }`}
-                      >
-                        {consultation.status}
+                      <span className="rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700">
+                        {consultation.followUpDate ? new Date(consultation.followUpDate).toLocaleDateString() : "Not scheduled"}
                       </span>
                     </td>
 
@@ -195,7 +180,7 @@ export default function ConsultationsPage() {
 
                     <td className="px-6 py-4 text-center">
                       <Link
-                        href={`/consultations/${consultation._id}`}
+                        href={`/consultations/${consultation.appointmentId}`}
                         className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
                       >
                         <Eye size={16} />

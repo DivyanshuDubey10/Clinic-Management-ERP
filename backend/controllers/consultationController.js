@@ -49,6 +49,30 @@ const createConsultation = async (req, res) => {
     }
 };
 
+// @desc    Update an existing consultation note
+// @route   PUT /api/consultations/:id
+// @access  Private (Doctor/Admin)
+const updateConsultation = async (req, res) => {
+    try {
+        const consultation = await Consultation.findById(req.params.id);
+        if (!consultation) {
+            return res.status(404).json({ success: false, message: 'Consultation not found' });
+        }
+
+        const allowedFields = ['symptoms', 'examinationFindings', 'diagnosis', 'treatmentPlan', 'followUpDate', 'status'];
+        for (const field of allowedFields) {
+            if (Object.prototype.hasOwnProperty.call(req.body, field)) {
+                consultation[field] = req.body[field];
+            }
+        }
+
+        await consultation.save();
+        res.status(200).json({ success: true, data: consultation });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message || 'Server Error' });
+    }
+};
+
 // @desc    Get complete consultation details (with Prescriptions & Lab Orders)
 // @route   GET /api/consultations/:appointmentId
 // @access  Private (Doctor, Admin, Patient)
@@ -369,6 +393,7 @@ const downloadPrescriptionPDF = async (req, res) => {
 
 module.exports = {
     createConsultation,
+    updateConsultation,
     getConsultations,
     getConsultationById,
     getConsultationByAppointment,

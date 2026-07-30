@@ -7,7 +7,8 @@ import {
     Eye,
     Pencil,
     Trash2,
-    CalendarDays
+    CalendarDays,
+    Stethoscope
 } from "lucide-react";
 import Link from "next/link";
 import Sidebar from "@/components/layout/Sidebar";
@@ -212,6 +213,10 @@ export default function appointmentPage(){
                                                             size={18}
                                                             className="text-green-600"
                                                           />
+                                                        </Link>
+
+                                                        <Link href={`/consultations/${appointment._id}`} title="Open consultation">
+                                                          <Stethoscope size={18} className="text-blue-600" />
                                                         </Link>
 
 
