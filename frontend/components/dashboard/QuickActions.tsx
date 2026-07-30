@@ -15,7 +15,7 @@ const actions = [
     {
         title:"Schedule Appointment",
         icon:<CalendarPlus size={28}/>,
-        href:"/appointment"
+        href:"/appointments"
     },
     {
         title:"Create Invoice",
@@ -24,7 +24,7 @@ const actions = [
     },{
         title:"View Reports",
         icon: <BarChart3 size={28}/>,
-        href:"/reports"
+        href:"/dashboard/reports"
     }
 ];
 
