@@ -38,7 +38,7 @@ export default function PatientPortal(){
     const cards = [
         {
             title: "Upcoming Appointments",
-            value: dashboard?.upcommingAppointments?.length ?? 0,
+            value: dashboard?.upcomingAppointments?.length ?? 0,
             color: "bg-blue-500"
         },
         {
