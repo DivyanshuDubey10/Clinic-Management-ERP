@@ -34,8 +34,8 @@ export default function StaffPage() {
     async function loadStaff() {
         try {
             const response = await getStaff();
-            setStaffList(response.data);
-            setFiltered(response.data);
+            setStaffList(response.data.data || []);
+            setFiltered(response.data.data || []);
         } catch (error) {
             console.error("Error loading staff:", error);
         }
