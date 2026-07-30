@@ -122,12 +122,11 @@ exports.updateStaff = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Staff member not found' });
         }
 
-        const { name, email, phone, role, department, specialization, password, isActive } = req.body;
+        const { name, phone, role, department, specialization, password, isActive } = req.body;
 
-        // If email or phone is updated, ensure they are unique
-        if (email && email !== staff.email) {
-            const emailExists = await User.findOne({ email });
-            if (emailExists) return res.status(400).json({ success: false, message: 'Email already in use' });
+        // Email addresses are permanent account identifiers, including when an admin manages staff.
+        if (Object.prototype.hasOwnProperty.call(req.body, 'email') && req.body.email !== staff.email) {
+            return res.status(400).json({ success: false, message: 'Email address cannot be changed' });
         }
         if (phone && phone !== staff.phone) {
             const phoneExists = await User.findOne({ phone });
@@ -136,7 +135,6 @@ exports.updateStaff = async (req, res) => {
 
         // Update fields
         if (name) staff.name = name;
-        if (email) staff.email = email;
         if (phone) staff.phone = phone;
         if (role) staff.role = role;
         if (department) staff.department = department;

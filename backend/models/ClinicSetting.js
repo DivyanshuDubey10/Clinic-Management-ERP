@@ -52,7 +52,11 @@ const clinicSettingSchema = new mongoose.Schema({
         city: { type: String, default: 'New Delhi' },
         state: { type: String, default: 'Delhi' },
         pincode: { type: String, default: '110001' },
-        phone: { type: String, default: '+91 11 2345 6789' },
+        phone: {
+            type: String,
+            default: '1123456789',
+            match: [/^\d{10}$/, 'Phone number must be exactly 10 digits']
+        },
         email: { type: String, default: 'contact@clinicerp.com' },
         website: { type: String, default: 'https://www.clinicerp.com' }
     },

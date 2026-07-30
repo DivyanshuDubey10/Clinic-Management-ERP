@@ -25,7 +25,8 @@ const patientSchema = new mongoose.Schema({
     phone: {
         type: String,
         required: [true, 'Please provide a phone number'],
-        unique: true
+        unique: true,
+        match: [/^\d{10}$/, 'Phone number must be exactly 10 digits']
     },
     email: {
         type: String,
@@ -72,7 +73,7 @@ const patientSchema = new mongoose.Schema({
     }],
     emergencyContact: {
         name: { type: String },
-        phone: { type: String },
+        phone: { type: String, match: [/^\d{10}$/, 'Emergency contact phone must be exactly 10 digits'] },
         relation: { type: String }
     },
     payerType: {

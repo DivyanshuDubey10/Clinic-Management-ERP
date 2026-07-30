@@ -32,14 +32,26 @@ export default function AddPatientPage(){
     function handleChange(
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     ){
+        const { name, value } = e.target;
+        if (name === "phone" || name === "emergencyPhone") {
+            setForm({
+                ...form,
+                [name]: value.replace(/\D/g, "").slice(0, 10)
+            });
+            return;
+        }
         setForm({
             ...form,
-            [e.target.name]:e.target.value
+            [name]:value
         })
     }
 
     async function handleSubmit(e: React.FormEvent){
         e.preventDefault();
+        if (!/^\d{10}$/.test(form.phone) || (form.emergencyPhone && !/^\d{10}$/.test(form.emergencyPhone))) {
+            alert("Phone numbers must contain exactly 10 digits.");
+            return;
+        }
         setLoading(true);
 
         try {
@@ -142,11 +154,15 @@ export default function AddPatientPage(){
                             />
 
                             <input
+                                type="tel"
                                 name="phone"
                                 placeholder="Phone"
                                 className="border p-3 rounded-lg"
                                 onChange={handleChange}
                                 value={form.phone}
+                                maxLength={10}
+                                inputMode="numeric"
+                                pattern="[0-9]{10}"
                             />
 
                             <input
@@ -198,11 +214,15 @@ export default function AddPatientPage(){
                             />
 
                             <input
+                                type="tel"
                                 name="emergencyPhone"
                                 placeholder="Emergency Contact Phone"
                                 className="border p-3 rounded-lg"
                                 onChange={handleChange}
                                 value={form.emergencyPhone}
+                                maxLength={10}
+                                inputMode="numeric"
+                                pattern="[0-9]{10}"
                             />
 
                             <input

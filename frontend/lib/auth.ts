@@ -41,7 +41,6 @@ export async function getProfile(){
 
 export async function updateProfile(data:{
     name:string;
-    email:string;
     phone:string;
     specialization?:string;
     consultationHours?:string;

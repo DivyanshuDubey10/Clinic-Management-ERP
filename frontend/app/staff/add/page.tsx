@@ -23,11 +23,19 @@ export default function AddStaffPage() {
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: name === "phone" ? value.replace(/\D/g, "").slice(0, 10) : value
+        });
     };
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+        if (!/^\d{10}$/.test(formData.phone)) {
+            setError("Phone number must be exactly 10 digits.");
+            return;
+        }
         setLoading(true);
         setError("");
 
@@ -128,10 +136,14 @@ export default function AddStaffPage() {
                                     <input
                                         type="tel"
                                         name="phone"
+                                        required
                                         value={formData.phone}
                                         onChange={handleChange}
+                                        maxLength={10}
+                                        inputMode="numeric"
+                                        pattern="[0-9]{10}"
                                         className="w-full border rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
-                                        placeholder="+1 (555) 000-0000"
+                                        placeholder="10 digit phone number"
                                     />
                                 </div>
 

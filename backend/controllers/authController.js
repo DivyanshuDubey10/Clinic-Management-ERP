@@ -223,8 +223,15 @@ exports.updateUserProfile = async (req, res) => {
             return res.status(404).json({ success: false, message: 'User not found' });
         }
 
+        // Email addresses are account identifiers and cannot be changed through a profile update.
+        if (Object.prototype.hasOwnProperty.call(req.body, 'email') && req.body.email !== user.email) {
+            return res.status(400).json({
+                success: false,
+                message: 'Email address cannot be changed'
+            });
+        }
+
         user.name = req.body.name || user.name;
-        user.email = req.body.email || user.email;
         user.phone = req.body.phone || user.phone;
         
         // Only allow updating specialization and consultation hours if user is a Doctor
