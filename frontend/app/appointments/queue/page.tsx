@@ -48,9 +48,6 @@ export default function QueuePage(){
             
             const res = await getQueue(doctorId)
 
-            
-            
-            )
 
             setQueue(res.data || [])
 

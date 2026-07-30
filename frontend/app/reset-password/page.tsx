@@ -10,7 +10,9 @@ import {
 } from "lucide-react"
 import { resetPassword } from "@/lib/forgotPassword";
 
-export default function ResetPasswordPage(){
+import { Suspense } from "react";
+
+function ResetPasswordForm(){
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -181,5 +183,13 @@ export default function ResetPasswordPage(){
                 </div>
             </div>
         </div>
+    )
+}
+
+export default function ResetPasswordPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <ResetPasswordForm />
+        </Suspense>
     )
 }
