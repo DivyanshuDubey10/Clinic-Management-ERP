@@ -53,8 +53,8 @@ exports.getAllStaff = async (req, res) => {
     try {
         const { role, department, search, page = 1, limit = 10 } = req.query;
 
-        // Base query: Get all users EXCEPT patients
-        let query = { role: { $ne: ROLES.PATIENT } };
+        // Show active staff only. Deleted staff are soft-deleted by setting isActive to false.
+        let query = { role: { $ne: ROLES.PATIENT }, isActive: true };
 
         // Apply filters
         if (role) query.role = role;

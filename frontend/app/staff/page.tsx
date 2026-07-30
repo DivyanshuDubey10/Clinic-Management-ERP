@@ -56,9 +56,11 @@ export default function StaffPage() {
 
         try {
             await deleteStaff(id);
-            loadStaff();
-        } catch (error) {
+            setStaffList((current) => current.filter((staff) => staff._id !== id));
+            setFiltered((current) => current.filter((staff) => staff._id !== id));
+        } catch (error: any) {
             console.error("Error deleting staff:", error);
+            alert(error.response?.data?.message || "Unable to delete this staff member.");
         }
     }
 
