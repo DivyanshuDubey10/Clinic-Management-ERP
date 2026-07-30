@@ -116,12 +116,12 @@ export default function PatientAppointments() {
                   className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6"
                 >
 
-                  <div className="flex justify-between">
+                  <div className="flex justify-between items-start">
 
                     <div>
 
                       <h2 className="text-2xl font-bold">
-                        Dr. {appointment.doctorId?.name}
+                        {appointment.doctorId?.name}
                       </h2>
 
                       <p className="text-gray-500">
