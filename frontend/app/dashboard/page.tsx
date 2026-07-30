@@ -24,11 +24,12 @@ export default function Dashboard() {
 
   //if someone types url of dashboard manually -> redirect em to login page
   useEffect(()=>{
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("accessToken")
 
     
     if(!token){
       router.push("/login")
+      return
     }
     
     loadDashboard();
@@ -41,7 +42,7 @@ export default function Dashboard() {
     try {
       const response = await getDashboard();
 
-      setStats(response.data.data)
+      setStats(response.data)
 
     } catch (error) {
       console.error(error)

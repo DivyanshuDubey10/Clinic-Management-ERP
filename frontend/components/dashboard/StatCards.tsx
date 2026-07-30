@@ -9,7 +9,7 @@ import {
   TrendingDown,
   LucideIcon,
 } from "lucide-react";
-
+import { useEffect, useState } from "react";
 
 type StatCardsProps ={
   stats:{
@@ -25,7 +25,20 @@ type StatCardsProps ={
 
 export default function StatCards({stats} : StatCardsProps) {
 
-  const today = new Date().toLocaleDateString("em-IN",{
+  const [today, setToday] = useState("");
+
+useEffect(() => {
+  setToday(
+    new Date().toLocaleDateString("en-IN", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    })
+  );
+}, []);
+
+  const todays = new Date().toLocaleDateString("en-IN",{
     weekday:"long",
     day:"numeric",
     month:"long",
@@ -75,6 +88,7 @@ export default function StatCards({stats} : StatCardsProps) {
   ]
 
   return (
+    
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 w-full">
       {cards.map((card) => {
 
@@ -93,7 +107,7 @@ export default function StatCards({stats} : StatCardsProps) {
                 </p>
 
                 <p className="text-gray-500">
-                    {today}
+                    {/* {today} */}
                 </p>
 
                 <h2 className="text-4xl font-bold mt-2">

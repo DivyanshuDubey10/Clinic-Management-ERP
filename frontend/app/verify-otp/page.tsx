@@ -38,7 +38,7 @@ export default function verifyOTPPage(){
 
         } catch (error: any) {
             setError(
-                error.reposne?.data?.message || "Invalid OTP"
+                error.reponse?.data?.message || "Invalid OTP"
             )
         }finally{
             setLoading(false)

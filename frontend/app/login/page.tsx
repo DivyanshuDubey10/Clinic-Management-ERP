@@ -1,223 +1,275 @@
+
 "use client";
-import {motion} from "framer-motion"
-import { useState } from "react";
+
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { Mail, Lock, HeartPulse, Eye, EyeOff } from "lucide-react";
-import api from "../../lib/api";
 import { useRouter } from "next/navigation";
+import { useState, type ChangeEvent, type FormEvent, type ReactNode } from "react";
+import { CheckCircle2, Eye, EyeOff, HeartPulse, Lock, Mail, ShieldCheck, Sparkles } from "lucide-react";
 import { loginUser } from "@/lib/auth";
 
+const benefits = ["Secure, role-based access", "Complete patient records", "Billing and appointments in one place"];
+
 export default function LoginPage() {
-    const [showPassword, setShowPassword] = useState(false);
-    const [loading, setLoading] = useState(false)
 
-    const [form, setForm] = useState({
-        email:"",
-        password:"",
-    })
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [form, setForm] = useState({ email: "", password: "" });
 
-    const router = useRouter()
-    const [error, setError] = useState("")
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
+  }
 
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
 
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>){
-        setForm({
-            ...form,
-            [e.target.name]: e.target.value,
-        })
+    event.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+
+      const data = await loginUser(form);
+
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      switch (data.user.role?.toLowerCase()) {
+
+        case "doctor": router.push("/dashboard/doctor"); break;
+
+        case "patient": router.push("/patient-portal/dashboard"); break;
+
+        default: router.push("/dashboard");
+      }
+
+    } catch (caughtError: unknown) {
+
+      const message = typeof caughtError === "object" 
+      && caughtError !== null && "response" in caughtError
+
+        ? (caughtError as { response?: 
+          { data?: { message?: string } } }).response?.data?.message
+        : undefined;
+
+      setError(message || "Invalid email or password. Please try again.");
+      
+    } finally {
+      setLoading(false);
     }
-
-    async function handleSubmit(e: React.FormEvent){
-        e.preventDefault()
-        setError("")
-        
-        try {
-          setLoading(true)
-          
-          const data = await loginUser({
-            email: form.email,
-            password: form.password,
-          })
-
-          console.log(data)
-
-          console.log("Login Response:", data)
-
-          //store jwt
-          localStorage.setItem("token", data.token)
-          localStorage.setItem("user", JSON.stringify(data.user))
-          
-
-          alert("Login Successfull!")
-
-          router.push("/dashboard");
-
-        } catch (err: any) {
-
-          setError(
-            err.response?.data?.message || "Invalid email or password"
-          );
-
-        }finally{
-
-          setLoading(false)
-
-        }
-
-        await new Promise(resolve => setTimeout(resolve,2000))
-        
-        console.log(form)
-
-        setLoading(false)
-        
-    }
-
+  }
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2 bg-gradient-to-br from-slate-100 via-blur-50 to-slate-200">
+    <main className="relative grid min-h-screen overflow-hidden bg-slate-50 lg:grid-cols-[1.05fr_0.95fr]">
 
-      {/* Left Side */}
-      <motion.div 
-        initial={{x:-100, opacity:0}}
-        animate={{x:0, opacity:1}}
-        transition={{duration:0.8}}
-        className="hidden lg:flex flex-col justify-center bg-gradient-to-br from-blue-700 to-blue-500 text-white p-20">
+      <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-cyan-200/35 blur-3xl" />
+
+      <motion.section initial={{ opacity: 0, x: -32 }}
+         animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, ease: "easeOut" }} 
+         className="relative hidden overflow-hidden bg-slate-950 px-12 py-16 text-white 
+         lg:flex lg:flex-col lg:justify-between xl:px-20">
+
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,
+        rgba(34,211,238,.24),transparent_26%),radial-gradient(circle_at_85%_75%,
+        rgba(59,130,246,.35),transparent_30%)]" />
+
+        <div className="relative">
+            <div className="flex items-center gap-3">
+
+               <div className="grid h-11 w-11 place-items-center rounded-xl 
+                  bg-cyan-400 text-slate-950 shadow-lg shadow-cyan-400/20">
+
+                     <HeartPulse size={24} strokeWidth={2.6} />
+                </div>
+
+                 <span className="text-xl font-bold tracking-tight">
+                   Clinic ERP
+                  </span>
+            </div>
+        </div>
+
+        <div className="relative max-w-xl">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full 
+           border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-medium text-cyan-100">
+
+            <Sparkles size={14} />
+
+             Smarter clinic operations 
+
+        </div>
           
-        <div className="flex items-center gap-3 mb-8">
-          <HeartPulse size={42} />
-          <h1 className="text-4xl font-bold">
-            Clinic ERP
+          <h1 className="text-5xl font-bold leading-[1.08] tracking-tight xl:text-6xl">
+              Care, coordinated.
+              <br />
+
+            <span className="text-cyan-300">
+              Everything, simplified.
+              </span>
+
           </h1>
-        </div>
-
-        <h2 className="text-5xl font-bold leading-tight">
-          Smart Healthcare
-          <br />
-          Management
-        </h2>
-
-        <p className="mt-6 text-lg text-blue-100 max-w-md">
-          Manage patients, appointments, billing and reports from one modern dashboard.
-        </p>
-
-        <div className="mt-10 space-y-3 text-lg">
-          <p>✔ Secure Login</p>
-          <p>✔ Patient Records</p>
-          <p>✔ Billing System</p>
-          <p>✔ Appointment Scheduling</p>
-        </div>
-
-      </motion.div>
-
-      {/* Right Side */}
-
-      <div className="flex items-center justify-center p-8">
-
-        <motion.div
-          initial={{opacity:0, y:40}}
-          animate={{opacity:1, y:0}}
-          transition={{
-            duration:0.6,
-            ease:"easeOut",
-          }} 
-          className="bg-white/90 backdrop-blur-xl shadow-2xl rounded-3xl w-full max-w-xl p-12 border border-gray-100 transition-all duration-300">
-
-          <h2 className="text-3xl font-bold text-center">
-            Welcome Back
-          </h2>
-
-          <p className="text-center text-gray-500 mt-2">
-            Login to your account
-          </p>
-
-          <form className="space-y-5 mt-8"
-          onSubmit={handleSubmit}>
-            <div className="relative">
-
-              <Mail
-                className="absolute left-4 top-4 text-gray-400"
-                size={20}
-              />
-
-              <input
-                type="email"
-                value={form.email}
-                name="email"
-                placeholder="Email"
-                onChange={handleChange}
-                className="w-full pl-12 pr-4 py-3 rounded-xl border outline-none focus:ring-2 focus:ring-blue-500"
-              />
-
-            </div>
-
-            <div className="relative">
-            <Lock
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-                size={20}
-            />
-
-            <input
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                className="w-full pl-12 pr-12 py-3 rounded-xl border 
-                transition-all duration-300
-                outline-none focus:scale-[1.02] focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-
-            <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600"
-            >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-            </div>
-
-            {error &&(
-              <div className="bg-red-100 text-red-700 p-3 rounded-lg text-sm">
-                {error}
-              </div>
-            )}
-
-            <button type="submit"
-              disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition disabled:opacity-70 flex items-center justify-center gap-2"
-            >
-              {loading?(
-                <>
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                 Logging in...
-                </>
-              ):("Login")}
-            </button>
-
-            <Link href='/forgot-password'
-               className="text-blue-600 text-sm hover:underline">
-               Forgot Password?
-            </Link>
-
-          </form>
-
-          <p className="text-center mt-6 text-sm">
-
-            Don't have an account?{" "}
-
-            <Link
-              href="/register"
-              className="text-blue-600 font-semibold hover:text-blue-800 transition duration-300"
-            >
-              Register
-            </Link>
-
-          </p>
-
-        </motion.div>
+              <p className="mt-6 max-w-md text-base leading-7 text-slate-300">
+                A secure workspace for your team to manage patients, 
+                appointments, billing, and care from a single place.
+                </p>
 
       </div>
 
-    </div>
+
+        <div className="relative space-y-3 border-t border-white/10 pt-8">
+
+           {benefits.map((benefit, index) => 
+            <motion.div key={benefit} initial={{ opacity: 0, x: -10 }} 
+            animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.35 + index * 0.1 }} 
+
+            className="flex items-center gap-3 text-sm text-slate-200">
+
+              <CheckCircle2 size={18} className="text-cyan-300" />
+                 {benefit}
+
+              </motion.div>)}
+
+        </div>
+
+      </motion.section>
+
+      <section className="relative flex items-center justify-center px-4 py-10 sm:px-6 lg:px-12">
+
+        <motion.div initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} 
+          transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }} 
+          className="w-full max-w-md rounded-3xl border border-slate-200 
+             bg-white p-6 shadow-2xl shadow-slate-900/10 sm:p-9">
+
+          <div className="mb-8 lg:hidden">
+              <div className="flex items-center gap-2 font-bold text-slate-900">
+                  <HeartPulse className="text-cyan-600" size={23} />
+                  Clinic ERP
+              </div>
+           </div>
+
+
+          <div>
+            <div className="mb-3 grid h-11 w-11 place-items-center rounded-xl bg-cyan-50 text-cyan-600">
+
+              <ShieldCheck size={22} />
+            </div>
+
+              <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+                Welcome back
+                </h2>
+
+
+                <p className="mt-2 text-sm text-slate-500">
+                  Enter your details to access your workspace.
+                  </p>
+            </div>
+
+          <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+
+            <Field label="Email address" icon={<Mail size={18} />}>
+
+              <input 
+              required 
+              autoComplete="email" 
+              type="email" 
+              name="email" 
+              value={form.email} 
+              onChange={handleChange} 
+              placeholder="you@clinic.com" 
+              className="h-12 w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-slate-800 
+              outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100" />
+
+            </Field>
+
+            <Field 
+              label="Password" 
+              icon={<Lock size={18} />}>
+                
+              <input required 
+              autoComplete="current-password" 
+              type={showPassword ? "text" : "password"} 
+              name="password" 
+              value={form.password} 
+              onChange={handleChange} 
+              placeholder="Enter your password"
+
+              className="h-12 w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-11 
+              text-sm text-slate-800 outline-none transition placeholder:text-slate-400 hover:border-slate-300 
+              focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100" />
+             
+             <button 
+              type="button" 
+              onClick={() => setShowPassword((value) => !value)} 
+              aria-label={showPassword ? "Hide password" : "Show password"}
+                className="absolute right-3 top-[37px] rounded-md p-1 text-slate-400 transition hover:text-cyan-600 
+                focus:outline-none focus:ring-2 focus:ring-cyan-400">
+
+                {showPassword 
+                ? <EyeOff size={18} /> 
+                : <Eye size={18} />}
+
+                </button>
+            </Field>
+
+            <div className="flex justify-end">
+              <Link href="/forgot-password" 
+              className="text-sm font-semibold text-cyan-700 transition hover:text-cyan-900 hover:underline">
+                Forgot password?
+                </Link>
+                </div>
+
+            <AnimatePresence>
+              {error && <motion.div initial={{ opacity: 0, height: 0 }} 
+              animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
+               className="overflow-hidden">
+                
+                <p role="alert" className="rounded-xl border border-rose-100 bg-rose-50 px-3.5 py-3 text-sm text-rose-700">
+                  {error}
+                  </p>
+                  
+                  </motion.div>}
+                  
+                  </AnimatePresence>
+
+
+            <motion.button whileHover={{ y: -1 }} 
+            whileTap={{ scale: 0.99 }}
+             type="submit" 
+             disabled={loading} 
+             className="flex h-12 w-full items-center justify-center gap-2
+              rounded-xl bg-slate-900 text-sm font-semibold text-white shadow-lg shadow-slate-900/15 transition 
+              hover:bg-cyan-600 focus:outline-none focus:ring-4 focus:ring-cyan-100 disabled:cursor-not-allowed disabled:opacity-70">
+                {loading && 
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />}
+                {loading ? "Signing in..." : "Sign in"}
+                
+                </motion.button>
+          </form>
+
+          <p className="mt-7 text-center text-sm text-slate-500">
+            Don&apos;t have an account?
+             <Link href="/register" 
+             className="font-semibold text-cyan-700 transition hover:text-cyan-900 hover:underline">
+              Create one
+              </Link>
+              
+              </p>
+
+        </motion.div>
+      </section>
+    </main>
   );
+}
+
+function Field({ label, icon, children }: { label: string; icon: ReactNode; children: ReactNode }) {
+  return <label 
+  className="relative block">
+    <span className="mb-2 block text-sm font-medium text-slate-700">
+      {label}
+      </span>
+      <span className="pointer-events-none absolute left-3.5 top-[37px] text-slate-400">
+        {icon}
+        </span>
+        {children}
+        </label>;
 }

@@ -1,5 +1,6 @@
 import api from "./api";
 
+
 export async function registerUser(data :{
     name:string;
     email:string;
@@ -12,6 +13,8 @@ export async function registerUser(data :{
     return response.data;
 }
 
+
+
 export async function loginUser(data:{
     email:string;
     password:string;
@@ -20,8 +23,11 @@ export async function loginUser(data:{
     return response.data
 }
 
+
+
 export async function getProfile(){
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("accessToken")
+
     const response = await api.get("/auth/profile",{
         headers:{
             Authorization:`Bearer ${token}`,
@@ -31,6 +37,8 @@ export async function getProfile(){
     return response.data
 }
 
+
+
 export async function updateProfile(data:{
     name:string;
     email:string;
@@ -38,7 +46,7 @@ export async function updateProfile(data:{
     specialization?:string;
     consultationHours?:string;
 }){
-    const token = localStorage.getitem("token")
+    const token = localStorage.getItem("accessToken")
 
     const response = await api.put("/auth/profile",data,{
         headers:{

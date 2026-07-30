@@ -1,7 +1,7 @@
 import api from "./api";
 
 function getAuthHeader(){
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('accessToken');
 
     return{
         headers:{

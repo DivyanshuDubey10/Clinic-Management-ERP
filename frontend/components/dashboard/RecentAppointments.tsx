@@ -1,35 +1,53 @@
-const appointments = [
-  {
-    id: 1,
-    patient: "Rahul Sharma",
-    doctor: "Dr. Mehta",
-    time: "10:00 AM",
-    status: "Completed",
-  },
-  {
-    id: 2,
-    patient: "Priya Das",
-    doctor: "Dr. Roy",
-    time: "11:30 AM",
-    status: "Pending",
-  },
-  {
-    id: 3,
-    patient: "Amit Kumar",
-    doctor: "Dr. Singh",
-    time: "01:00 PM",
-    status: "Completed",
-  },
-  {
-    id: 4,
-    patient: "Neha Patel",
-    doctor: "Dr. Khan",
-    time: "03:30 PM",
-    status: "Cancelled",
-  },
-];
+"use client";
+
+import { useEffect, useState } from "react";
+import { getAppointments } from "@/lib/appointment";
+
+interface Appointment{
+    _id: string;
+    patientId:{
+        firstName:string;
+        lastName:string;
+    };
+    doctorId:{
+        name:string;
+    };
+    appointmentDate:string;
+    status:string;
+}
+
 
 export default function RecentAppointments(){
+    const [appointments, setAppointments] = useState<Appointment[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(()=>{
+        loadAppointments()
+    },[]);
+
+
+    const loadAppointments = async () => {
+        try {
+            const res = await getAppointments();
+
+            setAppointments(res.data || []);
+        } catch (error) {
+            console.error("Failed to load appointments:", error)
+        }finally{
+            setLoading(false)
+        }
+    };
+
+
+    if(loading){
+        return(
+            <div className="bg-white rounded-2xl shadow-md p-6 mt-8">
+                Loading appointments...
+            </div>
+        );
+    };
+
+
     return(
         <div className="bg-white rounded-2xl shadow-md p-6 mt-8">
             <div className="flex justify-between items-center mb-6">
@@ -47,7 +65,7 @@ export default function RecentAppointments(){
                     <tr className="text-left text-gray-500 border-b">
                         <th className="pb-3">Patient</th>
                         <th className="pb-3">Doctor</th>
-                        <th className="pb-3">Time</th>
+                        <th className="pb-3">Date</th>
                         <th className="pb-3">Status</th>
                     </tr>
                 </thead>
@@ -55,21 +73,42 @@ export default function RecentAppointments(){
                 <tbody>
                     {appointments.map((appointment)=>(
                         <tr
-                        key={appointment.id}
-                        className="border-b hover:bg-gray-50">
-                            <td className="py-4">{appointment.patient}</td>
-                            <td>{appointment.doctor}</td>
-                            <td>{appointment.time}</td>
+                          key={appointment._id}
+                          className="border-b hover:bg-gray-50"
+                        >
+                            <td className="py-4">
+                                {appointment.patientId
+                                  ?`${appointment.patientId.firstName} ${appointment.patientId.lastName}`
+                                  :"N/A"
+                                }
+                            </td>
+
+                            <td>
+                                {appointment.doctorId?.name || "N/A"}
+                            </td>
+
+                            <td>
+                                {new Date(
+                                    appointment.appointmentDate
+                                ).toLocaleString()}
+                            </td>
 
                             <td>
                                 <span
-                                className={`px-3 py-1 rounded-full text-sm font-medium
-                                ${
-                                appointment.status === "Completed"
-                                ?"bg-green-100 text-green-700":
-                                appointment.status==="pending"
-                                ?"bg-yellow-100 text-yellow-700":
-                                "bg-red-100 text-red-700"}`}>
+                                  className={`px-3 py-1 rounded-full text-sm font-medium ${
+                                    appointment.status === "completed"
+                                    ? "bg-green-100 text-green-700"
+                                    : appointment.status === "booked"
+                                    ? "bg-blue-100 text-blue-700"
+                                    : appointment.status === "checked-in"
+                                    ? "bg-yellow-100 text-yellow-700"
+                                    : appointment.status === "in-progress"
+                                    ? "bg-purple-100 text-purple-700"
+                                    : appointment.status === "cancelled"
+                                    ? "bg-red-100 text-red-700"
+                                    : "bg-gray-100 text-gray-700"
+                                }`}
+                                >
                                     {appointment.status}
                                 </span>
                             </td>

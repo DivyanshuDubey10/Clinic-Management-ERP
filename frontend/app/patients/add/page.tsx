@@ -54,12 +54,18 @@ export default function AddPatientPage(){
                 bloodGroup: form.bloodGroup,
 
                 allergies: form.allergies
-                ? form.allergies.split(",").map((a)=>a.trim())
-                :[],
+                ? form.allergies.split(",").map((a) => ({
+                    allergen: a.trim(),
+                    severity: "Low",
+                    }))
+                : [],
 
                 medicalHistory: form.medicalHistory
-                ? form.medicalHistory.split(",").map((m)=>m.trim())
-                :[],
+                ? form.medicalHistory.split(",").map((m) => ({
+                    condition: m.trim(),
+                    status: "Active",
+                    }))
+                : [],
 
                 emergencyContact:{
                     name:form.emergencyName,
