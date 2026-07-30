@@ -127,7 +127,7 @@ export default function RegisterPage() {
           </div>
           
           <span className="text-xl font-bold tracking-tight">
-            Clinic ERP
+            Clinic Patient Portal
           </span>
         </div>
 
@@ -136,27 +136,26 @@ export default function RegisterPage() {
         bg-white/10 px-3 py-1.5 text-xs font-medium text-cyan-100">
           
           <UsersRound size={14} />
-          Built for connected care
+          Your personal health hub
           </div>
           
           <h1 className="text-5xl font-bold leading-[1.08] tracking-tight xl:text-6xl">
-            Start managing
+            Your health journey
             <br />
-            <span className="text-cyan-300">care with clarity.
+            <span className="text-cyan-300">starts here.
               </span>
 
               </h1>
               
               <p className="mt-6 max-w-md text-base leading-7 text-slate-300">
-                Create your secure Clinic ERP account and bring every part
-                 of your practice into one modern workspace.
+                Create your secure patient account to access your medical records, book appointments, and connect with your doctors.
                  </p>
             </div>
 
 
       <div className="relative flex items-center gap-3 border-t border-white/10 pt-8 text-sm text-slate-200">
       <ShieldCheck className="text-cyan-300" size={20} />
-      Your account is protected with secure role-based access.
+      Your medical data is protected with enterprise-grade security.
       </div>
 
 
@@ -172,7 +171,7 @@ export default function RegisterPage() {
         <div className="flex items-center gap-2 font-bold text-slate-900">
           
           <HeartPulse className="text-cyan-600" size={23} />
-          Clinic ERP
+          Clinic Patient Portal
           </div>
           
           </div>

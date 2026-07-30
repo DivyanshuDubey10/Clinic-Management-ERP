@@ -8,7 +8,7 @@ import { useState, type ChangeEvent, type FormEvent, type ReactNode } from "reac
 import { CheckCircle2, Eye, EyeOff, HeartPulse, Lock, Mail, ShieldCheck, Sparkles } from "lucide-react";
 import { loginUser } from "@/lib/auth";
 
-const benefits = ["Secure, role-based access", "Complete patient records", "Billing and appointments in one place"];
+const benefits = ["Secure personal access", "View lab results & records", "Book & manage appointments"];
 
 export default function LoginPage() {
 
@@ -85,7 +85,7 @@ export default function LoginPage() {
                 </div>
 
                  <span className="text-xl font-bold tracking-tight">
-                   Clinic ERP
+                   Clinic Patient Portal
                   </span>
             </div>
         </div>
@@ -96,22 +96,21 @@ export default function LoginPage() {
 
             <Sparkles size={14} />
 
-             Smarter clinic operations 
+             Your personal health hub 
 
         </div>
           
           <h1 className="text-5xl font-bold leading-[1.08] tracking-tight xl:text-6xl">
-              Care, coordinated.
+              Your health,
               <br />
 
             <span className="text-cyan-300">
-              Everything, simplified.
+              always connected.
               </span>
 
           </h1>
               <p className="mt-6 max-w-md text-base leading-7 text-slate-300">
-                A secure workspace for your team to manage patients, 
-                appointments, billing, and care from a single place.
+                Access your medical records, book appointments, and manage your health journey in one secure place.
                 </p>
 
       </div>
@@ -144,7 +143,7 @@ export default function LoginPage() {
           <div className="mb-8 lg:hidden">
               <div className="flex items-center gap-2 font-bold text-slate-900">
                   <HeartPulse className="text-cyan-600" size={23} />
-                  Clinic ERP
+                  Clinic Patient Portal
               </div>
            </div>
 
