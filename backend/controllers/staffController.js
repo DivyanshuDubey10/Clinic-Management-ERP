@@ -18,6 +18,13 @@ exports.createStaff = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Invalid staff role provided' });
         }
 
+        if (role === ROLES.ADMIN) {
+            const adminExists = await User.findOne({ role: ROLES.ADMIN });
+            if (adminExists) {
+                return res.status(400).json({ success: false, message: 'An admin already exists. Only one admin is allowed.' });
+            }
+        }
+
         // Check if email or phone already exists
         const userExists = await User.findOne({ $or: [{ email }, { phone }] });
         if (userExists) {
@@ -123,6 +130,13 @@ exports.updateStaff = async (req, res) => {
         }
 
         const { name, phone, role, department, specialization, password, isActive } = req.body;
+
+        if (role === ROLES.ADMIN && staff.role !== ROLES.ADMIN) {
+            const adminExists = await User.findOne({ role: ROLES.ADMIN });
+            if (adminExists) {
+                return res.status(400).json({ success: false, message: 'An admin already exists. Only one admin is allowed.' });
+            }
+        }
 
         // Email addresses are permanent account identifiers, including when an admin manages staff.
         if (Object.prototype.hasOwnProperty.call(req.body, 'email') && req.body.email !== staff.email) {

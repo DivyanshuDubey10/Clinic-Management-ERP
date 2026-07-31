@@ -66,6 +66,13 @@ exports.getAllPatients = async (req, res) => {
             if (ageMax) query.age.$lte = Number(ageMax);
         }
 
+        if (req.user.role === 'doctor') {
+            const Appointment = require('../models/Appointment');
+            const appointments = await Appointment.find({ doctorId: req.user._id }).select('patientId');
+            const patientIds = appointments.map(app => app.patientId);
+            query._id = { $in: patientIds };
+        }
+
         const patients = await Patient.find(query).populate({ path: 'createdBy', model: 'User', select: 'name email' });
         
         res.status(200).json({
@@ -93,6 +100,14 @@ exports.getPatientById = async (req, res) => {
                 success: false, 
                 message: 'Patient not found' 
             });
+        }
+
+        if (req.user.role === 'doctor') {
+            const Appointment = require('../models/Appointment');
+            const hasAppointment = await Appointment.findOne({ doctorId: req.user._id, patientId: req.params.id });
+            if (!hasAppointment) {
+                return res.status(403).json({ success: false, message: 'Not authorized to view this patient' });
+            }
         }
 
         res.status(200).json({

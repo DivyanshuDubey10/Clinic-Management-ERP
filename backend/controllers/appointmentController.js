@@ -107,7 +107,11 @@ const getAppointments = async (req, res) => {
         const { startDate, endDate, doctorId } = req.query;
         let query = {};
 
-        if (doctorId) query.doctorId = doctorId;
+        if (req.user.role === 'doctor') {
+            query.doctorId = req.user._id;
+        } else if (doctorId) {
+            query.doctorId = doctorId;
+        }
         
         if (startDate || endDate) {
             query.appointmentDate = {};
