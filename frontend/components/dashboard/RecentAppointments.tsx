@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { getAppointments } from "@/lib/appointment";
 
 interface Appointment{
@@ -55,13 +56,12 @@ export default function RecentAppointments(){
                     Recent Appointments
                 </h2>
 
-                <button className="text-blue-600 font-medium hover:underline">
+                <Link href="/appointments" className="text-blue-600 font-medium hover:underline">
                     View All
-                </button>
+                </Link>
             </div>
 
             <table className="w-full">
-                <thead>
                     <tr className="text-left text-gray-500 border-b">
                         <th className="pb-3">Patient</th>
                         <th className="pb-3">Doctor</th>
