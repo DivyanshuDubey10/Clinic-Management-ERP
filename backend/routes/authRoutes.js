@@ -5,8 +5,8 @@ const { validateBody } = require('../middlewares/validationMiddleware');
 
 const router = express.Router();
 
-router.post('/register', validateBody('name', 'email', 'password', 'role'), registerUser);
-router.post('/login', validateBody('email', 'password'), loginUser);
+router.post('/register', registerUser);
+router.post('/login', loginUser);
 router.post('/logout', logoutUser);
 router.post('/refresh', refreshToken);
 router.route('/profile')

@@ -7,12 +7,14 @@ import { useRouter } from "next/navigation";
 import { useState, type ChangeEvent, type FormEvent, type ReactNode } from "react";
 import { CheckCircle2, Eye, EyeOff, HeartPulse, Lock, Mail, ShieldCheck, Sparkles } from "lucide-react";
 import { loginUser } from "@/lib/auth";
+import { useLoading } from "@/lib/loading";
 
 const benefits = ["Secure personal access", "View lab results & records", "Book & manage appointments"];
 
 export default function LoginPage() {
 
   const router = useRouter();
+  const { showLoading, hideLoading } = useLoading();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -27,6 +29,7 @@ export default function LoginPage() {
     event.preventDefault();
     setError("");
     setLoading(true);
+    showLoading("Signing you in...");
 
     try {
 
@@ -58,6 +61,7 @@ export default function LoginPage() {
       
     } finally {
       setLoading(false);
+      hideLoading();
     }
   }
 

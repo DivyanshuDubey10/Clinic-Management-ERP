@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState, type ChangeEvent, type FormEvent, type ReactNode } from "react";
 import { CheckCircle2, Eye, EyeOff, HeartPulse, Lock, Mail, Phone, ShieldCheck, User, UsersRound } from "lucide-react";
 import { registerUser } from "@/lib/auth";
+import { useLoading } from "@/lib/loading";
 
 type Form = {
   name: string;
@@ -31,6 +32,7 @@ const initialForm: Form = {
 export default function RegisterPage() {
 
   const router = useRouter();
+  const { showLoading, hideLoading } = useLoading();
 
   const [form, setForm] = useState<Form>(initialForm);
 
@@ -61,8 +63,8 @@ export default function RegisterPage() {
 
     event.preventDefault(); 
     setError("");
-    if (form.password.length < 8)
-       return setError("Use a password with at least 8 characters.");
+    if (form.password.length < 6)
+       return setError("Use a password with at least 6 characters.");
 
     if (form.phone.length !== 10)
        return setError("Phone number must be exactly 10 digits.");
@@ -74,8 +76,9 @@ export default function RegisterPage() {
 
     try {
       setLoading(true);
+      showLoading("Creating your account...");
 
-      await registerUser({ 
+      const data = await registerUser({ 
         name: form.name, 
         email: form.email, 
         phone: form.phone, 
@@ -83,8 +86,12 @@ export default function RegisterPage() {
         role: "patient"
       });
 
+      // Auto-login: store tokens from the register response
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
       setSuccess(true);
-      window.setTimeout(() => router.push("/login"), 1500);
+      window.setTimeout(() => router.push("/patient-portal"), 1200);
     } catch (caughtError: unknown) {
 
       const message = typeof caughtError === "object" && 
@@ -99,7 +106,8 @@ export default function RegisterPage() {
       setError(message || "We couldn't create your account. Please try again.");
 
     } finally { 
-      setLoading(false); 
+      setLoading(false);
+      hideLoading(); 
     }
   }
 
@@ -257,13 +265,13 @@ export default function RegisterPage() {
             
             <input 
             required 
-            minLength={8} 
+            minLength={6} 
             autoComplete="new-password" 
             type={showPassword ? "text" : "password"} 
             name="password" 
             value={form.password} 
             onChange={handleChange} 
-            placeholder="8+ characters" 
+            placeholder="6+ characters" 
             className="h-12 w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-10 text-sm text-slate-800 
             outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-cyan-400 focus:ring-4 
             focus:ring-cyan-100" />
@@ -315,7 +323,7 @@ export default function RegisterPage() {
             : "border-rose-100 bg-rose-50 text-rose-700"}`}>
               
               <CheckCircle2 size={17} />
-              {success ? "Account created. Redirecting to sign in..." : error}
+              {success ? "Account created! Signing you in..." : error}
               
               </p>
               
