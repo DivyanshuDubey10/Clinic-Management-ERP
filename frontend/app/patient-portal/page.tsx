@@ -216,16 +216,18 @@ export default function PatientPortal(){
 
     <Link
       href="/patient-portal/payment"
+      className="flex items-center justify-between rounded-xl border border-border px-5 py-4 transition hover:bg-muted hover:border-primary"
+    >
       <div>
-        <p className="font-semibold text-slate-800">
+        <p className="font-semibold text-foreground">
           Bills & Payments
         </p>
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-muted-foreground">
           View and pay invoices
         </p>
       </div>
 
-      <span className="text-slate-400 text-xl">→</span>
+      <span className="text-muted-foreground text-xl">→</span>
     </Link>
   </div>
 </div>
