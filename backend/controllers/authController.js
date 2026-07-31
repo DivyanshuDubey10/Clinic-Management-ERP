@@ -310,13 +310,6 @@ exports.loginUser = async (req, res) => {
             });
         }
 
-        if (!user.isEmailVerified && user.role !== ROLES.ADMIN) {
-            return res.status(403).json({
-                success: false,
-                message: "Please verify your email before logging in."
-            });
-        }
-
 
         // 6. Generate tokens
         const accessToken = generateAccessToken(user._id, user.role);
