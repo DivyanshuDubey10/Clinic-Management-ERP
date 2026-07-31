@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  Activity,
+
   BarChart3,
   CalendarDays,
   ChevronDown,
@@ -52,7 +52,7 @@ export default function Sidebar() {
       try {
         const user = JSON.parse(userStr);
         setUserRole(user.role?.toLowerCase() || "");
-      } catch (e) {
+      } catch {
         console.error("Failed to parse user role");
       }
     }
