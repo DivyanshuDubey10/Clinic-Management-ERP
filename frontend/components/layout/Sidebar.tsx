@@ -54,9 +54,7 @@ const allMenuItems: MenuItem[] = [
   { title: "Appointments", 
     icon: CalendarDays, 
     children: [{ title: "Appointments", 
-    href: "/appointments" }, 
-    { title: "Consultations", 
-    href: "/consultations" }], 
+    href: "/appointments" }], 
   roles: ["admin", "receptionist", "doctor"] 
 },
   { title: "Pharmacy", 
