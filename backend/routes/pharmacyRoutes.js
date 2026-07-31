@@ -11,7 +11,10 @@ const {
     getPurchases,
     getPurchaseById,
     getPendingPrescriptions,
-    getPrescriptionById
+    getPrescriptionById,
+    getMedicineById,
+    updateMedicine,
+    deleteMedicine
 } = require('../controllers/pharmacyController');
 const { validateObjectId, validateBody, validateArray } = require('../middlewares/validationMiddleware');
 
@@ -23,6 +26,11 @@ router.use(authorize(ROLES.ADMIN, ROLES.RECEPTIONIST));
 router.route('/medicines')
     .post(validateBody('name', 'genericName', 'category', 'manufacturer', 'unitPrice'), addMedicine)
     .get(getMedicines);
+
+router.route('/medicines/:id')
+    .get(validateObjectId('id'), getMedicineById)
+    .put(validateObjectId('id'), validateBody('name', 'genericName', 'category', 'manufacturer', 'unitPrice'), updateMedicine)
+    .delete(validateObjectId('id'), deleteMedicine);
 
 // Stock In / Purchases
 router.route('/purchases')

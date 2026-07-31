@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Sidebar from "@/components/layout/Sidebar";
 import Navbar from "@/components/layout/Navbar";
 import {
@@ -11,91 +12,90 @@ import {
   FlaskConical,
   Pill,
 } from "lucide-react";
-
-const stats = [
-  {
-    title: "Total Patients",
-    value: 1254,
-    icon: Users,
-    color: "bg-blue-100 text-blue-600",
-  },
-  {
-    title: "Total Doctors",
-    value: 42,
-    icon: Stethoscope,
-    color: "bg-green-100 text-green-600",
-  },
-  {
-    title: "Appointments",
-    value: 893,
-    icon: CalendarDays,
-    color: "bg-purple-100 text-purple-600",
-  },
-  {
-    title: "Revenue",
-    value: "₹8,45,600",
-    icon: IndianRupee,
-    color: "bg-yellow-100 text-yellow-700",
-  },
-];
-
-const appointmentStats = [
-  { label: "Scheduled", value: 245, color: "bg-blue-500" },
-  { label: "Completed", value: 560, color: "bg-green-500" },
-  { label: "Cancelled", value: 88, color: "bg-red-500" },
-];
-
-const departmentStats = [
-  {
-    name: "General Medicine",
-    patients: 320,
-  },
-  {
-    name: "Cardiology",
-    patients: 140,
-  },
-  {
-    name: "Orthopedics",
-    patients: 118,
-  },
-  {
-    name: "Neurology",
-    patients: 76,
-  },
-  {
-    name: "Pediatrics",
-    patients: 210,
-  },
-];
-
-const invoices = [
-  {
-    invoice: "INV-1001",
-    patient: "Rahul Sharma",
-    amount: "₹1,500",
-    status: "Paid",
-  },
-  {
-    invoice: "INV-1002",
-    patient: "Aman Das",
-    amount: "₹800",
-    status: "Pending",
-  },
-  {
-    invoice: "INV-1003",
-    patient: "Priya Singh",
-    amount: "₹2,200",
-    status: "Paid",
-  },
-  {
-    invoice: "INV-1004",
-    patient: "John Mathew",
-    amount: "₹1,250",
-    status: "Pending",
-  },
-];
+import { getDashboard } from "@/lib/dashboard";
+import { getPerformanceReport } from "@/lib/reporting";
+import { getInvoices } from "@/lib/billing";
 
 export default function ReportsPage() {
+  const [loading, setLoading] = useState(true);
+  const [dashboardData, setDashboardData] = useState<any>(null);
+  const [performanceData, setPerformanceData] = useState<any>(null);
+  const [recentInvoices, setRecentInvoices] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        setLoading(true);
+        const [dashRes, perfRes, invRes] = await Promise.all([
+          getDashboard(),
+          getPerformanceReport(),
+          getInvoices({ limit: 5 })
+        ]);
+        setDashboardData(dashRes.data || dashRes);
+        setPerformanceData(perfRes.data || perfRes);
+        setRecentInvoices(invRes.data?.data || invRes.data || []);
+      } catch (error) {
+        console.error("Failed to load report data", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
+
+  const stats = [
+    {
+      title: "Total Patients",
+      value: dashboardData?.totalPatients || 0,
+      icon: Users,
+      color: "bg-blue-100 text-blue-600",
+    },
+    {
+      title: "Total Doctors",
+      value: dashboardData?.totalDoctors || 0,
+      icon: Stethoscope,
+      color: "bg-green-100 text-green-600",
+    },
+    {
+      title: "Appointments",
+      value: dashboardData?.totalAppointments || 0,
+      icon: CalendarDays,
+      color: "bg-purple-100 text-purple-600",
+    },
+    {
+      title: "Revenue",
+      value: `₹${performanceData?.financialOverview?.totalCollected?.toLocaleString() || "0"}`,
+      icon: IndianRupee,
+      color: "bg-yellow-100 text-yellow-700",
+    },
+  ];
+
+  const totalAppts = dashboardData?.totalAppointments || 1;
+  const appointmentStats = [
+    { label: "Scheduled", value: dashboardData?.bookedAppointments || 0, color: "bg-blue-500" },
+    { label: "Completed", value: dashboardData?.completedAppointments || 0, color: "bg-green-500" },
+    { label: "Cancelled", value: dashboardData?.cancelledAppointments || 0, color: "bg-red-500" },
+  ];
+
+  const departmentStats = (performanceData?.doctorLeaderboard || []).slice(0, 5).map((doc: any) => ({
+    name: doc.doctorName || "Unknown",
+    patients: doc.consultations || 0,
+  }));
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen">
+        <Sidebar />
+        <div className="flex-1 bg-slate-100">
+          <Navbar />
+          <div className="flex items-center justify-center h-[80vh]">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-600"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex">
       <Sidebar />
@@ -185,7 +185,7 @@ export default function ReportsPage() {
                       <div
                         className={`${item.color} h-3 rounded-full`}
                         style={{
-                          width: `${item.value / 6}%`,
+                          width: `${Math.min((item.value / totalAppts) * 100, 100)}%`,
                         }}
                       />
 
@@ -326,23 +326,23 @@ export default function ReportsPage() {
 
               <tbody>
 
-                {invoices.map((invoice) => (
+                {recentInvoices.slice(0, 5).map((invoice) => (
 
                   <tr
-                    key={invoice.invoice}
+                    key={invoice.invoiceNumber || invoice._id}
                     className="border-b hover:bg-gray-50"
                   >
 
                     <td className="p-4">
-                      {invoice.invoice}
+                      {invoice.invoiceNumber || "-"}
                     </td>
 
                     <td className="p-4">
-                      {invoice.patient}
+                      {invoice.patientId?.firstName} {invoice.patientId?.lastName}
                     </td>
 
                     <td className="p-4">
-                      {invoice.amount}
+                      ₹{invoice.billingDetails?.grandTotal?.toLocaleString() || "0"}
                     </td>
 
                     <td className="p-4">
@@ -354,7 +354,7 @@ export default function ReportsPage() {
                             : "bg-yellow-100 text-yellow-700"
                         }`}
                       >
-                        {invoice.status}
+                        {invoice.status || "Pending"}
                       </span>
 
                     </td>

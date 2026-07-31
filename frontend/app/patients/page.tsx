@@ -136,8 +136,8 @@ export default function patientPage(){
                                         </td>
 
                                         <td>{patient.phone}</td>
-                                        <td>{patient.bloodGroup}</td>
-                                        <td>{patient.gender}</td>
+                                        <td>{patient.bloodGroup || "-"}</td>
+                                        <td>{patient.gender || "-"}</td>
 
                                         <td>
                                             <div className="flex justify-center gap-3">

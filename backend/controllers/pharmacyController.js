@@ -315,5 +315,8 @@ module.exports = {
     getPurchases,
     getPurchaseById,
     getPendingPrescriptions,
-    getPrescriptionById
+    getPrescriptionById,
+    getMedicineById,
+    updateMedicine,
+    deleteMedicine
 };

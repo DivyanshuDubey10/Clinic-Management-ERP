@@ -61,18 +61,18 @@ export async function getAlerts(){
 
 
 export const deleteMedicine = async (id: string) => {
-    const response = await api.delete(`/pharmacy/${id}`);
+    const response = await api.delete(`/pharmacy/medicines/${id}`);
     return response.data;
 }
 
 
 
 export async function getMedicineById(id: string) {
-    const response = await api.get(`/pharmacy/${id}`);
+    const response = await api.get(`/pharmacy/medicines/${id}`);
     return response.data;
 }
 
 export async function updateMedicine(id: string, data: any) {
-    const response = await api.put(`/pharmacy/${id}`, data);
+    const response = await api.put(`/pharmacy/medicines/${id}`, data);
     return response.data;
 }

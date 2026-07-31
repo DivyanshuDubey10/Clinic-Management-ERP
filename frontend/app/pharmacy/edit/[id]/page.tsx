@@ -19,6 +19,7 @@ export default function EditMedicinePage() {
 
   const [form, setForm] = useState({
     name: "",
+    genericName: "",
     manufacturer: "",
     category: "",
     price: "",
@@ -40,9 +41,10 @@ export default function EditMedicinePage() {
 
       setForm({
         name: medicine.name || "",
+        genericName: medicine.genericName || "",
         manufacturer: medicine.manufacturer || "",
         category: medicine.category || "",
-        price: medicine.price || "",
+        price: medicine.unitPrice || medicine.price || "",
         stock: medicine.stock || medicine.totalStock || "",
         reorderLevel:
           medicine.reorderLevel ||
@@ -75,10 +77,15 @@ export default function EditMedicinePage() {
       setSaving(true);
 
       await updateMedicine(id as string, {
-        ...form,
+        name: form.name,
+        genericName: form.genericName,
+        category: form.category,
+        manufacturer: form.manufacturer,
+        unitPrice: Number(form.price),
+        reorderThreshold: Number(form.reorderLevel),
         stock: Number(form.stock),
-        reorderLevel: Number(form.reorderLevel),
-        price: Number(form.price),
+        expiryDate: form.expiryDate,
+        batchNumber: form.batchNumber
       });
 
       alert("Medicine updated successfully.");
@@ -129,6 +136,13 @@ export default function EditMedicinePage() {
                 label="Medicine Name"
                 name="name"
                 value={form.name}
+                onChange={handleChange}
+              />
+
+              <Input
+                label="Generic Name"
+                name="genericName"
+                value={form.genericName}
                 onChange={handleChange}
               />
 
