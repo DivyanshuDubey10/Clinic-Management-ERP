@@ -316,19 +316,7 @@ const sendTokenResponse = (user, statusCode, res) => {
                     message: "Please verify your email before logging in."
                 });
             }
-        // 3. Check if password matches
-        const isMatch = await user.matchPassword(password);
-        if (!isMatch) {
-            return res.status(401).json({ success: false, message: 'Invalid credentials' });
-        }
-        // 4. Prevent inactive users from logging in
-        if (!user.isActive) {
-            return res.status(403).json({
 
-                success: false,
-                message: 'Your account has been deactivated. Please contact the administrator.'
-            });
-        }
 
             // 6. Generate tokens
             const accessToken = generateAccessToken(user._id, user.role);
