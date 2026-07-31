@@ -3,6 +3,7 @@ const ClinicSetting = require('../models/ClinicSetting');
 const AuditLog = require('../models/AuditLog');
 const logAudit = require('../utils/auditLogger');
 const { ROLES } = require('../constants/roles');
+const Notification = require('../models/Notification');
 
 // @desc    9.1 Get All Clinic / Branch Settings
 // @route   GET /api/admin/settings
@@ -99,6 +100,16 @@ exports.createBranchSetting = async (req, res) => {
             metadata: { branchCode: newBranch.branchCode, isPrimary: newBranch.isPrimary }
         });
 
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Branch Settings Created',
+                message: `New clinic/branch setting was created.`,
+                type: 'success',
+                link: `/admin/settings`
+            });
+        }
+
         res.status(201).json({
             success: true,
             message: 'New branch configuration created successfully',
@@ -142,6 +153,16 @@ exports.updateBranchSetting = async (req, res) => {
             metadata: { updatedFields: Object.keys(req.body) }
         });
 
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Branch Settings Updated',
+                message: `Clinic/branch settings were updated successfully.`,
+                type: 'info',
+                link: `/admin/settings`
+            });
+        }
+
         res.status(200).json({
             success: true,
             message: 'Branch settings updated successfully',
@@ -180,6 +201,15 @@ exports.deleteBranchSetting = async (req, res) => {
             resourceId: req.params.id,
             details: `Deleted branch configuration: ${setting.branchName} (${setting.branchCode})`
         });
+
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Branch Settings Deleted',
+                message: `A clinic branch configuration was deleted.`,
+                type: 'warning'
+            });
+        }
 
         res.status(200).json({
             success: true,

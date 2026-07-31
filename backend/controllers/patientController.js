@@ -1,4 +1,5 @@
 const Patient = require('../models/Patient');
+const Notification = require('../models/Notification');
 
 // @desc    Create Patient
 // @route   POST /api/patients
@@ -24,6 +25,16 @@ exports.createPatient = async (req, res) => {
         }
 
         const patient = await Patient.create(patientData);
+
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'New Patient Registered',
+                message: `Patient ${patient.firstName} ${patient.lastName} has been successfully registered.`,
+                type: 'success',
+                link: `/patients/${patient._id}`
+            });
+        }
 
         res.status(201).json({
             success: true,
@@ -155,6 +166,16 @@ exports.updatePatient = async (req, res) => {
             });
         }
 
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Patient Updated',
+                message: `Patient ${patient.firstName} ${patient.lastName}'s information has been updated.`,
+                type: 'info',
+                link: `/patients/${patient._id}`
+            });
+        }
+
         res.status(200).json({
             success: true,
             message: 'Patient updated successfully',
@@ -179,6 +200,15 @@ exports.deletePatient = async (req, res) => {
             return res.status(404).json({ 
                 success: false, 
                 message: 'Patient not found' 
+            });
+        }
+
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Patient Deleted',
+                message: `Patient ${patient.firstName} ${patient.lastName}'s record has been deleted.`,
+                type: 'warning'
             });
         }
 

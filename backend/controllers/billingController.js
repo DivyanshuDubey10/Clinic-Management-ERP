@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 const Invoice = require('../models/Invoice');
 const Patient = require('../models/Patient');
+const Notification = require('../models/Notification');
 
 // Initialize Razorpay
 const razorpay = new Razorpay({
@@ -74,6 +75,16 @@ exports.createInvoice = async (req, res) => {
             insuranceDetails,
             createdBy: req.user._id
         });
+
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Invoice Created',
+                message: `Invoice ${invoice.invoiceNumber || 'generated'} has been created.`,
+                type: 'success',
+                link: `/billing/${invoice._id}`
+            });
+        }
 
         res.status(201).json({
             success: true,
@@ -244,6 +255,16 @@ exports.verifyOnlinePayment = async (req, res) => {
 
         await invoice.save();
 
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Online Payment Verified',
+                message: `Payment of ${amountPaid} verified for invoice.`,
+                type: 'success',
+                link: `/billing/${invoice._id}`
+            });
+        }
+
         res.status(200).json({
             success: true,
             message: 'Payment verified and recorded successfully',
@@ -301,6 +322,16 @@ exports.recordManualPayment = async (req, res) => {
 
         await invoice.save();
 
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Manual Payment Recorded',
+                message: `Payment of ${amount} recorded for invoice.`,
+                type: 'success',
+                link: `/billing/${invoice._id}`
+            });
+        }
+
         res.status(200).json({
             success: true,
             message: 'Manual payment recorded successfully',
@@ -328,6 +359,16 @@ exports.updateInsuranceClaim = async (req, res) => {
         if (claimAmount !== undefined) invoice.insuranceDetails.claimAmount = Number(claimAmount);
 
         await invoice.save();
+
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Insurance Claim Updated',
+                message: `Insurance claim status updated to ${claimStatus || 'modified'}.`,
+                type: 'info',
+                link: `/billing/${invoice._id}`
+            });
+        }
 
         res.status(200).json({
             success: true,

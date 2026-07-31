@@ -3,6 +3,7 @@ const Patient = require('../models/Patient');
 const Appointment = require('../models/Appointment');
 const DoctorAvailability = require('../models/DoctorAvailability');
 const Waitlist = require('../models/Waitlist');
+const Notification = require('../models/Notification');
 const sendEmail = require('../utils/sendEmail');
 
 // @desc    Create new appointment
@@ -85,6 +86,16 @@ const createAppointment = async (req, res) => {
         };
 
         const appointment = await Appointment.create(appointmentData);
+
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Appointment Booked',
+                message: `New appointment successfully created.`,
+                type: 'success',
+                link: `/appointments/${appointment._id}`
+            });
+        }
 
         res.status(201).json({
             success: true,
@@ -245,6 +256,16 @@ const updateAppointment = async (req, res) => {
             .populate({ path: 'doctorId', model: 'User', select: 'name email specialization' })
             .populate({ path: 'createdBy', model: 'User', select: 'name email' });
 
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Appointment Updated',
+                message: `Appointment details have been updated.`,
+                type: 'info',
+                link: `/appointments/${appointment._id}`
+            });
+        }
+
         res.status(200).json({
             success: true,
             message: 'Appointment updated successfully',
@@ -273,6 +294,15 @@ const deleteAppointment = async (req, res) => {
         }
 
         await appointment.deleteOne();
+
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Appointment Cancelled/Deleted',
+                message: `An appointment has been removed.`,
+                type: 'warning'
+            });
+        }
 
         res.status(200).json({
             success: true,
@@ -481,6 +511,14 @@ const getLiveQueue = async (req, res) => {
 const addToWaitlist = async (req, res) => {
     try {
         const waitlistEntry = await Waitlist.create(req.body);
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Added to Waitlist',
+                message: `Patient added to waitlist successfully.`,
+                type: 'info'
+            });
+        }
         res.status(201).json({ success: true, data: waitlistEntry });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });

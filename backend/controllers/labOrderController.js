@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const LabOrder = require('../models/LabOrder');
+const Notification = require('../models/Notification');
 
 // @desc    Get all lab orders (with filters)
 // @route   GET /api/lab-orders
@@ -66,6 +67,16 @@ const createLabOrder = async (req, res) => {
             status: 'Pending'
         });
 
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Lab Order Created',
+                message: `New lab order has been created.`,
+                type: 'success',
+                link: `/lab-orders/${labOrder._id}`
+            });
+        }
+
         res.status(201).json({ success: true, data: labOrder });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -96,6 +107,16 @@ const updateLabOrder = async (req, res) => {
         }
 
         await labOrder.save();
+
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Lab Order Updated',
+                message: `Lab order status or results have been updated.`,
+                type: 'info',
+                link: `/lab-orders/${labOrder._id}`
+            });
+        }
 
         res.status(200).json({ success: true, data: labOrder });
     } catch (error) {

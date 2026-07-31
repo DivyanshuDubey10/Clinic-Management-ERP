@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const { ROLES, STAFF_ROLES } = require('../constants/roles');
+const Notification = require('../models/Notification');
 
 // @desc    Create new staff
 // @route   POST /api/staff
@@ -42,6 +43,16 @@ exports.createStaff = async (req, res) => {
         });
 
         staff.password = undefined; // Hide password in response
+
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Staff Created',
+                message: `New staff member ${staff.name} has been added.`,
+                type: 'success',
+                link: `/staff/${staff._id}`
+            });
+        }
 
         res.status(201).json({
             success: true,
@@ -160,6 +171,16 @@ exports.updateStaff = async (req, res) => {
 
         staff.password = undefined; // Don't return password
 
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Staff Updated',
+                message: `Staff member ${staff.name} details have been updated.`,
+                type: 'info',
+                link: `/staff/${staff._id}`
+            });
+        }
+
         res.status(200).json({
             success: true,
             message: 'Staff updated successfully',
@@ -184,6 +205,15 @@ exports.deleteStaff = async (req, res) => {
         // Soft delete
         staff.isActive = false;
         await staff.save({ validateBeforeSave: false }); // Skip validation just in case
+
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Staff Deleted',
+                message: `Staff member has been deactivated.`,
+                type: 'warning'
+            });
+        }
 
         res.status(200).json({
             success: true,
