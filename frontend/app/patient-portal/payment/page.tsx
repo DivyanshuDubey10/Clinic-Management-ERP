@@ -140,7 +140,7 @@ export default function PaymentPage() {
       paymentObject.open();
 
     } catch (error: any) {
-      error.response?.data?.message || "Unable to initiate payment"
+      alert(error.response?.data?.message || "Unable to initiate payment")
     }
   }
 
@@ -255,7 +255,7 @@ export default function PaymentPage() {
                        onClick={()=> handlePayment(invoice)} 
                        className="mt-6 bg-slate-900 hover:bg-black text-white px-6 py-3 rounded-xl transition"
                     >
-                       Pay ${invoice.billingDetails.amountDue}
+                       Pay ₹{invoice.billingDetails.amountDue}
                     </button>
                   )}
                 </div>
