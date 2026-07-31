@@ -33,10 +33,11 @@ export async function getProfile(){
 }
 
 export async function updateProfile(data:{
-    name:string;
-    phone:string;
+    name?:string;
+    phone?:string;
     specialization?:string;
     consultationHours?:string;
+    password?:string;
 }){
     const token = localStorage.getItem("accessToken")
 
