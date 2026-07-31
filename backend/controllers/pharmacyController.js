@@ -1,6 +1,7 @@
 const Medicine = require('../models/Medicine');
 const Purchase = require('../models/Purchase');
 const Prescription = require('../models/Prescription');
+const Notification = require('../models/Notification');
 
 // @desc    Add a new medicine to catalog
 // @route   POST /api/pharmacy/medicines
@@ -8,6 +9,15 @@ const Prescription = require('../models/Prescription');
 const addMedicine = async (req, res) => {
     try {
         const medicine = await Medicine.create(req.body);
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Medicine Added',
+                message: `New medicine ${medicine.name} added to catalog.`,
+                type: 'success',
+                link: `/pharmacy/medicines/${medicine._id}`
+            });
+        }
         res.status(201).json({ success: true, data: medicine });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -69,6 +79,16 @@ const recordPurchase = async (req, res) => {
                 purchasePrice: item.purchasePrice
             });
             await medicine.save();
+        }
+
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Purchase Recorded',
+                message: `Stock purchase recorded successfully.`,
+                type: 'success',
+                link: `/pharmacy/purchases/${purchase._id}`
+            });
         }
 
         res.status(201).json({ success: true, data: purchase });
@@ -192,6 +212,16 @@ const dispensePrescription = async (req, res) => {
         // Mark prescription as Dispensed
         prescription.status = 'Dispensed';
         await prescription.save();
+
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Prescription Dispensed',
+                message: `Medicines dispensed for prescription.`,
+                type: 'success',
+                link: `/pharmacy/prescriptions/${prescription._id}`
+            });
+        }
 
         res.status(200).json({ success: true, message: 'Medicines dispensed successfully' });
     } catch (error) {
@@ -327,6 +357,17 @@ const updateMedicine = async (req, res) => {
         if (!medicine) {
             return res.status(404).json({ success: false, message: 'Medicine not found' });
         }
+        
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Medicine Updated',
+                message: `Medicine ${medicine.name} details have been updated.`,
+                type: 'info',
+                link: `/pharmacy/medicines/${medicine._id}`
+            });
+        }
+        
         res.status(200).json({ success: true, data: medicine });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -339,6 +380,16 @@ const deleteMedicine = async (req, res) => {
         if (!medicine) {
             return res.status(404).json({ success: false, message: 'Medicine not found' });
         }
+        
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Medicine Deleted',
+                message: `Medicine has been removed from catalog.`,
+                type: 'warning'
+            });
+        }
+
         res.status(200).json({ success: true, data: {} });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });

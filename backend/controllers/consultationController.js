@@ -7,6 +7,7 @@ const User = require('../models/User');
 const PDFDocument = require('pdfkit');
 const { HfInference } = require('@huggingface/inference');
 const pdfParse = require('pdf-parse');
+const Notification = require('../models/Notification');
 
 // @desc    Create a new consultation note (S.O.A.P)
 // @route   POST /api/consultations
@@ -43,6 +44,16 @@ const createConsultation = async (req, res) => {
         appointment.status = 'Completed';
         await appointment.save();
 
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Consultation Created',
+                message: `Consultation note created successfully.`,
+                type: 'success',
+                link: `/consultations/${consultation._id}`
+            });
+        }
+
         res.status(201).json({ success: true, data: consultation });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -67,6 +78,17 @@ const updateConsultation = async (req, res) => {
         }
 
         await consultation.save();
+        
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Consultation Updated',
+                message: `Consultation note updated successfully.`,
+                type: 'info',
+                link: `/consultations/${consultation._id}`
+            });
+        }
+        
         res.status(200).json({ success: true, data: consultation });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message || 'Server Error' });
@@ -222,6 +244,16 @@ const addPrescription = async (req, res) => {
             });
         }
 
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Prescription Added/Updated',
+                message: `Prescription added to consultation.`,
+                type: 'success',
+                link: `/consultations/${consultationId}`
+            });
+        }
+
         res.status(201).json({ success: true, data: prescription });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -247,6 +279,16 @@ const createLabOrder = async (req, res) => {
             doctorId: consultation.doctorId,
             tests
         });
+
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Lab Order Created',
+                message: `Lab order created for consultation.`,
+                type: 'success',
+                link: `/consultations/${consultationId}`
+            });
+        }
 
         res.status(201).json({ success: true, data: labOrder });
     } catch (error) {
@@ -324,6 +366,16 @@ const uploadLabResults = async (req, res) => {
 
         labOrder.status = 'Completed';
         await labOrder.save();
+
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Lab Results Uploaded',
+                message: `Lab results successfully uploaded.`,
+                type: 'success',
+                link: `/consultations/lab-orders/${labOrder._id}`
+            });
+        }
 
         res.status(200).json({ success: true, data: labOrder });
     } catch (error) {
@@ -422,6 +474,15 @@ const deleteConsultation = async (req, res) => {
 
         // Delete consultation
         await Consultation.findByIdAndDelete(req.params.id);
+
+        if (req.user) {
+            await Notification.create({
+                user: req.user._id,
+                title: 'Consultation Deleted',
+                message: `Consultation note has been deleted.`,
+                type: 'warning'
+            });
+        }
 
         res.status(200).json({
             success: true,
