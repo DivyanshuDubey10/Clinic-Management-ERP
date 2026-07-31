@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Bell, ChevronDown, LogOut, Search, Settings, UserRound, CheckCircle2, Info, AlertTriangle, XCircle, Check } from "lucide-react";
 import { getProfile } from "@/lib/auth";
 import { getNotifications, markNotificationAsRead, markAllNotificationsAsRead, type Notification } from "@/lib/notification";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 type User = { name?: string; role?: string };
 
@@ -37,16 +38,6 @@ export default function Navbar() {
         const data = await getProfile();
         setUser(data.user);
         localStorage.setItem("user", JSON.stringify(data.user));
-
-        // Load notifications
-        try {
-          const notifData = await getNotifications();
-          setNotifications(notifData.data);
-          setUnreadCount(notifData.unreadCount);
-        } catch (e) {
-          console.error("Failed to load notifications", e);
-        }
-
       } catch (error) {
         console.error(error);
         localStorage.removeItem("accessToken");
@@ -57,6 +48,26 @@ export default function Navbar() {
 
     loadUser();
   }, [router]);
+
+  useEffect(() => {
+    async function fetchNotifications() {
+      if (!localStorage.getItem("accessToken")) return;
+      try {
+        const notifData = await getNotifications();
+        setNotifications(notifData.data);
+        setUnreadCount(notifData.unreadCount);
+      } catch (e) {
+        console.error("Failed to load notifications", e);
+      }
+    }
+
+    fetchNotifications(); // Initial fetch
+    
+    // Poll every 15 seconds
+    const intervalId = setInterval(fetchNotifications, 15000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -158,14 +169,16 @@ export default function Navbar() {
         <button type="button" 
         aria-label="Search" 
         className="grid h-10 w-10 place-items-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 
-        focus:outline-none focus:ring-2 focus:ring-cyan-400 md:hidden">
+        focus:outline-none focus:ring-2 focus:ring-cyan-400 md:hidden dark:hover:bg-slate-800 dark:hover:text-slate-200">
           <Search size={20} />
         </button>
+
+        <ThemeToggle />
 
         <button type="button" 
         aria-label="Notifications, 3 unread" 
         className="relative grid h-10 w-10 place-items-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 
-        focus:outline-none focus:ring-2 focus:ring-cyan-400">
+        focus:outline-none focus:ring-2 focus:ring-cyan-400 dark:hover:bg-slate-800 dark:hover:text-slate-200">
 
           <Bell size={20} />
           <span className="absolute right-1.5 top-1.5 grid h-4 min-w-4 place-items-center rounded-full border-2 border-white 
