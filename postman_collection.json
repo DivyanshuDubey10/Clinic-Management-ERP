@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "c71e21b0-2b1d-4876-92b1-5e9e0837f6a2",
-    "name": "Clinic Management ERP - Full API Suite (9 Modules)",
+    "name": "Ziva Care - Full API Suite (9 Modules)",
     "description": "Comprehensive Postman Collection for the 9-Module Healthcare ERP System.\n\n### Quick Start Guide for Frontend Developer:\n1. **Environment Setup**: The collection uses `{{baseUrl}}` (defaults to `http://localhost:5000` or your deployed Atlas URL) and `{{token}}` for authentication.\n2. **Authenticate First**: Run the **Admin Login** or **Doctor Login** request under Module 1. The test script automatically saves the returned JWT token to your `{{token}}` variable!\n3. **Seed Data**: Run `npm run seed` in the backend terminal to populate 15 sample patients, inventory medicines, appointments, and billing records.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },

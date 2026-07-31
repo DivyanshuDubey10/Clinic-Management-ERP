@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CareSync - Clinic Management",
+  title: "Ziva Care - Clinic Management",
   description: "Modern clinic management and patient portal",
 };
 

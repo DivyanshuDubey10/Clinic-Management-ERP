@@ -51,7 +51,7 @@ export default function LandingPage() {
           <div className="bg-blue-600 p-2.5 rounded-xl text-white shadow-lg shadow-blue-600/20">
             <HeartPulse size={26} strokeWidth={2.5} />
           </div>
-          <span className="text-2xl font-bold tracking-tight text-slate-800">CareSync</span>
+          <span className="text-2xl font-bold tracking-tight text-slate-800">Ziva Care</span>
         </div>
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-500">
           <a href="#features" className="hover:text-blue-600 transition-colors">Features</a>
@@ -72,7 +72,7 @@ export default function LandingPage() {
       <section className="container mx-auto px-6 pt-24 pb-20 relative z-10 flex flex-col items-center justify-center max-w-7xl">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
           <span className="px-5 py-2 rounded-full bg-blue-100/80 text-blue-700 font-semibold text-sm mb-8 inline-block shadow-sm">
-            Next-Generation Clinic Management
+            Next-Generation Ziva Care
           </span>
         </motion.div>
 
@@ -209,10 +209,10 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <Reveal>
               <div>
-                <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">Why CareSync</span>
+                <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">Why Ziva Care</span>
                 <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mt-3 mb-6">Healthcare, Simplified for Everyone</h2>
                 <p className="text-slate-500 leading-relaxed mb-8">
-                  We built CareSync to bridge the gap between clinics and patients. Whether you&#39;re managing a busy practice or simply trying to book a doctor visit, our platform makes it effortless.
+                  We built Ziva Care to bridge the gap between clinics and patients. Whether you&#39;re managing a busy practice or simply trying to book a doctor visit, our platform makes it effortless.
                 </p>
                 <ul className="space-y-4">
                   {[
@@ -234,7 +234,7 @@ export default function LandingPage() {
               <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-10 text-white shadow-2xl shadow-blue-600/20">
                 <h3 className="text-2xl font-bold mb-4">Ready to get started?</h3>
                 <p className="text-blue-100 leading-relaxed mb-8">
-                  Simplify your healthcare journey with CareSync. Registration is free and takes under a minute.
+                  Simplify your healthcare journey with Ziva Care. Registration is free and takes under a minute.
                 </p>
                 <Link href="/register" className="inline-flex items-center gap-2 bg-white text-blue-700 font-semibold px-7 py-3.5 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all group">
                   Create Free Account
@@ -281,7 +281,7 @@ export default function LandingPage() {
                 <div className="bg-blue-600 p-2 rounded-xl text-white">
                   <HeartPulse size={22} strokeWidth={2.5} />
                 </div>
-                <span className="text-xl font-bold text-white">CareSync</span>
+                <span className="text-xl font-bold text-white">Ziva Care</span>
               </div>
               <p className="text-sm leading-relaxed">
                 A modern clinic management platform built for patients and healthcare providers alike. Simplifying healthcare, one click at a time.
@@ -317,13 +317,13 @@ export default function LandingPage() {
               <ul className="space-y-4 text-sm">
                 <li className="flex items-center gap-3"><MapPin size={16} className="text-blue-400 flex-shrink-0" /> 123 Health Ave, Medical District</li>
                 <li className="flex items-center gap-3"><Phone size={16} className="text-blue-400 flex-shrink-0" /> +91 98765 43210</li>
-                <li className="flex items-center gap-3"><Mail size={16} className="text-blue-400 flex-shrink-0" /> support@caresync.in</li>
+                <li className="flex items-center gap-3"><Mail size={16} className="text-blue-400 flex-shrink-0" /> support@zivacare.in</li>
               </ul>
             </div>
           </div>
 
           <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
-            <p>&copy; {new Date().getFullYear()} CareSync. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Ziva Care. All rights reserved.</p>
             <div className="flex gap-6">
               <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
               <a href="#" className="hover:text-white transition-colors">Terms of Service</a>

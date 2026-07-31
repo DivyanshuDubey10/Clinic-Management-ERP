@@ -64,7 +64,7 @@ export default function PaymentCollectionPage() {
       key: order.data.keyId,
       amount: order.data.amount,
       currency: order.data.currency,
-      name: "Clinic Management ERP",
+      name: "Ziva Care",
       description: "Invoice Payment",
       order_id: order.data.orderId,
 

@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>Clinic Management ERP</h1>
+  <h1>Ziva Care</h1>
 
   <p>
     <strong>A robust, enterprise-grade Clinic Management System built with the MERN stack.</strong>
@@ -11,7 +11,7 @@
 
 ## TABLE OF CONTENTS
 
-- [PROJECT HEADER](#-clinic-management-erp)
+- [PROJECT HEADER](#-ziva-care)
 - [PROJECT OVERVIEW](#project-overview)
 - [FEATURES](#features)
 - [TECHNOLOGY STACK](#technology-stack)
@@ -43,7 +43,7 @@
 ## PROJECT OVERVIEW
 
 ### Purpose
-The Clinic Management ERP is a comprehensive, centralized software solution designed to streamline the operations of medical clinics, healthcare centers, and independent medical practitioners. It bridges the gap between clinical care and administrative efficiency.
+The Ziva Care platform is a comprehensive, centralized software solution designed to streamline the operations of medical clinics, healthcare centers, and independent medical practitioners. It bridges the gap between clinical care and administrative efficiency.
 
 ### Problem Statement
 Modern clinics struggle with fragmented systems—using one software for billing, another for scheduling, paper records for patient histories, and a disjointed pharmacy system. This leads to data silos, administrative overhead, patient wait times, and a higher risk of medical errors.
@@ -404,7 +404,7 @@ The Billing module handles complex financial workflows:
 
 ## AI OCR (Optical Character Recognition)
 
-A standout feature for Clinic Management ERP is the handling of legacy lab reports.
+A standout feature for Ziva Care is the handling of legacy lab reports.
 - **Process**: When a Receptionist or Doctor uploads a scanned image (JPEG/PNG) of a lab result via `PUT /api/consultations/lab-orders/:orderId/results`.
 - **Multer**: intercepts the file and stores it in memory.
 - **Hugging Face API**: The image buffer is sent to the Hugging Face Inference API utilizing the `stepfun-ai/GOT-OCR2_0` model (or similar configured model).

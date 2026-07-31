@@ -264,7 +264,7 @@ exports.downloadPrescriptionPDF = async (req, res) => {
         doc.pipe(res);
 
         // Clinic Header
-        doc.fontSize(20).text('CLINIC MANAGEMENT ERP', { align: 'center' });
+        doc.fontSize(20).text('ZIVA CARE', { align: 'center' });
         doc.fontSize(10).text('Excellence in Healthcare & Patient Services', { align: 'center' });
         doc.moveDown();
         doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
@@ -354,7 +354,7 @@ exports.downloadLabOrderPDF = async (req, res) => {
 
         // Header
         doc.fontSize(20).text('DIAGNOSTIC LABORATORY REPORT', { align: 'center' });
-        doc.fontSize(10).text('Clinic Management ERP - Laboratory Services', { align: 'center' });
+        doc.fontSize(10).text('Ziva Care - Laboratory Services', { align: 'center' });
         doc.moveDown();
         doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
         doc.moveDown();
