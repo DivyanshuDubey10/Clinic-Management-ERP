@@ -50,16 +50,34 @@ const userSchema = new mongoose.Schema(
         department: {
             type: String
         },
+
+        //reset password
         resetPasswordOTP: {
             type: String
         },
         resetPasswordOTPExpire: {
             type: Date
         },
+
+        
+        //email verification
+        emailVerificationOTP:{
+            type: String
+        },
+        emailVerificationOTPExpire: {
+            type: Date
+        },
+        
+        isEmailVerified: {
+            type: Boolean,
+            default: false
+        },
+        
         isActive: {
             type: Boolean,
             default: true
-        }
+        },
+        
     },
     {
         timestamps: true // Automatically adds createdAt and updatedAt fields

@@ -60,6 +60,19 @@ export async function getAlerts(){
 }
 
 
-export const deleteMedicine = (id: string) => {
-    api.delete(`/pharmacy/${id}`);
+export const deleteMedicine = async (id: string) => {
+    const response = await api.delete(`/pharmacy/${id}`);
+    return response.data;
+}
+
+
+
+export async function getMedicineById(id: string) {
+    const response = await api.get(`/pharmacy/${id}`);
+    return response.data;
+}
+
+export async function updateMedicine(id: string, data: any) {
+    const response = await api.put(`/pharmacy/${id}`, data);
+    return response.data;
 }

@@ -142,7 +142,8 @@ const getConsultations = async (req, res) => {
                 { symptoms: { $regex: search, $options: 'i' } }
             ];
         }
-        const consultations = await Consultation.find(query)
+
+        const consultations = await Consultation.find(query)
             .populate('patientId', 'firstName lastName patientId')
             .populate('doctorId', 'name specialization')
             .sort({ createdAt: -1 })
@@ -206,6 +207,11 @@ const addPrescription = async (req, res) => {
             await prescription.save();
         } else {
             // Create new
+            console.log("================================");
+            console.log("MEDICATIONS RECEIVED:");
+            console.log(JSON.stringify(medications, null, 2));
+            console.log("================================");
+
             prescription = await Prescription.create({
                 consultationId,
                 patientId: consultation.patientId,
@@ -388,6 +394,48 @@ const downloadPrescriptionPDF = async (req, res) => {
     }
 };
 
+
+// @desc Delete Consultation
+// @route DELETE /api/consultations/:id
+// @access Private (Doctor/Admin)
+
+const deleteConsultation = async (req, res) => {
+    try {
+        const consultation = await Consultation.findById(req.params.id);
+
+        if (!consultation) {
+            return res.status(404).json({
+                success: false,
+                message: "Consultation not found"
+            });
+        }
+
+        // Delete linked prescription
+        await Prescription.deleteMany({
+            consultationId: consultation._id
+        });
+
+        // Delete linked lab orders
+        await LabOrder.deleteMany({
+            consultationId: consultation._id
+        });
+
+        // Delete consultation
+        await Consultation.findByIdAndDelete(req.params.id);
+
+        res.status(200).json({
+            success: true,
+            message: "Consultation deleted successfully"
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
     createConsultation,
     updateConsultation,
@@ -397,5 +445,6 @@ module.exports = {
     addPrescription,
     createLabOrder,
     uploadLabResults,
-    downloadPrescriptionPDF
+    downloadPrescriptionPDF,
+    deleteConsultation,
 };

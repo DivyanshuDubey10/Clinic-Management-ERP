@@ -23,22 +23,25 @@ export default function PaymentPage() {
   },[])
 
 
-  async function loadInvoices() {
-    try {
-      const response = await getMyInvoices();
+async function loadInvoices() {
+  console.log("loadInvoices called");
 
-      
+  try {
+    console.log("Calling API...");
 
-      setInvoices(response.data)
+    const response = await getMyInvoices();
 
-    } catch (error) {
+    console.log("API Response:", response);
 
-      console.error(error)
-    }finally{
+    setInvoices(response.data);
 
-      setLoading(false)
-    }
+  } catch (error: any) {
+    console.error("API Error:", error);
+    console.log("Response:", error.response);
+  } finally {
+    setLoading(false);
   }
+}
 
 
   if(loading){

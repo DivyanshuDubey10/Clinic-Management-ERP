@@ -27,17 +27,96 @@ type MenuItem = {
 };
 
 const allMenuItems: MenuItem[] = [
-  { title: "Dashboard", icon: LayoutDashboard, href: "/dashboard", roles: ["admin", "receptionist"] },
-  { title: "Doctor Dashboard", icon: LayoutDashboard, href: "/dashboard/doctor", roles: ["doctor"] },
-  { title: "Staff Management", icon: Users, children: [{ title: "All Staff", href: "/staff" }, { title: "Add Staff", href: "/staff/add" }], roles: ["admin"] },
-  { title: "Patient Management", icon: Users, children: [{ title: "Patients", href: "/patients" }], roles: ["admin", "receptionist", "doctor"] },
-  { title: "Appointments", icon: CalendarDays, children: [{ title: "Appointments", href: "/appointments" }, { title: "Consultations", href: "/consultations" }], roles: ["admin", "receptionist", "doctor"] },
-  { title: "Pharmacy", icon: Pill, children: [{ title: "Medicine Inventory", href: "/pharmacy" }, { title: "Add Medicine", href: "/pharmacy/add" }, { title: "Dispense Medicine", href: "/pharmacy/dispense" }, { title: "Inventory Alerts", href: "/pharmacy/alerts" }], roles: ["admin", "pharmacist"] },
-  { title: "Laboratory", icon: FlaskConical, children: [{ title: "Lab Orders", href: "/lab" }, { title: "Create Lab Order", href: "/lab/create" }], roles: ["admin", "doctor"] },
-  { title: "Billing", icon: CreditCard, children: [{ title: "Generate Invoice", href: "/billing" }, { title: "Payment Collection", href: "/billing/payment" }, { title: "Invoice History", href: "/billing/history" }, { title: "Insurance", href: "/billing/insurance" }], roles: ["admin", "receptionist"] },
-  { title: "Patient Portal", icon: User, children: [{ title: "Dashboard", href: "/patient-portal" }, { title: "Reports", href: "/patient-portal/reports" }, { title: "Billing Payment", href: "/patient-portal/payment" }], roles: ["admin", "patient"] },
-  { title: "Reports", icon: BarChart3, href: "/dashboard/reports", roles: ["admin"] },
-  { title: "Administration", icon: Settings, children: [{ title: "My Profile", href: "/settings/profile" }, { title: "System Settings", href: "/settings" }], roles: ["admin", "doctor", "receptionist", "pharmacist", "patient"] },
+  { title: "Dashboard", 
+    icon: LayoutDashboard, 
+    href: "/dashboard", 
+    roles: ["admin", "receptionist"] 
+  },
+  { title: "Doctor Dashboard", 
+    icon: LayoutDashboard, 
+    href: "/dashboard/doctor", 
+    roles: ["doctor"] 
+
+  },
+  { title: "Staff Management", icon: Users, 
+    children: [{ title: "All Staff", 
+    href: "/staff" }, 
+    { title: "Add Staff", 
+    href: "/staff/add" }], 
+  roles: ["admin"] 
+},
+  { title: "Patient Management", 
+    icon: Users, 
+    children: [{ title: "Patients", 
+    href: "/patients" }], 
+  roles: ["admin", "receptionist", "doctor"] 
+},
+  { title: "Appointments", 
+    icon: CalendarDays, 
+    children: [{ title: "Appointments", 
+    href: "/appointments" }, 
+    { title: "Consultations", 
+    href: "/consultations" }], 
+  roles: ["admin", "receptionist", "doctor"] 
+},
+  { title: "Pharmacy", 
+    icon: Pill, 
+    children: [{ title: "Medicine Inventory", 
+    href: "/pharmacy" }, 
+    { title: "Add Medicine", 
+      href: "/pharmacy/add" }, 
+    { title: "Dispense Medicine", 
+      href: "/pharmacy/dispense" }, 
+      { title: "Inventory Alerts", 
+        href: "/pharmacy/alerts" }], 
+        roles: ["admin", "pharmacist"]
+       },
+  { title: "Laboratory", 
+    icon: FlaskConical, 
+    children: [{ title: "Lab Orders", 
+    href: "/lab" }, 
+    { title: "Create Lab Order", 
+      href: "/lab/create" }], 
+  roles: ["admin", "doctor"] 
+},
+  { title: "Billing", 
+    icon: CreditCard, 
+    children: [{ title: "Generate Invoice", 
+    href: "/billing" }, 
+
+    // { title: "Payment Collection", 
+    //   href: "/billing/payment" 
+    // }, 
+
+    { title: "Invoice History",
+       href: "/billing/history" 
+      }, 
+       { title: "Insurance", 
+        href: "/billing/insurance"
+       }],
+        roles: ["admin", "receptionist"] 
+      },
+  { title: "Patient Portal", 
+    icon: User, 
+    children: [{ title: "Dashboard", 
+    href: "/patient-portal" }, 
+    { title: "Reports", 
+      href: "/patient-portal/reports" }, 
+    { title: "Billing Payment", 
+      href: "/patient-portal/payment" }],
+       roles: ["admin", "patient"] 
+      },
+  { title: "Reports", 
+    icon: BarChart3, 
+    href: "/dashboard/reports", 
+    roles: ["admin"] },
+  { title: "Administration", 
+    icon: Settings, 
+    children: [{ title: "My Profile", 
+    href: "/settings/profile" }, 
+    { title: "System Settings", 
+    href: "/settings" }], 
+  roles: ["admin", "doctor", "receptionist", "pharmacist", "patient"] },
 ];
 
 export default function Sidebar() {

@@ -1,3 +1,5 @@
+console.log("🔥 consultationRoutes.js loaded");
+
 const express = require('express');
 const router = express.Router();
 const { protect, authorize } = require('../middlewares/authMiddleware');
@@ -16,7 +18,8 @@ const {
     addPrescription,
     createLabOrder,
     uploadLabResults,
-    downloadPrescriptionPDF
+    downloadPrescriptionPDF,
+    deleteConsultation,
 } = require('../controllers/consultationController');
 
 const { validateObjectId, validateBody, validateArray } = require('../middlewares/validationMiddleware');
@@ -53,4 +56,16 @@ router.post('/:id/lab-orders', authorize(ROLES.DOCTOR), validateObjectId('id'), 
 // Upload/Attach Lab Results to an Order (Now accepts multipart form data with file)
 router.put('/lab-orders/:orderId/results', authorize(ROLES.ADMIN, ROLES.DOCTOR, ROLES.RECEPTIONIST), validateObjectId('orderId'), upload.single('file'), uploadLabResults);
 
+//delete consultation
+
+router.get("/test-delete", (req, res) => {
+    res.send("Delete route file is loaded");
+});
+
+router.delete(
+    "/:id",
+    authorize(ROLES.DOCTOR, ROLES.ADMIN),
+    validateObjectId("id"),
+    deleteConsultation
+);
 module.exports = router;

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Search, Plus, Eye } from "lucide-react";
 import { useState,useEffect } from "react";
 import { getConsultations } from "@/lib/patientPortal";
-
+import { deleteConsultation } from "@/lib/consultation";
 
 // const consultations = [
 //   {
@@ -58,6 +58,28 @@ export default function ConsultationsPage() {
     }
 
   }
+
+  const handleDelete = async (id: string) => {
+    console.log("handle DElete")
+    if (!confirm("Delete this consultation?")) return;
+
+    try {
+        await deleteConsultation(id);
+
+        setConsultations((prev) =>
+            prev.filter((c) => c._id !== id)
+        );
+
+        alert("Consultation deleted successfully.");
+    } catch (err: any) {
+    console.error(err);
+
+    console.log(err.response?.status);
+    console.log(err.response?.data);
+
+    alert(err.response?.data?.message || "Failed to delete consultation");
+}
+};
 
   return (
     <div className="flex min-h-screen bg-slate-100">
@@ -178,15 +200,24 @@ export default function ConsultationsPage() {
                       </span>
                     </td>
 
-                    <td className="px-6 py-4 text-center">
+                    <td className="px-6 py-4 text-center flex justify-center gap-2">
+
                       <Link
-                        href={`/consultations/${consultation.appointmentId}`}
-                        className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
+                          href={`/consultations/${consultation.appointmentId}`}
+                          className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
                       >
-                        <Eye size={16} />
-                        View EMR
+                          <Eye size={16} />
+                          View EMR
                       </Link>
-                    </td>
+
+                      <button
+                          onClick={() => handleDelete(consultation._id)}
+                          className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
+                      >
+                          Delete
+                      </button>
+
+                  </td>
                   </tr>
                 ))}
               </tbody>

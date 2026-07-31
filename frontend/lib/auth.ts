@@ -51,3 +51,14 @@ export async function updateProfile(data:{
 }
 
 
+
+export async function verifyEmail(email:string, otp:string){
+    return api.post("/auth/verify-email",{
+        email,otp
+    });
+}
+
+
+export async function resendVerificationOTP(email:string){
+    return api.post("/auth/resend-verification",{email})
+}

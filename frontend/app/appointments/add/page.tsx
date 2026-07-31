@@ -37,6 +37,7 @@ export default function AddAppointmentPage() {
 
 
   useEffect(() => {
+    console.log("useeffect")
     if (form.doctorId && form.date) {
       loadSlots();
     }
@@ -77,15 +78,17 @@ export default function AddAppointmentPage() {
 
 
   async function loadSlots() {
-
+    console.log("Load slot")
+    
     try {
       const response = await getAvailableSlots(
         form.doctorId,
         form.date
       );
-
       
-
+      console.log("Slot:", response)
+      console.log("Response:", response.data)
+  
       setSlots(response.data || []);
 
     } catch (err) {
@@ -121,15 +124,17 @@ export default function AddAppointmentPage() {
     try {
       setLoading(true);
 
+      const appointmentDate = `${form.date}T${form.timeslot}`;
       
-      
-
       await createAppointment({
         patientId: form.patientId,
         doctorId: form.doctorId,
-        appointmentDate: form.timeslot,
-        duration: form.duration,
-        appointmentType: form.appointmentType as | "Walk-in" | "Online" | "Follow-up",
+        appointmentDate,
+        duration: Number(form.duration),
+        appointmentType: form.appointmentType as
+          | "Walk-in"
+          | "Online"
+          | "Follow-up",
         reasonForVisit: form.reasonForVisit,
         consultationRoom: form.consultationRoom,
       });

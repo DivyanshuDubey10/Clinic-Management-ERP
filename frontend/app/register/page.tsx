@@ -91,6 +91,14 @@ export default function RegisterPage() {
       localStorage.setItem("user", JSON.stringify(data.user));
 
       setSuccess(true);
+
+      window.setTimeout(() => {
+        router.push(
+          // `/verify-email?email=${encodeURIComponent(form.email)}`
+          "/login"
+        );
+      }, 1000);
+
       window.setTimeout(() => router.push("/patient-portal"), 1200);
     } catch (caughtError: unknown) {
 
@@ -397,6 +405,5 @@ function Toggle({ onClick, shown }
         {shown ? <EyeOff size={18} /> 
         : <Eye size={18} />}
         </button>
-        
    ) 
 }

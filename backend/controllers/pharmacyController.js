@@ -93,14 +93,46 @@ const dispensePrescription = async (req, res) => {
 
         let itemsToDispense = req.body.dispenseItems;
 
+        // if (!itemsToDispense || itemsToDispense.length === 0) {
+        //     // Derive items from prescription
+        //     itemsToDispense = prescription.medications
+        //         .filter(med => med.medicineId) // Only medications linked to item master
+        //         .map(med => ({
+        //             medicineId: med.medicineId,
+        //             requestedQuantity: med.requestedQuantity || 1 // default to 1 if not specified
+        //         }));
+        // }
+
+
         if (!itemsToDispense || itemsToDispense.length === 0) {
-            // Derive items from prescription
-            itemsToDispense = prescription.medications
-                .filter(med => med.medicineId) // Only medications linked to item master
-                .map(med => ({
-                    medicineId: med.medicineId,
-                    requestedQuantity: med.requestedQuantity || 1 // default to 1 if not specified
-                }));
+
+            itemsToDispense = [];
+
+            for (const med of prescription.medications) {
+
+                let medicineId = med.medicineId;
+
+                // If medicineId wasn't saved, find it using drug name
+                if (!medicineId) {
+                    const medicine = await Medicine.findOne({
+                        name: { $regex: `^${med.drugName}$`, $options: "i" }
+                    });
+
+                    if (!medicine) {
+                        return res.status(404).json({
+                            success: false,
+                            message: `Medicine '${med.drugName}' not found in inventory`
+                        });
+                    }
+
+                    medicineId = medicine._id;
+                }
+
+                itemsToDispense.push({
+                    medicineId,
+                    requestedQuantity: med.requestedQuantity || 1
+                });
+            }
         }
 
         if (!itemsToDispense || itemsToDispense.length === 0) {
@@ -261,7 +293,7 @@ const getPendingPrescriptions = async (req, res) => {
 // @access  Private (Admin, Receptionist)
 const getPrescriptionById = async (req, res) => {
     try {
-        const prescription = await Prescription.findById(req.params.id)
+        const prescription = await Prescription.findById(req.params.id).populate("medications.medicineId")
             .populate('patientId', 'firstName lastName phone')
             .populate('doctorId', 'name specialization');
             

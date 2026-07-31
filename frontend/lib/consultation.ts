@@ -33,3 +33,14 @@ export async function updateConsultation(id: string, data: {
   const response = await api.put(`/consultations/${id}`, data, authHeader());
   return response.data;
 }
+
+
+
+export async function deleteConsultation(id: string) {
+    const response = await api.delete(
+        `/consultations/${id}`,
+        authHeader()
+    );
+
+    return response.data;
+}

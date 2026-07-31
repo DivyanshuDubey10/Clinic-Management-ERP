@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Calendar, momentLocalizer } from  "react-big-calendar" ;
 import moment from "moment"
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { getAllAvailability } from "@/lib/availability";
 import Navbar from "@/components/layout/Navbar";
 import Sidebar from "@/components/layout/Sidebar";
 import api from "@/lib/api";
@@ -13,48 +12,81 @@ const localizer = momentLocalizer(moment);
 
 export default function AppointmentCalendar(){
     const [events, setEvents] = useState<any[]>([])
+    const [currentDate, setCurrentDate] = useState(new Date());
+
+    console.log("calendar")
 
     useEffect(()=>{
-        loadAppointments();
+        console.log("loading appointments:")
+        loadAppointments(currentDate);
     },[])
 
 
-    async function loadAppointments(){
-        try {
-            const startDate = moment().startOf("month").format("YYYY-MM-DD");
-            const endDate = moment().endOf("month").format("YYYY-MM-DD")
 
-            const token = localStorage.getItem("accessToken");
+    async function loadAppointments(date = new Date()) {
+        console.log("Load Appointment")
+        try {
+            const startDate = moment(date)
+            .startOf("month")
+            .format("YYYY-MM-DD");
+
+            const endDate = moment(date)
+            .endOf("month")
+            .format("YYYY-MM-DD");
 
             const response = await api.get(
-                `/appointments?startDate=${startDate}&endDate=${endDate}`,
-                {
-                    headers:{
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-            )
+            `/appointments?startDate=${startDate}&endDate=${endDate}`
+            );
 
+            console.log("Appointments:", response.data.data);
 
-            const data = response.data.map((appointment: any)=>({
+            const appointments =
+            response.data.data ?? response.data;
 
-                title: `${appointment.patientId?.firstName} ${appointment.patientId?.lastName}`,
+            const data = appointments.map((appointment: any) => {
+            const appointmentDate =
+                appointment.appointmentDate || appointment.date;
+
+            const appointmentTime =
+                appointment.time ||
+                appointment.timeslot ||
+                "09:00";
+
+            return {
+                id: appointment._id,
+
+                title: appointment.patientId
+                ? `${appointment.patientId.firstName} ${appointment.patientId.lastName}`
+                : "Unknown Patient",
+
                 start: new Date(
-                    `${appointment.date.split("T")[0]}T${appointment.timeslot}`
+                `${appointmentDate.split("T")[0]}T${appointmentTime}`
                 ),
 
                 end: moment(
-                    `${appointment.date.split("T")[0]}T${appointment.timeslot}`
-                ).add(15,"minutes").toDate(),
+                `${appointmentDate.split("T")[0]}T${appointmentTime}`
+                )
+                .add(15, "minutes")
+                .toDate(),
 
-                type:"appointment",
+                type: "appointment",
+            };
+            });
 
-            }))
-            
-            setEvents(data)
-            
-        } catch (error) {
-            console.error(error)
+
+            console.table(
+                data.map((e:any)=>({
+                    title:e.title,
+                    start: e.start,
+                    end:e.end, 
+                }))
+            );
+
+            setEvents(data);
+        } catch (error: any) {
+            console.log(error.response?.status);
+            console.log(error.response?.data);
+            console.log(error);
         }
     }
 
@@ -72,7 +104,15 @@ export default function AppointmentCalendar(){
                        events={events}
                        startAccessor="start"
                        endAccessor="end"
+                       onView={(view) => console.log(view)}
                        style={{height:700}}
+                       defaultView="month"
+                       defaultDate={new Date("2026-07-30")}
+                        date={currentDate}
+                        onNavigate={(date) => {
+                            setCurrentDate(date);
+                            loadAppointments(date);
+                        }}
                        eventPropGetter={(event:any)=>{
                         switch(event.type){
                             case "appointment":

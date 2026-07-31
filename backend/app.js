@@ -73,6 +73,7 @@ app.use('/api/prescriptions', prescriptionRoutes);
 app.use('/api/lab-orders', labOrderRoutes);
 app.use('/api/notifications', notificationRoutes);
 
+
 // Global Error Handler Middleware
 app.use((err, req, res, next) => {
     console.error('Unhandled Error:', err.stack || err);

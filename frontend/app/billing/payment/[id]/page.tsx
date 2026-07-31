@@ -15,6 +15,7 @@ import {
 export default function PaymentCollectionPage() {
   const { id } = useParams();
   const router = useRouter();
+  console.log("payment collection")
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -32,7 +33,10 @@ export default function PaymentCollectionPage() {
   }, []);
 
   async function loadInvoice() {
+
     try {
+      console.log("Route params:", useParams());
+      console.log("Invoice ID:", id);
       const res = await getInvoice(id as string);
 
       setInvoice(res.data);
@@ -43,14 +47,16 @@ export default function PaymentCollectionPage() {
         transactionId: "",
       });
     } catch (err: any) {
+      console.error("Invoice Error:", err);
+      console.log(err.response);
 
-        
-        
-        console.error(err);
+      alert(
+        err?.response?.data?.message ||
+        err.message ||
+        "Unable to load Invoice"
+      );
 
-        alert("Unable to load Invoice")
-
-    } finally {
+    }finally {
       setLoading(false);
     }
   }

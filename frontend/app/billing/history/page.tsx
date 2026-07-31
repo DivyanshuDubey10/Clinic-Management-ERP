@@ -265,7 +265,7 @@ export default function BillingHistoryPage() {
                         <div className="flex justify-center gap-2">
 
                           <Link
-                            href={`/billing/details/${invoice._id}`}
+                            href={`/billing/${invoice._id}`}
                             className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm"
                           >
                             <Eye size={16} />
