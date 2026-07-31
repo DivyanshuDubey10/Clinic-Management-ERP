@@ -37,8 +37,9 @@ export default function BillingHistoryPage() {
 
   const filteredInvoices = useMemo(() => {
     return invoices.filter((invoice) => {
-      const patient =
-        `${invoice.patientId?.firstName || ""} ${invoice.patientId?.lastName || ""}`.toLowerCase();
+      const patient = invoice.patientId 
+        ? `${invoice.patientId.firstName || ""} ${invoice.patientId.lastName || ""}`.toLowerCase()
+        : "unknown patient";
 
       const invoiceNumber =
         invoice.invoiceNumber?.toLowerCase() || "";
@@ -228,8 +229,7 @@ export default function BillingHistoryPage() {
                       </td>
 
                       <td className="p-4">
-                        {invoice.patientId?.firstName}{" "}
-                        {invoice.patientId?.lastName}
+                        {invoice.patientId ? `${invoice.patientId.firstName} ${invoice.patientId.lastName}` : "Unknown Patient"}
                       </td>
 
                       <td className="p-4">

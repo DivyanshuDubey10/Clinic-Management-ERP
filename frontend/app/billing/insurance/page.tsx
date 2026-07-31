@@ -114,8 +114,7 @@ export default function InsurancePage() {
                       value={invoice._id}
                     >
                       {invoice.invoiceNumber} -{" "}
-                      {invoice.patientId?.firstName}{" "}
-                      {invoice.patientId?.lastName}
+                      {invoice.patientId ? `${invoice.patientId.firstName} ${invoice.patientId.lastName}` : "Unknown Patient"}
                     </option>
                   ))}
                 </select>

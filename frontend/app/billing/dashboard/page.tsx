@@ -188,8 +188,7 @@ export default function BillingDashboard() {
                     </td>
 
                     <td className="p-4">
-                      {invoice.patientId?.firstName}{" "}
-                      {invoice.patientId?.lastName}
+                      {invoice.patientId ? `${invoice.patientId.firstName} ${invoice.patientId.lastName}` : "Unknown Patient"}
                     </td>
 
                     <td className="p-4">

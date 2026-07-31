@@ -89,7 +89,7 @@ export default function Dashboard() {
             Dashboard
           </h1>
 
-            {userRole === "admin" && <StatCards stats={stats}/>}
+            {(userRole === "admin" || userRole === "receptionist") && <StatCards stats={stats}/>}
 
             <RecentAppointments/>
 

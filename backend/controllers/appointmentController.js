@@ -155,6 +155,14 @@ const getAppointmentById = async (req, res) => {
             });
         }
 
+        // Restrict doctor to view only their own appointments
+        if (req.user.role === 'doctor') {
+            const apptDoctorId = appointment.doctorId ? appointment.doctorId._id.toString() : null;
+            if (apptDoctorId !== req.user._id.toString()) {
+                return res.status(403).json({ success: false, message: 'Not authorized to view this appointment' });
+            }
+        }
+
         res.status(200).json({
             success: true,
             message: 'Appointment retrieved successfully',

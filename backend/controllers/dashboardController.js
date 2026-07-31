@@ -7,14 +7,25 @@ const User = require('../models/User');
 // @access  Private
 const getDashboardStats = async (req, res) => {
     try {
-        // Count total patients
-        const totalPatients = await Patient.countDocuments();
+        let query = {};
+        if (req.user.role === 'doctor') {
+            query.doctorId = req.user._id;
+        }
+
+        // Count total appointments
+        const totalAppointments = await Appointment.countDocuments(query);
+
+        // Count total patients (distinct patients for this doctor)
+        let totalPatients = 0;
+        if (req.user.role === 'doctor') {
+            const uniquePatients = await Appointment.distinct('patientId', query);
+            totalPatients = uniquePatients.length;
+        } else {
+            totalPatients = await Patient.countDocuments();
+        }
 
         // Count total doctors
         const totalDoctors = await User.countDocuments({ role: 'doctor' });
-
-        // Count total appointments
-        const totalAppointments = await Appointment.countDocuments();
 
         // Calculate today's start and end time
         const startOfDay = new Date();
@@ -25,6 +36,7 @@ const getDashboardStats = async (req, res) => {
 
         // Count today's appointments
         const todayAppointments = await Appointment.countDocuments({
+            ...query,
             appointmentDate: {
                 $gte: startOfDay,
                 $lte: endOfDay
@@ -32,13 +44,13 @@ const getDashboardStats = async (req, res) => {
         });
 
         // Count appointments by status
-        const completedAppointments = await Appointment.countDocuments({ status: 'Completed' });
-        const bookedAppointments = await Appointment.countDocuments({ status: 'Booked' });
-        const cancelledAppointments = await Appointment.countDocuments({ status: 'Cancelled' });
-        const noShowAppointments = await Appointment.countDocuments({ status: 'No-show' });
+        const completedAppointments = await Appointment.countDocuments({ ...query, status: 'Completed' });
+        const bookedAppointments = await Appointment.countDocuments({ ...query, status: 'Booked' });
+        const cancelledAppointments = await Appointment.countDocuments({ ...query, status: 'Cancelled' });
+        const noShowAppointments = await Appointment.countDocuments({ ...query, status: 'No-show' });
 
         // Fetch latest 5 appointments
-        const recentAppointments = await Appointment.find()
+        const recentAppointments = await Appointment.find(query)
             .sort({ createdAt: -1 })
             .limit(5)
             .populate({ path: 'patientId', model: 'Patient', select: 'firstName lastName patientId' })

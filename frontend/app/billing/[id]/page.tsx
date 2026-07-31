@@ -109,13 +109,12 @@ export default function InvoiceDetailsPage() {
 
               <p>
                 <strong>Name:</strong>{" "}
-                {invoice.patientId.firstName}{" "}
-                {invoice.patientId.lastName}
+                {invoice.patientId ? `${invoice.patientId.firstName} ${invoice.patientId.lastName}` : "Unknown Patient"}
               </p>
 
               <p>
                 <strong>Patient ID:</strong>{" "}
-                {invoice.patientId.patientId}
+                {invoice.patientId ? invoice.patientId.patientId : "N/A"}
               </p>
 
               <p>
