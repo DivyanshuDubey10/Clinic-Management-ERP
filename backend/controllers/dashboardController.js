@@ -1,5 +1,6 @@
 const Appointment = require('../models/Appointment');
 const Patient = require('../models/Patient');
+const User = require('../models/User');
 
 // @desc    Get dashboard statistics
 // @route   GET /api/dashboard
@@ -8,6 +9,9 @@ const getDashboardStats = async (req, res) => {
     try {
         // Count total patients
         const totalPatients = await Patient.countDocuments();
+
+        // Count total doctors
+        const totalDoctors = await User.countDocuments({ role: 'doctor' });
 
         // Count total appointments
         const totalAppointments = await Appointment.countDocuments();
@@ -46,6 +50,7 @@ const getDashboardStats = async (req, res) => {
             data: {
                 statistics: {
                     totalPatients,
+                    totalDoctors,
                     totalAppointments,
                     todayAppointments,
                     completedAppointments,

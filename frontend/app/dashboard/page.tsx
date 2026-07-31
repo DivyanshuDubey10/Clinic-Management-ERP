@@ -56,7 +56,17 @@ export default function Dashboard() {
     try {
       const response = await getDashboard();
 
-      setStats(response.data)
+      if (response.data && response.data.statistics) {
+        const s = response.data.statistics;
+        setStats({
+          totalPatients: s.totalPatients || 0,
+          totalDoctors: s.totalDoctors || 0,
+          totalAppointments: s.totalAppointments || 0,
+          pendingAppointments: s.bookedAppointments || 0,
+          completedAppointments: s.completedAppointments || 0,
+          cancelledAppointments: s.cancelledAppointments || 0
+        });
+      }
 
     } catch (error) {
       console.error(error)
