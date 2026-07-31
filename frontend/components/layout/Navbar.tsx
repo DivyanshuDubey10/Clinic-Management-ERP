@@ -19,6 +19,7 @@ export default function Navbar() {
   
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     async function loadUser() {
@@ -138,6 +139,13 @@ export default function Navbar() {
           <Search size={18} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && searchQuery.trim()) {
+                router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+              }
+            }}
             placeholder="Search patients, records..."
             className="h-10 w-64 rounded-xl border border-slate-200 bg-slate-50/70 py-2 pl-10 pr-4 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 hover:border-slate-300 focus:w-72 focus:border-cyan-400 focus:bg-white focus:ring-4 focus:ring-cyan-100"
           />

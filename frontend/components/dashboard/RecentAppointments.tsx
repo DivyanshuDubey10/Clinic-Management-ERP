@@ -62,6 +62,7 @@ export default function RecentAppointments(){
             </div>
 
             <table className="w-full">
+                <thead>
                     <tr className="text-left text-gray-500 border-b">
                         <th className="pb-3">Patient</th>
                         <th className="pb-3">Doctor</th>
