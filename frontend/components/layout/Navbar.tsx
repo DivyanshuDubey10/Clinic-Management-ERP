@@ -135,20 +135,20 @@ export default function Navbar() {
   const initials = user?.name?.trim().charAt(0).toUpperCase() || "U";
 
   return (
-    <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-slate-200/80 bg-white/85 px-4 shadow-sm shadow-slate-200/50 backdrop-blur-xl sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-border/80 bg-background/85 px-4 shadow-sm shadow-slate-200/50 dark:shadow-none backdrop-blur-xl sm:px-6 lg:px-8">
       <div>
         <div className="flex items-center gap-2">
           <span className="h-5 w-1 rounded-full bg-gradient-to-b from-cyan-400 to-blue-600" />
-          <h2 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">Dashboard</h2>
+          <h2 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">Dashboard</h2>
         </div>
-        <p className="mt-1 pl-3 text-sm text-slate-500">Here&apos;s what&apos;s happening at your clinic.</p>
+        <p className="mt-1 pl-3 text-sm text-muted-foreground">Here&apos;s what&apos;s happening at your clinic.</p>
       </div>
 
       <div className="flex items-center gap-2 sm:gap-3">
         <label className="relative hidden md:block">
           <span className="sr-only">Search</span>
           <Search size={18} 
-          className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
 
           <input
             type="search"
@@ -160,99 +160,81 @@ export default function Navbar() {
               }
             }}
             placeholder="Search patients, records..."
-            className="h-10 w-64 rounded-xl border border-slate-200 bg-slate-50/70 py-2 pl-10 pr-4 text-sm text-slate-800 
-            outline-none transition-all placeholder:text-slate-400 hover:border-slate-300 focus:w-72 focus:border-cyan-400 
-            focus:bg-white focus:ring-4 focus:ring-cyan-100"
+            className="h-10 w-64 rounded-xl border border-border bg-muted/50 py-2 pl-10 pr-4 text-sm text-foreground 
+            outline-none transition-all placeholder:text-muted-foreground hover:border-border/80 focus:w-72 focus:border-primary 
+            focus:bg-background focus:ring-4 focus:ring-primary/20"
           />
         </label>
 
         <button type="button" 
         aria-label="Search" 
-        className="grid h-10 w-10 place-items-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 
-        focus:outline-none focus:ring-2 focus:ring-cyan-400 md:hidden dark:hover:bg-slate-800 dark:hover:text-slate-200">
+        className="grid h-10 w-10 place-items-center rounded-xl text-muted-foreground transition hover:bg-muted hover:text-foreground 
+        focus:outline-none focus:ring-2 focus:ring-primary md:hidden">
           <Search size={20} />
         </button>
 
         <ThemeToggle />
 
-        <button type="button" 
-        aria-label="Notifications, 3 unread" 
-        className="relative grid h-10 w-10 place-items-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 
-        focus:outline-none focus:ring-2 focus:ring-cyan-400 dark:hover:bg-slate-800 dark:hover:text-slate-200">
-
-          <Bell size={20} />
-          <span className="absolute right-1.5 top-1.5 grid h-4 min-w-4 place-items-center rounded-full border-2 border-white 
-          bg-rose-500 px-0.5 text-[9px] font-bold leading-none text-white">
-            3
-            </span>
-
-        </button>
         {/* Notifications Dropdown */}
         <div className="relative" ref={notificationMenuRef}>
           <button 
             type="button" 
             aria-label={`Notifications, ${unreadCount} unread`} 
             onClick={() => setIsNotificationMenuOpen(!isNotificationMenuOpen)}
-            className={`relative grid h-10 w-10 place-items-center rounded-xl transition focus:outline-none focus:ring-2 focus:ring-cyan-400 ${isNotificationMenuOpen ? 'bg-slate-100 text-slate-800' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800'}`}
+            className={`relative grid h-10 w-10 place-items-center rounded-xl transition focus:outline-none focus:ring-2 focus:ring-primary ${isNotificationMenuOpen ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}`}
           >
             <Bell size={20} />
             {unreadCount > 0 && (
               <span className="absolute right-1.5 top-1.5 grid h-4 min-w-4 place-items-center rounded-full border-2 border-white bg-rose-500 px-0.5 text-[9px] font-bold leading-none text-white">
+              <span className="absolute right-1.5 top-1.5 grid h-4 min-w-4 place-items-center rounded-full border-2 border-background bg-rose-500 px-0.5 text-[9px] font-bold leading-none text-white">
                 {unreadCount > 99 ? '99+' : unreadCount}
               </span>
             )}
           </button>
 
           <div 
-            className={`absolute right-0 top-[calc(100%+0.6rem)] w-80 sm:w-96 origin-top-right rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-900/10 transition-all duration-200 ${isNotificationMenuOpen ? "translate-y-0 scale-100 opacity-100" : "pointer-events-none -translate-y-2 scale-95 opacity-0"}`}
+            className={`absolute right-0 top-[calc(100%+0.6rem)] w-80 sm:w-96 origin-top-right rounded-2xl border border-border bg-card shadow-xl dark:shadow-none transition-all duration-200 ${isNotificationMenuOpen ? "translate-y-0 scale-100 opacity-100" : "pointer-events-none -translate-y-2 scale-95 opacity-0"}`}
           >
-            <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-              <h3 className="font-semibold text-slate-800">Notifications</h3>
+            <div className="flex items-center justify-between border-b border-border px-4 py-3">
+              <h3 className="font-semibold text-foreground">Notifications</h3>
               {unreadCount > 0 && (
                 <button 
                   onClick={handleMarkAllAsRead} 
-                  className="flex items-center gap-1.5 text-xs font-medium text-cyan-600 transition hover:text-cyan-800"
+                  className="text-xs font-medium text-primary hover:text-primary/80"
                 >
-                  <Check size={14} />
                   Mark all as read
                 </button>
               )}
             </div>
-            
-            <div className="max-h-96 overflow-y-auto overscroll-contain">
-              {notifications.length === 0 ? (
-                <div className="p-8 text-center">
-                  <Bell className="mx-auto mb-2 text-slate-300" size={32} />
-                  <p className="text-sm text-slate-500">No notifications yet.</p>
-                </div>
-              ) : (
-                <div className="flex flex-col">
-                  {notifications.map((notif) => (
-                    <button
-                      key={notif._id}
-                      onClick={() => handleNotificationClick(notif)}
-                      className={`flex w-full items-start gap-3 border-b border-slate-50 p-4 text-left transition hover:bg-slate-50 ${!notif.isRead ? 'bg-blue-50/40' : ''}`}
-                    >
-                      <div className="mt-0.5 shrink-0">
-                        {getNotificationIcon(notif.type)}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className={`text-sm ${!notif.isRead ? 'font-semibold text-slate-900' : 'font-medium text-slate-800'}`}>
+
+            <div className="max-h-[360px] overflow-y-auto">
+              {notifications.length > 0 ? (
+                notifications.map((notif) => (
+                  <div
+                    key={notif._id}
+                    onClick={() => handleNotificationClick(notif)}
+                    className={`flex cursor-pointer gap-3 border-b border-border p-4 transition hover:bg-muted/50 ${notif.isRead ? 'opacity-70' : 'bg-primary/5'}`}
+                  >
+                    <div className="mt-0.5 flex-shrink-0">
+                      {getNotificationIcon(notif.type)}
+                    </div>
+                    <div className="flex-1 space-y-1">
+                      <div className="flex items-start justify-between gap-2">
+                        <p className={`text-sm ${notif.isRead ? 'font-medium text-foreground' : 'font-semibold text-foreground'}`}>
                           {notif.title}
                         </p>
-                        <p className={`mt-0.5 text-xs leading-relaxed ${!notif.isRead ? 'text-slate-600' : 'text-slate-500'}`}>
-                          {notif.message}
-                        </p>
-                        <p className="mt-1.5 text-[11px] font-medium text-slate-400">
-                          {formatDate(notif.createdAt)}
-                        </p>
                       </div>
-                      {!notif.isRead && (
-                        <div className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-blue-500" />
-                      )}
-                    </button>
-                  ))}
-                </div>
+                      <p className={`text-xs leading-relaxed ${notif.isRead ? 'text-muted-foreground' : 'text-muted-foreground'}`}>
+                        {notif.message}
+                      </p>
+                      <p className="text-[11px] font-medium text-muted-foreground">
+                        {formatDate(notif.createdAt)}
+                      </p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="p-8 text-center text-muted-foreground text-sm">No notifications yet.</div>
               )}
             </div>
           </div>
@@ -265,77 +247,64 @@ export default function Navbar() {
             onClick={() => setIsProfileMenuOpen((value) => !value)}
             aria-expanded={isProfileMenuOpen}
             aria-haspopup="menu"
-            className="flex items-center gap-2 rounded-xl p-1.5 text-left transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            className="flex items-center gap-2 rounded-xl p-1.5 text-left transition hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 text-sm font-bold text-white 
-            shadow-md shadow-cyan-200/60">
+            <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 text-sm font-bold text-white shadow-md">
             {initials}
             </div>
 
             <div className="hidden min-w-0 lg:block">
-
-              <p className="max-w-32 truncate text-sm font-semibold text-slate-800">
+              <p className="max-w-32 truncate text-sm font-semibold text-foreground">
                 {user?.name || "Loading..."}
-                
-                </p>
-
-              <p className="max-w-32 truncate text-xs capitalize text-slate-500">
+              </p>
+              <p className="max-w-32 truncate text-xs capitalize text-muted-foreground">
                 {user?.role || ""}
-                </p>
-                
+              </p>
             </div>
             <ChevronDown size={16} 
-              className={`hidden text-slate-400 transition-transform duration-200 lg:block 
+              className={`hidden text-muted-foreground transition-transform duration-200 lg:block 
                ${isProfileMenuOpen ? "rotate-180" : ""}`} 
               />
           </button>
 
           <div role="menu" 
-          className={`absolute right-0 top-[calc(100%+0.6rem)] w-56 origin-top-right rounded-2xl border border-slate-200 bg-white p-2
-           shadow-xl shadow-slate-900/10 transition-all duration-200 ${isProfileMenuOpen ? "translate-y-0 scale-100 opacity-100"
+          className={`absolute right-0 top-[calc(100%+0.6rem)] w-56 origin-top-right rounded-2xl border border-border bg-card p-2 shadow-xl dark:shadow-none transition-all duration-200 ${isProfileMenuOpen ? "translate-y-0 scale-100 opacity-100"
             : "pointer-events-none -translate-y-2 scale-95 opacity-0"}`}>
 
-            <div className="border-b border-slate-100 px-3 py-2.5">
-
-              <p className="truncate text-sm font-semibold text-slate-800">
+            <div className="border-b border-border px-3 py-2.5">
+              <p className="truncate text-sm font-semibold text-foreground">
                 {user?.name || "User"}
-                </p>
-
-              <p className="truncate text-xs capitalize text-slate-500">
+              </p>
+              <p className="truncate text-xs capitalize text-muted-foreground">
                 {user?.role || "Clinic account"}
-                </p>
-
+              </p>
             </div>
 
             <button type="button"
              role="menuitem" 
              onClick={() => router.push("/settings/profile")}
-             className="mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-600 transition 
-             hover:bg-slate-100 hover:text-slate-900">
-
-              <UserRound size={17} />
-              My profile
+             className="mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-muted-foreground transition hover:bg-muted hover:text-foreground">
+              <UserRound size={16} />
+              My Profile
               </button>
 
-            <button type="button" 
-            role="menuitem" 
-            onClick={() => router.push("/settings/setting")} 
-            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-600 
-            transition hover:bg-slate-100 hover:text-slate-900">
-              
-              <Settings size={17} />
-              Settings
+            <button 
+                onClick={() => { setIsProfileMenuOpen(false); router.push("/settings"); }}
+                className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
+              >
+                <Settings size={16} />
+                Settings
               </button>
 
-            <div className="my-1 border-t border-slate-100" />
-
-            <button type="button" 
-            role="menuitem" 
-            onClick={logout} 
-            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-rose-600 transition hover:bg-rose-50">
-              <LogOut size={17} />
-              Sign out
+            <div className="border-t border-border p-2 mt-1">
+              <button
+                onClick={logout}
+                className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-destructive transition hover:bg-destructive/10"
+              >
+                <LogOut size={16} />
+                Sign out
               </button>
+            </div>
           </div>
         </div>
       </div>

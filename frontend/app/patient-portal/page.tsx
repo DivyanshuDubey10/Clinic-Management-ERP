@@ -61,7 +61,7 @@ export default function PatientPortal(){
 
     if(loading){
         return(
-            <div className="fex min-h-screen bg-slate-100">
+            <div className="flex min-h-screen bg-muted/30">
                 <Sidebar/>
 
                 <div className="flex-1">
@@ -76,7 +76,7 @@ export default function PatientPortal(){
 
 
     return(
-        <div className="flex min-h-screen bg-slate-100">
+        <div className="flex min-h-screen bg-muted/30">
             <Sidebar/>
 
             <div className="flex-1">
@@ -107,11 +107,11 @@ export default function PatientPortal(){
     {cards.map((card) => (
       <div
         key={card.title}
-        className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+        className="rounded-2xl border border-border bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
       >
-        <p className="text-sm text-gray-500">{card.title}</p>
+        <p className="text-sm text-muted-foreground">{card.title}</p>
 
-        <h2 className="mt-3 text-4xl font-bold text-slate-800">
+        <h2 className="mt-3 text-4xl font-bold text-card-foreground">
           {card.value}
         </h2>
       </div>
@@ -121,9 +121,9 @@ export default function PatientPortal(){
   {/* Main Grid */}
   <div className="grid gap-6 lg:grid-cols-3">
     {/* Upcoming Appointment */}
-    <div className="lg:col-span-2 rounded-3xl bg-white p-6 shadow-sm border border-slate-200">
+    <div className="lg:col-span-2 rounded-3xl bg-card p-6 shadow-sm border border-border">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">
+        <h2 className="text-2xl font-bold text-foreground">
           Upcoming Appointment
         </h2>
 
@@ -136,16 +136,16 @@ export default function PatientPortal(){
       </div>
 
       {dashboard?.upcomingAppointments?.length ? (
-        <div className="mt-6 rounded-2xl bg-slate-50 p-6 border">
-          <h3 className="text-xl font-semibold">
+        <div className="mt-6 rounded-2xl bg-muted/30 p-6 border border-border">
+          <h3 className="text-xl font-semibold text-foreground">
             {dashboard.upcomingAppointments[0].doctorId?.name}
           </h3>
 
-          <p className="text-gray-500">
+          <p className="text-muted-foreground">
             {dashboard.upcomingAppointments[0].doctorId?.specialization}
           </p>
 
-          <div className="mt-5 flex flex-wrap gap-6 text-gray-700">
+          <div className="mt-5 flex flex-wrap gap-6 text-foreground">
             <span>
               📅{" "}
               {new Date(
@@ -169,56 +169,53 @@ export default function PatientPortal(){
           </div>
         </div>
       ) : (
-        <div className="mt-8 rounded-2xl border-2 border-dashed border-slate-300 p-10 text-center text-gray-500">
+        <div className="mt-8 rounded-2xl border-2 border-dashed border-border p-10 text-center text-muted-foreground">
           No upcoming appointments.
         </div>
       )}
     </div>
 
     {/* Quick Actions */}
-    {/* Quick Actions */}
-<div className="rounded-3xl bg-white p-6 shadow-sm border border-slate-200">
-  <h2 className="text-2xl font-bold mb-6">
+<div className="rounded-3xl bg-card p-6 shadow-sm border border-border">
+  <h2 className="text-2xl font-bold mb-6 text-foreground">
     Quick Actions
   </h2>
 
   <div className="space-y-3">
     <Link
       href="/patient-portal/appointments"
-      className="flex items-center justify-between rounded-xl border border-slate-200 px-5 py-4 transition hover:bg-slate-50 hover:border-blue-400"
+      className="flex items-center justify-between rounded-xl border border-border px-5 py-4 transition hover:bg-muted hover:border-primary"
     >
       <div>
-        <p className="font-semibold text-slate-800">
+        <p className="font-semibold text-foreground">
           Book Appointment
         </p>
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-muted-foreground">
           Schedule a new consultation
         </p>
       </div>
 
-      <span className="text-slate-400 text-xl">→</span>
+      <span className="text-muted-foreground text-xl">→</span>
     </Link>
 
     <Link
-      href="/patient-portal/reports"
-      className="flex items-center justify-between rounded-xl border border-slate-200 px-5 py-4 transition hover:bg-slate-50 hover:border-blue-400"
+      href="/patient-portal/prescriptions"
+      className="flex items-center justify-between rounded-xl border border-border px-5 py-4 transition hover:bg-muted hover:border-primary"
     >
       <div>
-        <p className="font-semibold text-slate-800">
-          Medical Reports
+        <p className="font-semibold text-foreground">
+          View Prescriptions
         </p>
-        <p className="text-sm text-slate-500">
-          View prescriptions & lab reports
+        <p className="text-sm text-muted-foreground">
+          Access your medications
         </p>
       </div>
 
-      <span className="text-slate-400 text-xl">→</span>
+      <span className="text-muted-foreground text-xl">→</span>
     </Link>
 
     <Link
       href="/patient-portal/payment"
-      className="flex items-center justify-between rounded-xl border border-slate-200 px-5 py-4 transition hover:bg-slate-50 hover:border-blue-400"
-    >
       <div>
         <p className="font-semibold text-slate-800">
           Bills & Payments
