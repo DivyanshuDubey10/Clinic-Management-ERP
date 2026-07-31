@@ -31,9 +31,9 @@ export default function ReportsPage() {
           getPerformanceReport(),
           getInvoices({ limit: 5 })
         ]);
-        setDashboardData(dashRes.data || dashRes);
-        setPerformanceData(perfRes.data || perfRes);
-        setRecentInvoices(invRes.data?.data || invRes.data || []);
+        setDashboardData(dashRes?.data?.statistics || dashRes?.statistics || dashRes?.data || dashRes);
+        setPerformanceData(perfRes?.data || perfRes);
+        setRecentInvoices(invRes?.data?.data || invRes?.data || invRes || []);
       } catch (error) {
         console.error("Failed to load report data", error);
       } finally {
@@ -207,7 +207,7 @@ export default function ReportsPage() {
 
               <div className="space-y-4">
 
-                {departmentStats.map((dept) => (
+                {departmentStats.map((dept: any) => (
 
                   <div
                     key={dept.name}
@@ -229,62 +229,7 @@ export default function ReportsPage() {
 
           </div>
 
-          {/* Summary Cards */}
-
-          <div className="grid md:grid-cols-3 gap-6">
-
-            <div className="bg-white rounded-xl shadow p-6">
-
-              <Activity
-                className="text-green-600 mb-4"
-                size={36}
-              />
-
-              <h3 className="text-lg font-semibold">
-                Lab Tests
-              </h3>
-
-              <p className="text-4xl font-bold mt-3">
-                382
-              </p>
-
-            </div>
-
-            <div className="bg-white rounded-xl shadow p-6">
-
-              <FlaskConical
-                className="text-blue-600 mb-4"
-                size={36}
-              />
-
-              <h3 className="text-lg font-semibold">
-                Pending Reports
-              </h3>
-
-              <p className="text-4xl font-bold mt-3">
-                29
-              </p>
-
-            </div>
-
-            <div className="bg-white rounded-xl shadow p-6">
-
-              <Pill
-                className="text-purple-600 mb-4"
-                size={36}
-              />
-
-              <h3 className="text-lg font-semibold">
-                Medicines Dispensed
-              </h3>
-
-              <p className="text-4xl font-bold mt-3">
-                1,284
-              </p>
-
-            </div>
-
-          </div>
+          {/* Removed Summary Cards since real metrics are not yet available in the backend */}
 
           {/* Recent Invoices */}
 
@@ -338,7 +283,7 @@ export default function ReportsPage() {
                     </td>
 
                     <td className="p-4">
-                      {invoice.patientId?.firstName} {invoice.patientId?.lastName}
+                      {invoice.patientId ? `${invoice.patientId.firstName} ${invoice.patientId.lastName}` : "Unknown Patient"}
                     </td>
 
                     <td className="p-4">
