@@ -14,7 +14,7 @@ import {
   FileText,
   CreditCard,
   FlaskConical,
-  Star,
+
   Phone,
   Mail,
   MapPin,
@@ -44,7 +44,6 @@ export default function LandingPage() {
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-blue-100 relative overflow-hidden flex flex-col">
       {/* Background decorations */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-400/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-400/20 rounded-full blur-3xl pointer-events-none" />
 
       {/* ─── Navbar ──────────────────────────────────────────── */}
       <header className="container mx-auto px-6 py-6 flex items-center justify-between relative z-10 w-full max-w-7xl">
@@ -57,7 +56,6 @@ export default function LandingPage() {
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-500">
           <a href="#features" className="hover:text-blue-600 transition-colors">Features</a>
           <a href="#how-it-works" className="hover:text-blue-600 transition-colors">How It Works</a>
-          <a href="#testimonials" className="hover:text-blue-600 transition-colors">Testimonials</a>
           <a href="#contact" className="hover:text-blue-600 transition-colors">Contact</a>
         </nav>
         <div className="flex items-center gap-6">
@@ -204,42 +202,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ─── Testimonials ────────────────────────────────────── */}
-      <section id="testimonials" className="relative z-10 py-28 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-50 via-blue-50/30 to-slate-50 pointer-events-none" />
-        <div className="container mx-auto max-w-6xl px-6 relative">
-          <Reveal className="text-center mb-16">
-            <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">What People Say</span>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 mt-3">Trusted by Patients & Doctors</h2>
-          </Reveal>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { name: "Priya Sharma", role: "Patient", quote: "Booking appointments has never been this easy. I love being able to see my lab reports right on my phone!", stars: 5 },
-              { name: "Amit Patel", role: "Patient", quote: "The online payment and billing feature saved me so much time. Everything is transparent and easy to track.", stars: 5 },
-              { name: "Rahul Verma", role: "Patient", quote: "The digital prescriptions are a game-changer. No more keeping track of paper slips. Highly recommended!", stars: 5 },
-            ].map((t, i) => (
-              <Reveal key={t.name} delay={i * 0.12}>
-                <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col h-full">
-                  <div className="flex gap-1 mb-4">
-                    {Array.from({ length: t.stars }).map((_, j) => (
-                      <Star key={j} size={18} className="fill-amber-400 text-amber-400" />
-                    ))}
-                  </div>
-                  <p className="text-slate-600 leading-relaxed italic flex-1">&ldquo;{t.quote}&rdquo;</p>
-                  <div className="mt-6 pt-6 border-t border-slate-100">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold text-sm mb-2">
-                      {t.name.charAt(0)}
-                    </div>
-                    <p className="font-bold text-slate-900">{t.name}</p>
-                    <p className="text-sm text-slate-500">{t.role}</p>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ─── Why Choose Us ───────────────────────────────────── */}
       <section className="relative z-10 bg-white py-28">
@@ -332,7 +294,6 @@ export default function LandingPage() {
               <ul className="space-y-3 text-sm">
                 <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
                 <li><a href="#how-it-works" className="hover:text-white transition-colors">How It Works</a></li>
-                <li><a href="#testimonials" className="hover:text-white transition-colors">Testimonials</a></li>
                 <li><Link href="/register" className="hover:text-white transition-colors">Register</Link></li>
                 <li><Link href="/login" className="hover:text-white transition-colors">Sign In</Link></li>
               </ul>
