@@ -107,14 +107,14 @@ export default function AddPatientPage(){
 
 
     return(
-        <div className="flex bg-slate-100 min-h-screen">
+        <div className="flex bg-muted/30 min-h-screen">
             <Sidebar/>
 
             <div className="flex-1">
                 <Navbar/>
 
                 <main className="p-8">
-                    <div className="bg-white rounded-2xl shadow p-8 max-w-4xl mx-auto">
+                    <div className="bg-card rounded-2xl shadow p-8 max-w-4xl mx-auto">
                         <h1>Add Patient</h1>
 
                         <form onSubmit={handleSubmit}

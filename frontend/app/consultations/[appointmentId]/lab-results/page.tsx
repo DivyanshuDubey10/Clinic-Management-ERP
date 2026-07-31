@@ -41,7 +41,7 @@ export default function LabResultPage(){
                 <Navbar/>
 
                 <div className="p-6 space-y-6">
-                    <div className="bg-white rounded-xl shadow p-6">
+                    <div className="bg-card rounded-xl shadow p-6">
                         <h2 className="  text-2xl font-semibold mb-5">
                             Upload Lab Report
                         </h2>
@@ -67,7 +67,7 @@ export default function LabResultPage(){
                     </div>
 
 
-                    <div className="bg-white rounded-xl shadow p-6">
+                    <div className="bg-card rounded-xl shadow p-6">
                         <h2 className="text-2xl font-semibold mb-5">
                             Previous Reports
                         </h2>

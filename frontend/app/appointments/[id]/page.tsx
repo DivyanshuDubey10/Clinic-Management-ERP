@@ -27,7 +27,7 @@ export default function viewAppointmentPage(){
 
     if(!appointment){
         return(
-            <div className="flex min-h-screen bg-slate-100">
+            <div className="flex min-h-screen bg-muted/30">
                 <Sidebar/>
 
                 <div className="flex-1">
@@ -44,14 +44,14 @@ export default function viewAppointmentPage(){
 
 
     return(
-        <div className="flex min-h-screen bg-slate-100">
+        <div className="flex min-h-screen bg-muted/30">
             <Sidebar/>
 
             <div className="flex-1">
                 <Navbar/>
 
                 <main className="p-8">
-                    <div className="bg-white rounded-2xl shadow p-8 max-w-3xl">
+                    <div className="bg-card rounded-2xl shadow p-8 max-w-3xl">
 
                         <h1 className="text-3xl font-bold mb-8">
                             Appointment Details
@@ -60,7 +60,7 @@ export default function viewAppointmentPage(){
                         <div className="grid gap-6 md:grid-cols-2">
 
                             <div>
-                                <p className="text-gray-500">
+                                <p className="text-muted-foreground">
                                     Patient
                                 </p>
 
@@ -72,7 +72,7 @@ export default function viewAppointmentPage(){
 
 
                             <div>
-                                <p className="text-gray-500">Doctor</p>
+                                <p className="text-muted-foreground">Doctor</p>
 
                                 <h2 className="font-semibold text-lg">
                                     {appointment.doctorId?.name || "-"}
@@ -81,7 +81,7 @@ export default function viewAppointmentPage(){
 
 
                             <div>
-                                <p className="text-gray-500">Date</p>
+                                <p className="text-muted-foreground">Date</p>
                                 
                                 <h2 className="font-semibold text-lg">
                                     {appointment.appointmentDate
@@ -91,7 +91,7 @@ export default function viewAppointmentPage(){
                             </div>
 
                             <div>
-                                <p className="text-gray-500">Time Slot</p>
+                                <p className="text-muted-foreground">Time Slot</p>
 
                                 <h2 className="font-semibold text-lg">
                                     {appointment.appointmentDate
@@ -105,7 +105,7 @@ export default function viewAppointmentPage(){
 
 
                             <div>
-                                <p className="text-gray-500">Status</p>
+                                <p className="text-muted-foreground">Status</p>
 
                                 <h2 className="font-semibold text-lg">
                                     {appointment.status}
@@ -114,7 +114,7 @@ export default function viewAppointmentPage(){
 
 
                             <div>
-                                <p className="text-gray-500">Appointment ID</p>
+                                <p className="text-muted-foreground">Appointment ID</p>
 
                                 <h2 className="font-semibold text-lg">
                                     {appointment._id}

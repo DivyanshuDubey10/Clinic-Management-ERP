@@ -66,7 +66,7 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="relative grid min-h-screen overflow-hidden bg-slate-50 lg:grid-cols-[1.05fr_0.95fr]">
+    <main className="relative grid min-h-screen overflow-hidden bg-muted/50 lg:grid-cols-[1.05fr_0.95fr]">
 
       <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-cyan-200/35 blur-3xl" />
 
@@ -96,7 +96,7 @@ export default function LoginPage() {
 
         <div className="relative max-w-xl">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full 
-           border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-medium text-cyan-100">
+           border border-white/15 bg-card/10 px-3 py-1.5 text-xs font-medium text-cyan-100">
 
             <Sparkles size={14} />
 
@@ -141,11 +141,11 @@ export default function LoginPage() {
 
         <motion.div initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} 
           transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }} 
-          className="w-full max-w-md rounded-3xl border border-slate-200 
-             bg-white p-6 shadow-2xl shadow-slate-900/10 sm:p-9">
+          className="w-full max-w-md rounded-3xl border border-border 
+             bg-card p-6 shadow-2xl shadow-slate-900/10 sm:p-9">
 
           <div className="mb-8 lg:hidden">
-              <div className="flex items-center gap-2 font-bold text-slate-900">
+              <div className="flex items-center gap-2 font-bold text-foreground">
                   <HeartPulse className="text-cyan-600" size={23} />
                   Clinic Patient Portal
               </div>
@@ -158,12 +158,12 @@ export default function LoginPage() {
               <ShieldCheck size={22} />
             </div>
 
-              <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+              <h2 className="text-2xl font-bold tracking-tight text-foreground">
                 Welcome back
                 </h2>
 
 
-                <p className="mt-2 text-sm text-slate-500">
+                <p className="mt-2 text-sm text-muted-foreground">
                   Enter your details to access your workspace.
                   </p>
             </div>
@@ -180,8 +180,8 @@ export default function LoginPage() {
               value={form.email} 
               onChange={handleChange} 
               placeholder="you@clinic.com" 
-              className="h-12 w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-slate-800 
-              outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100" />
+              className="h-12 w-full rounded-xl border border-border bg-card py-3 pl-10 pr-4 text-sm text-card-foreground 
+              outline-none transition placeholder:text-muted-foreground hover:border-border focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100" />
 
             </Field>
 
@@ -197,15 +197,15 @@ export default function LoginPage() {
               onChange={handleChange} 
               placeholder="Enter your password"
 
-              className="h-12 w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-11 
-              text-sm text-slate-800 outline-none transition placeholder:text-slate-400 hover:border-slate-300 
+              className="h-12 w-full rounded-xl border border-border bg-card py-3 pl-10 pr-11 
+              text-sm text-card-foreground outline-none transition placeholder:text-muted-foreground hover:border-border 
               focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100" />
              
              <button 
               type="button" 
               onClick={() => setShowPassword((value) => !value)} 
               aria-label={showPassword ? "Hide password" : "Show password"}
-                className="absolute right-3 top-[37px] rounded-md p-1 text-slate-400 transition hover:text-cyan-600 
+                className="absolute right-3 top-[37px] rounded-md p-1 text-muted-foreground transition hover:text-cyan-600 
                 focus:outline-none focus:ring-2 focus:ring-cyan-400">
 
                 {showPassword 
@@ -250,7 +250,7 @@ export default function LoginPage() {
                 </motion.button>
           </form>
 
-          <p className="mt-7 text-center text-sm text-slate-500">
+          <p className="mt-7 text-center text-sm text-muted-foreground">
             Don&apos;t have an account?
              <Link href="/register" 
              className="font-semibold text-cyan-700 transition hover:text-cyan-900 hover:underline">
@@ -271,7 +271,7 @@ function Field({ label, icon, children }: { label: string; icon: ReactNode; chil
     <span className="mb-2 block text-sm font-medium text-slate-700">
       {label}
       </span>
-      <span className="pointer-events-none absolute left-3.5 top-[37px] text-slate-400">
+      <span className="pointer-events-none absolute left-3.5 top-[37px] text-muted-foreground">
         {icon}
         </span>
         {children}

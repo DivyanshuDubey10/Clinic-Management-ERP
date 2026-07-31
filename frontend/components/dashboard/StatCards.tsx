@@ -97,16 +97,16 @@ useEffect(() => {
         return (
          <div
             key={card.title}
-            className="w-full bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300"
+            className="w-full bg-card rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300"
             >
             <div className="flex justify-between">
 
               <div>
-                <p className="text-gray-500">
+                <p className="text-muted-foreground">
                   {card.title}
                 </p>
 
-                <p className="text-gray-500">
+                <p className="text-muted-foreground">
                     {/* {today} */}
                 </p>
 
@@ -132,7 +132,7 @@ useEffect(() => {
                     {card.change}
                   </span>
 
-                  <span className="text-gray-400 text-sm">
+                  <span className="text-muted-foreground text-sm">
                     this month
                   </span>
 

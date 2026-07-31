@@ -70,7 +70,7 @@ export default function PrescriptionPage() {
 
           <form
             onSubmit={handleSubmit}
-            className="bg-white rounded-xl shadow p-6"
+            className="bg-card rounded-xl shadow p-6"
           >
 
             <h2 className="text-2xl font-semibold mb-6">

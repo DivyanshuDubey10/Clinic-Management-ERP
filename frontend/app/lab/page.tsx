@@ -38,7 +38,7 @@ export default function LabOrdersPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex min-h-screen bg-muted/30">
       <Sidebar />
 
       <div className="flex-1 flex flex-col">
@@ -51,11 +51,11 @@ export default function LabOrdersPage() {
           <div className="flex justify-between items-center mb-8">
 
             <div>
-              <h1 className="text-3xl font-bold text-slate-800">
+              <h1 className="text-3xl font-bold text-card-foreground">
                 Laboratory Orders
               </h1>
 
-              <p className="text-slate-500 mt-1">
+              <p className="text-muted-foreground mt-1">
                 Manage patient laboratory investigations.
               </p>
             </div>
@@ -72,12 +72,12 @@ export default function LabOrdersPage() {
 
           {/* Search & Filter */}
 
-          <div className="bg-white rounded-xl shadow p-5 mb-6 flex gap-4">
+          <div className="bg-card rounded-xl shadow p-5 mb-6 flex gap-4">
 
             <div className="relative flex-1">
 
               <Search
-                className="absolute left-3 top-3 text-gray-400"
+                className="absolute left-3 top-3 text-muted-foreground"
                 size={18}
               />
 
@@ -116,7 +116,7 @@ export default function LabOrdersPage() {
 
           {/* Table */}
 
-          <div className="bg-white rounded-xl shadow overflow-hidden">
+          <div className="bg-card rounded-xl shadow overflow-hidden">
 
             <table className="w-full">
 
@@ -152,7 +152,7 @@ export default function LabOrdersPage() {
                   <tr>
                     <td
                       colSpan={7}
-                      className="text-center py-10 text-gray-500"
+                      className="text-center py-10 text-muted-foreground"
                     >
                       No Lab Orders Found
                     </td>
@@ -164,7 +164,7 @@ export default function LabOrdersPage() {
 
                     <tr
                       key={order._id}
-                      className="border-b hover:bg-slate-50"
+                      className="border-b hover:bg-muted/50"
                     >
 
                       <td className="px-6 py-4 font-medium">
@@ -198,7 +198,7 @@ export default function LabOrdersPage() {
                               ? "bg-blue-100 text-blue-700"
                               : order.status === "Sample Collected"
                               ? "bg-yellow-100 text-yellow-700"
-                              : "bg-slate-100 text-slate-700"
+                              : "bg-muted/30 text-slate-700"
                           }`}
                         >
                           {order.status}

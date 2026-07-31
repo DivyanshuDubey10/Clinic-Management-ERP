@@ -93,7 +93,7 @@ export default function SettingsPage() {
   );
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex min-h-screen bg-muted/30">
       <Sidebar />
 
       <div className="flex-1 flex flex-col">
@@ -101,8 +101,8 @@ export default function SettingsPage() {
 
         <main className="p-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-slate-800">Settings</h1>
-            <p className="text-slate-500 mt-2">
+            <h1 className="text-3xl font-bold text-card-foreground">Settings</h1>
+            <p className="text-muted-foreground mt-2">
               Manage your account and system settings.
             </p>
           </div>
@@ -114,7 +114,7 @@ export default function SettingsPage() {
                 <Link
                   key={index}
                   href={card.href}
-                  className="bg-white rounded-2xl shadow hover:shadow-lg transition p-6 group"
+                  className="bg-card rounded-2xl shadow hover:shadow-lg transition p-6 group"
                 >
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-4">
@@ -125,28 +125,28 @@ export default function SettingsPage() {
                       </div>
                       <div>
                         <h2 className="text-xl font-semibold">{card.title}</h2>
-                        <p className="text-gray-500 mt-1">{card.description}</p>
+                        <p className="text-muted-foreground mt-1">{card.description}</p>
                       </div>
                     </div>
-                    <ChevronRight className="text-gray-400 group-hover:text-blue-600" />
+                    <ChevronRight className="text-muted-foreground group-hover:text-blue-600" />
                   </div>
                 </Link>
               );
             })}
 
             {/* About Card (Visible to all) */}
-            <div className="bg-white rounded-2xl shadow p-6">
+            <div className="bg-card rounded-2xl shadow p-6">
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-xl bg-purple-100 flex items-center justify-center">
                   <Info size={28} className="text-purple-600" />
                 </div>
                 <div>
                   <h2 className="text-xl font-semibold">About</h2>
-                  <p className="text-gray-500 mt-1">Ziva Care System</p>
+                  <p className="text-muted-foreground mt-1">Ziva Care System</p>
                 </div>
               </div>
               <div className="mt-6 border-t pt-4">
-                <p className="text-sm text-gray-500">Version</p>
+                <p className="text-sm text-muted-foreground">Version</p>
                 <p className="font-semibold">v1.1.0</p>
               </div>
             </div>

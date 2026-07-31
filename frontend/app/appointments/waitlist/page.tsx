@@ -113,7 +113,7 @@ export default function WaitlistPage() {
         <div className="p-6 space-y-6">
           <form
             onSubmit={handleSubmit}
-            className="bg-white rounded-xl shadow p-6 space-y-4"
+            className="bg-card rounded-xl shadow p-6 space-y-4"
           >
             {/* <input
               type="text"
@@ -199,7 +199,7 @@ export default function WaitlistPage() {
             </button>
           </form>
 
-          <div className="bg-white rounded-xl shadow overflow-x-auto">
+          <div className="bg-card rounded-xl shadow overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-100">
                 <tr>

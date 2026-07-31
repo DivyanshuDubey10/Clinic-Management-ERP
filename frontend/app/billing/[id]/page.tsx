@@ -32,7 +32,7 @@ export default function InvoiceDetailsPage() {
 
   if (loading)
     return (
-      <div className="flex min-h-screen bg-slate-100">
+      <div className="flex min-h-screen bg-muted/30">
         <Sidebar />
         <div className="flex-1">
           <Navbar />
@@ -43,7 +43,7 @@ export default function InvoiceDetailsPage() {
 
   if (!invoice)
     return (
-      <div className="flex min-h-screen bg-slate-100">
+      <div className="flex min-h-screen bg-muted/30">
         <Sidebar />
         <div className="flex-1">
           <Navbar />
@@ -53,7 +53,7 @@ export default function InvoiceDetailsPage() {
     );
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex min-h-screen bg-muted/30">
 
       <Sidebar />
 
@@ -71,7 +71,7 @@ export default function InvoiceDetailsPage() {
                 {invoice.invoiceNumber}
               </h1>
 
-              <p className="text-gray-500">
+              <p className="text-muted-foreground">
                 {new Date(invoice.createdAt).toLocaleDateString()}
               </p>
 
@@ -101,7 +101,7 @@ export default function InvoiceDetailsPage() {
 
           <div className="grid md:grid-cols-2 gap-6">
 
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-card rounded-xl shadow p-6">
 
               <h2 className="text-xl font-semibold mb-4">
                 Patient Details
@@ -129,7 +129,7 @@ export default function InvoiceDetailsPage() {
 
             </div>
 
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-card rounded-xl shadow p-6">
 
               <h2 className="text-xl font-semibold mb-4">
                 Billing Summary
@@ -173,7 +173,7 @@ export default function InvoiceDetailsPage() {
 
           </div>
 
-          <div className="bg-white rounded-xl shadow p-6 mt-8">
+          <div className="bg-card rounded-xl shadow p-6 mt-8">
 
             <h2 className="text-xl font-semibold mb-5">
               Billing Items
@@ -237,7 +237,7 @@ export default function InvoiceDetailsPage() {
 
           <div className="grid md:grid-cols-2 gap-6 mt-8">
 
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-card rounded-xl shadow p-6">
 
               <h2 className="text-xl font-semibold mb-4">
                 Payment History
@@ -245,7 +245,7 @@ export default function InvoiceDetailsPage() {
 
               {invoice.paymentHistory.length === 0 ? (
 
-                <p className="text-gray-500">
+                <p className="text-muted-foreground">
                   No payments recorded
                 </p>
 
@@ -262,11 +262,11 @@ export default function InvoiceDetailsPage() {
                       ₹{payment.amount}
                     </p>
 
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-muted-foreground">
                       {payment.method}
                     </p>
 
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-muted-foreground">
                       {new Date(payment.date).toLocaleString()}
                     </p>
 
@@ -278,7 +278,7 @@ export default function InvoiceDetailsPage() {
 
             </div>
 
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-card rounded-xl shadow p-6">
 
               <h2 className="text-xl font-semibold mb-4">
                 Insurance

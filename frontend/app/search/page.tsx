@@ -73,53 +73,53 @@ function SearchContent() {
   return (
     <main className="p-8 max-w-7xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-900 mb-2">
+        <h1 className="text-3xl font-bold text-foreground mb-2">
           Search Results
         </h1>
-        <p className="text-slate-500">
-          Showing results for <span className="font-semibold text-slate-800">&quot;{query}&quot;</span>
+        <p className="text-muted-foreground">
+          Showing results for <span className="font-semibold text-card-foreground">&quot;{query}&quot;</span>
         </p>
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center p-20 text-slate-500">
+        <div className="flex items-center justify-center p-20 text-muted-foreground">
           <LoaderCircle size={32} className="animate-spin mr-3 text-cyan-600" />
           <span>Searching...</span>
         </div>
       ) : (
         <div className="space-y-8">
           {!query ? (
-            <div className="bg-white p-10 rounded-2xl border border-slate-200 text-center text-slate-500">
+            <div className="bg-card p-10 rounded-2xl border border-border text-center text-muted-foreground">
               <Search size={48} className="mx-auto mb-4 text-slate-300" />
               <p>Type something in the global search bar to see results.</p>
             </div>
           ) : patients.length === 0 && medicines.length === 0 ? (
-            <div className="bg-white p-10 rounded-2xl border border-slate-200 text-center text-slate-500">
+            <div className="bg-card p-10 rounded-2xl border border-border text-center text-muted-foreground">
               <Search size={48} className="mx-auto mb-4 text-slate-300" />
               <p>No results found for &quot;{query}&quot;.</p>
             </div>
           ) : (
             <>
               {patients.length > 0 && (
-                <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                  <div className="border-b border-slate-100 bg-slate-50/50 p-5 flex items-center gap-3">
+                <div className="bg-card rounded-2xl shadow-sm border border-border overflow-hidden">
+                  <div className="border-b border-slate-100 bg-muted/50/50 p-5 flex items-center gap-3">
                     <div className="bg-blue-100 text-blue-600 p-2 rounded-lg">
                       <User size={20} />
                     </div>
-                    <h2 className="text-lg font-bold text-slate-900">Patients ({patients.length})</h2>
+                    <h2 className="text-lg font-bold text-foreground">Patients ({patients.length})</h2>
                   </div>
                   <div className="divide-y divide-slate-100">
                     {patients.map(patient => (
                       <Link 
                         href={`/patients/${patient._id}`} 
                         key={patient._id}
-                        className="flex items-center justify-between p-5 hover:bg-slate-50 transition"
+                        className="flex items-center justify-between p-5 hover:bg-muted/50 transition"
                       >
                         <div>
-                          <p className="font-semibold text-slate-900">
+                          <p className="font-semibold text-foreground">
                             {patient.firstName} {patient.lastName}
                           </p>
-                          <p className="text-sm text-slate-500 flex gap-4 mt-1">
+                          <p className="text-sm text-muted-foreground flex gap-4 mt-1">
                             <span>ID: {patient.patientId || patient._id.slice(-6).toUpperCase()}</span>
                             <span>Phone: {patient.phone}</span>
                           </p>
@@ -132,25 +132,25 @@ function SearchContent() {
               )}
 
               {medicines.length > 0 && (
-                <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                  <div className="border-b border-slate-100 bg-slate-50/50 p-5 flex items-center gap-3">
+                <div className="bg-card rounded-2xl shadow-sm border border-border overflow-hidden">
+                  <div className="border-b border-slate-100 bg-muted/50/50 p-5 flex items-center gap-3">
                     <div className="bg-emerald-100 text-emerald-600 p-2 rounded-lg">
                       <Package size={20} />
                     </div>
-                    <h2 className="text-lg font-bold text-slate-900">Medicines ({medicines.length})</h2>
+                    <h2 className="text-lg font-bold text-foreground">Medicines ({medicines.length})</h2>
                   </div>
                   <div className="divide-y divide-slate-100">
                     {medicines.map(medicine => (
                       <Link 
                         href={`/pharmacy/edit/${medicine._id}`} 
                         key={medicine._id}
-                        className="flex items-center justify-between p-5 hover:bg-slate-50 transition"
+                        className="flex items-center justify-between p-5 hover:bg-muted/50 transition"
                       >
                         <div>
-                          <p className="font-semibold text-slate-900">
+                          <p className="font-semibold text-foreground">
                             {medicine.name}
                           </p>
-                          <p className="text-sm text-slate-500 mt-1">
+                          <p className="text-sm text-muted-foreground mt-1">
                             ID: {medicine._id.slice(-6).toUpperCase()}
                           </p>
                         </div>
@@ -170,11 +170,11 @@ function SearchContent() {
 
 export default function SearchPage() {
   return (
-    <div className="flex bg-slate-50 min-h-screen">
+    <div className="flex bg-muted/50 min-h-screen">
       <Sidebar />
       <div className="flex-1 min-w-0">
         <Navbar />
-        <Suspense fallback={<div className="p-8 text-center text-slate-500">Loading search...</div>}>
+        <Suspense fallback={<div className="p-8 text-center text-muted-foreground">Loading search...</div>}>
           <SearchContent />
         </Suspense>
       </div>

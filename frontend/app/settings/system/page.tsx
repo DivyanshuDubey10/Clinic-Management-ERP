@@ -69,17 +69,17 @@ export default function SystemSettingsPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex min-h-screen bg-muted/30">
       <Sidebar />
       <div className="flex-1 flex flex-col">
         <Navbar />
         <main className="p-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-slate-800">System Settings</h1>
-            <p className="text-slate-500 mt-2">Manage clinic branches and global configurations.</p>
+            <h1 className="text-3xl font-bold text-card-foreground">System Settings</h1>
+            <p className="text-muted-foreground mt-2">Manage clinic branches and global configurations.</p>
           </div>
 
-          <div className="bg-white rounded-xl shadow p-6 max-w-2xl">
+          <div className="bg-card rounded-xl shadow p-6 max-w-2xl">
             <h2 className="text-xl font-semibold mb-6">Clinic Details</h2>
             
             {error && <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">{error}</div>}

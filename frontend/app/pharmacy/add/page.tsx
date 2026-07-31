@@ -93,7 +93,7 @@ export default function AddMedicinePage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
+    <div className="flex min-h-screen bg-muted/50">
       <Sidebar />
 
       <div className="min-w-0 flex-1">
@@ -105,21 +105,21 @@ export default function AddMedicinePage() {
               <PackagePlus size={22} />
             </div>
 
-            <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground">
               Add Medicine
             </h1>
 
-            <p className="mt-2 text-slate-500">
+            <p className="mt-2 text-muted-foreground">
               Add medicine details, batch information, and opening stock.
             </p>
           </div>
 
           <form
             onSubmit={handleSubmit}
-            className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
+            className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8"
           >
             <section>
-              <h2 className="text-lg font-bold text-slate-900">
+              <h2 className="text-lg font-bold text-foreground">
                 Medicine Details
               </h2>
 
@@ -213,7 +213,7 @@ export default function AddMedicinePage() {
                         min="0"
                         step="0.01"
                         required
-                        className="w-full rounded-xl border border-slate-200 px-3.5 py-3 text-sm 
+                        className="w-full rounded-xl border border-border px-3.5 py-3 text-sm 
                         outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
                     />
                     </Field>
@@ -221,11 +221,11 @@ export default function AddMedicinePage() {
             </section>
 
             <section className="mt-8 border-t border-slate-100 pt-8">
-              <h2 className="text-lg font-bold text-slate-900">
+              <h2 className="text-lg font-bold text-foreground">
                 Initial Batch & Stock
               </h2>
 
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-sm text-muted-foreground">
                 This information will appear in the pharmacy inventory table.
               </p>
 
@@ -280,7 +280,7 @@ export default function AddMedicinePage() {
                 type="button"
                 onClick={() => router.push("/pharmacy")}
                 disabled={loading}
-                className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 disabled:opacity-50"
+                className="rounded-xl border border-border px-5 py-3 text-sm font-semibold text-slate-600 transition hover:bg-muted/50 disabled:opacity-50"
               >
                 Cancel
               </button>

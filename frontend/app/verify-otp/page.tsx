@@ -50,7 +50,7 @@ function VerifyOTPForm(){
 
 
     return(
-        <div className="min-h-screen grid lg:grid-cols-2 bg-slate-100">
+        <div className="min-h-screen grid lg:grid-cols-2 bg-muted/30">
             <div className="hidden lg:flex flex-col justify-center bg-gradient-to-br from-blue-700 to-blue-500 text-white p-20">
 
                 <div className="flex items-center gap-3 mb-8">
@@ -72,12 +72,12 @@ function VerifyOTPForm(){
             </div>
 
             <div className="flex justify-center items-center p-8">
-                <div className="bg-white shadow-2xl rounded-3xl w-full max-w-md p-10">
+                <div className="bg-card shadow-2xl rounded-3xl w-full max-w-md p-10">
                     <h2 className="text-3xl font-bold text-center">
                         Verify OTP
                     </h2>
 
-                    <p className="text-center text-gray-500 mt-2">
+                    <p className="text-center text-muted-foreground mt-2">
                         {email}
                     </p>
 
@@ -86,7 +86,7 @@ function VerifyOTPForm(){
                         <div className="relative">
 
                             <ShieldCheck size={20}
-                            className="absolute left-4 top-4 text-gray-400"/>
+                            className="absolute left-4 top-4 text-muted-foreground"/>
 
                             <input
                             type="text"

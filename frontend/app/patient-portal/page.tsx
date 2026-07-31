@@ -98,8 +98,8 @@ export default function PatientPortal(){
       </p>
     </div>
 
-    <div className="absolute -right-16 -top-16 h-72 w-72 rounded-full bg-white/10"></div>
-    <div className="absolute right-32 bottom-0 h-32 w-32 rounded-full bg-white/10"></div>
+    <div className="absolute -right-16 -top-16 h-72 w-72 rounded-full bg-card/10"></div>
+    <div className="absolute right-32 bottom-0 h-32 w-32 rounded-full bg-card/10"></div>
   </div>
 
   {/* Stats */}
@@ -236,7 +236,7 @@ export default function PatientPortal(){
 
   {/* Bottom Cards */}
   <div className="grid gap-6 md:grid-cols-2">
-    <div className="rounded-3xl border bg-white p-6 shadow-sm">
+    <div className="rounded-3xl border bg-card p-6 shadow-sm">
       <h2 className="text-xl font-bold">
         Recent Prescriptions
       </h2>
@@ -245,12 +245,12 @@ export default function PatientPortal(){
         {dashboard?.recentPrescriptions?.length || 0}
       </p>
 
-      <p className="text-gray-500 mt-2">
+      <p className="text-muted-foreground mt-2">
         Available prescriptions
       </p>
     </div>
 
-    <div className="rounded-3xl border bg-white p-6 shadow-sm">
+    <div className="rounded-3xl border bg-card p-6 shadow-sm">
       <h2 className="text-xl font-bold">
         Outstanding Bills
       </h2>
@@ -259,7 +259,7 @@ export default function PatientPortal(){
         {dashboard?.outstandingInvoices?.length || 0}
       </p>
 
-      <p className="text-gray-500 mt-2">
+      <p className="text-muted-foreground mt-2">
         Pending invoices
       </p>
     </div>

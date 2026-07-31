@@ -159,14 +159,14 @@ export default function EditAppointmentPage(){
 
 
     return(
-        <div className="flex min-h-screen bg-slate-100">
+        <div className="flex min-h-screen bg-muted/30">
             <Sidebar/>
 
             <div className="flex-1">
                 <Navbar/>
 
                 <main className="p-8">
-                    <div className="bg-white max-w-3xl rounded-2xl shadow p-8">
+                    <div className="bg-card max-w-3xl rounded-2xl shadow p-8">
 
                         <h1 className="text-3xl font-bold mb-8">
                             Edit Appointment

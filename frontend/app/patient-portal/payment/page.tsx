@@ -46,7 +46,7 @@ async function loadInvoices() {
 
   if(loading){
     return(
-      <div className="flex min-h-screen bg-slate-100">
+      <div className="flex min-h-screen bg-muted/30">
         <Sidebar/>
 
         <div className="flex-1">
@@ -151,7 +151,7 @@ async function loadInvoices() {
 
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex min-h-screen bg-muted/30">
       <Sidebar />
 
       <div className="flex-1">
@@ -164,13 +164,13 @@ async function loadInvoices() {
               Payments
             </h1>
 
-            <p className="text-slate-500 mt-2">
+            <p className="text-muted-foreground mt-2">
               View and pay your outstanding invoices.
             </p>
           </div>
 
           {invoices.length === 0 ? (
-            <div className="bg-white rounded-2xl border p-10 text-center text-slate-500">
+            <div className="bg-card rounded-2xl border p-10 text-center text-muted-foreground">
               No invoices found.
             </div>
 
@@ -181,7 +181,7 @@ async function loadInvoices() {
 
                 <div
                   key={invoice._id}
-                  className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6"
+                  className="bg-card rounded-2xl border border-border shadow-sm p-6"
                 >
                   <div className="flex justify-between">
 
@@ -191,7 +191,7 @@ async function loadInvoices() {
                         {invoice.invoiceNumber}
                       </h2>
 
-                      <p className="text-slate-500 mt-5">
+                      <p className="text-muted-foreground mt-5">
                         {new Date(
                           invoice.createdAt
                         ).toLocaleDateString()}
@@ -216,7 +216,7 @@ async function loadInvoices() {
                   <div className="grid md:grid-cols-3 gap-6 mt-6">
 
                     <div>
-                      <p className="text-sm text-slate-500">
+                      <p className="text-sm text-muted-foreground">
                         Grand Total
                       </p>
 
@@ -227,7 +227,7 @@ async function loadInvoices() {
                     </div>
 
                     <div>
-                      <p className="text-sm text-slate-500">
+                      <p className="text-sm text-muted-foreground">
                         Paid
                       </p>
 
@@ -239,7 +239,7 @@ async function loadInvoices() {
 
 
                     <div>
-                      <p className="text-sm text-slate-500">
+                      <p className="text-sm text-muted-foreground">
                         Due
                       </p>
 

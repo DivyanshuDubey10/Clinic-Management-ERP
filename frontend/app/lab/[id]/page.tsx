@@ -49,7 +49,7 @@ export default function LabOrderDetailsPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex min-h-screen bg-muted/30">
       <Sidebar />
 
       <div className="flex-1 flex flex-col">
@@ -64,7 +64,7 @@ export default function LabOrderDetailsPage() {
                 Lab Order Details
               </h1>
 
-              <p className="text-gray-500">
+              <p className="text-muted-foreground">
                 Review laboratory investigation details.
               </p>
             </div>
@@ -79,12 +79,12 @@ export default function LabOrderDetailsPage() {
 
           </div>
 
-          <div className="bg-white rounded-2xl shadow p-8 space-y-6">
+          <div className="bg-card rounded-2xl shadow p-8 space-y-6">
 
             <div className="grid grid-cols-2 gap-6">
 
               <div>
-                <p className="text-gray-500 text-sm">
+                <p className="text-muted-foreground text-sm">
                   Patient
                 </p>
 
@@ -95,7 +95,7 @@ export default function LabOrderDetailsPage() {
               </div>
 
               <div>
-                <p className="text-gray-500 text-sm">
+                <p className="text-muted-foreground text-sm">
                   Doctor
                 </p>
 
@@ -106,7 +106,7 @@ export default function LabOrderDetailsPage() {
               </div>
 
               <div>
-                <p className="text-gray-500 text-sm">
+                <p className="text-muted-foreground text-sm">
                   Test Name
                 </p>
 
@@ -116,7 +116,7 @@ export default function LabOrderDetailsPage() {
               </div>
 
               <div>
-                <p className="text-gray-500 text-sm">
+                <p className="text-muted-foreground text-sm">
                   Priority
                 </p>
 
@@ -126,7 +126,7 @@ export default function LabOrderDetailsPage() {
               </div>
 
               <div>
-                <p className="text-gray-500 text-sm">
+                <p className="text-muted-foreground text-sm">
                   Status
                 </p>
 
@@ -136,7 +136,7 @@ export default function LabOrderDetailsPage() {
               </div>
 
               <div>
-                <p className="text-gray-500 text-sm">
+                <p className="text-muted-foreground text-sm">
                   Ordered Date
                 </p>
 
@@ -151,11 +151,11 @@ export default function LabOrderDetailsPage() {
 
             <div>
 
-              <p className="text-gray-500 text-sm mb-2">
+              <p className="text-muted-foreground text-sm mb-2">
                 Notes
               </p>
 
-              <div className="border rounded-xl p-4 bg-slate-50">
+              <div className="border rounded-xl p-4 bg-muted/50">
                 {labOrder.notes || "No notes available."}
               </div>
 
@@ -163,11 +163,11 @@ export default function LabOrderDetailsPage() {
 
             <div>
 
-              <p className="text-gray-500 text-sm mb-2">
+              <p className="text-muted-foreground text-sm mb-2">
                 Result
               </p>
 
-              <div className="border rounded-xl p-4 bg-slate-50 min-h-[120px]">
+              <div className="border rounded-xl p-4 bg-muted/50 min-h-[120px]">
                 {labOrder.result || "Result not available yet."}
               </div>
 

@@ -51,7 +51,7 @@ export default function PatientAppointments() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen bg-slate-100">
+      <div className="flex min-h-screen bg-muted/30">
         <Sidebar />
         <div className="flex-1">
           <Navbar />
@@ -62,7 +62,7 @@ export default function PatientAppointments() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex min-h-screen bg-muted/30">
       <Sidebar />
 
       <div className="flex-1">
@@ -79,7 +79,7 @@ export default function PatientAppointments() {
                 My Appointments
               </h1>
 
-              <p className="text-gray-500 mt-1">
+              <p className="text-muted-foreground mt-1">
                 View and manage your appointments.
               </p>
             </div>
@@ -95,12 +95,12 @@ export default function PatientAppointments() {
 
           {appointments.length === 0 ? (
 
-            <div className="bg-white rounded-3xl p-16 text-center shadow">
+            <div className="bg-card rounded-3xl p-16 text-center shadow">
               <h2 className="text-2xl font-semibold">
                 No appointments found
               </h2>
 
-              <p className="text-gray-500 mt-2">
+              <p className="text-muted-foreground mt-2">
                 Book your first appointment.
               </p>
             </div>
@@ -113,7 +113,7 @@ export default function PatientAppointments() {
 
                 <div
                   key={appointment._id}
-                  className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6"
+                  className="bg-card rounded-3xl shadow-sm border border-border p-6"
                 >
 
                   <div className="flex justify-between items-start">
@@ -124,7 +124,7 @@ export default function PatientAppointments() {
                         {appointment.doctorId?.name}
                       </h2>
 
-                      <p className="text-gray-500">
+                      <p className="text-muted-foreground">
                         {appointment.doctorId?.specialization}
                       </p>
 
@@ -150,7 +150,7 @@ export default function PatientAppointments() {
                   <div className="grid md:grid-cols-3 gap-5 mt-6">
 
                     <div>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-muted-foreground">
                         Date
                       </p>
 
@@ -162,7 +162,7 @@ export default function PatientAppointments() {
                     </div>
 
                     <div>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-muted-foreground">
                         Time
                       </p>
 
@@ -177,7 +177,7 @@ export default function PatientAppointments() {
                     </div>
 
                     <div>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-muted-foreground">
                         Consultation Type
                       </p>
 
@@ -190,7 +190,7 @@ export default function PatientAppointments() {
 
                   <div className="mt-6">
 
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-muted-foreground">
                       Reason for Visit
                     </p>
 

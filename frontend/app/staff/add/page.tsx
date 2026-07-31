@@ -49,7 +49,7 @@ export default function AddStaffPage() {
     };
 
     return (
-        <div className="flex bg-slate-100 min-h-screen">
+        <div className="flex bg-muted/30 min-h-screen">
             <Sidebar />
 
             <div className="flex-1">
@@ -58,12 +58,12 @@ export default function AddStaffPage() {
                 <main className="p-8">
                     <div className="max-w-3xl mx-auto">
                         <div className="flex items-center gap-4 mb-8">
-                            <Link href="/staff" className="p-2 bg-white rounded-xl shadow-sm hover:bg-gray-50 transition">
-                                <ArrowLeft size={20} className="text-gray-600" />
+                            <Link href="/staff" className="p-2 bg-card rounded-xl shadow-sm hover:bg-muted/50 transition">
+                                <ArrowLeft size={20} className="text-muted-foreground" />
                             </Link>
                             <div>
                                 <h1 className="text-3xl font-bold">Add Staff Member</h1>
-                                <p className="text-gray-500">Create a new staff account</p>
+                                <p className="text-muted-foreground">Create a new staff account</p>
                             </div>
                         </div>
 
@@ -73,7 +73,7 @@ export default function AddStaffPage() {
                             </div>
                         )}
 
-                        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm p-8">
+                        <form onSubmit={handleSubmit} className="bg-card rounded-2xl shadow-sm p-8">
                             <div className="grid md:grid-cols-2 gap-6 mb-6">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
@@ -122,7 +122,7 @@ export default function AddStaffPage() {
                                         required
                                         value={formData.role}
                                         onChange={handleChange}
-                                        className="w-full border rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+                                        className="w-full border rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none bg-card"
                                     >
                                         <option value="doctor">Doctor</option>
                                         <option value="receptionist">Receptionist</option>
@@ -163,7 +163,7 @@ export default function AddStaffPage() {
                             </div>
 
                             <div className="flex justify-end pt-4 border-t mt-8">
-                                <Link href="/staff" className="px-6 py-3 text-gray-600 hover:text-gray-800 font-medium mr-4">
+                                <Link href="/staff" className="px-6 py-3 text-muted-foreground hover:text-foreground font-medium mr-4">
                                     Cancel
                                 </Link>
                                 <button

@@ -108,7 +108,7 @@ export default function EditMedicinePage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
+    <div className="flex min-h-screen bg-muted/50">
       <Sidebar />
 
       <div className="flex-1">
@@ -123,7 +123,7 @@ export default function EditMedicinePage() {
             Back
           </button>
 
-          <div className="rounded-2xl bg-white p-8 shadow">
+          <div className="rounded-2xl bg-card p-8 shadow">
             <h1 className="mb-8 text-3xl font-bold">
               Edit Medicine
             </h1>
@@ -239,7 +239,7 @@ function Input({
 
       <input
         {...props}
-        className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+        className="w-full rounded-xl border border-border px-4 py-3 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
       />
     </div>
   );

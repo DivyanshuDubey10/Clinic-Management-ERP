@@ -42,7 +42,7 @@ export default function RecentAppointments(){
 
     if(loading){
         return(
-            <div className="bg-white rounded-2xl shadow-md p-6 mt-8">
+            <div className="bg-card rounded-2xl shadow-md p-6 mt-8">
                 Loading appointments...
             </div>
         );
@@ -50,7 +50,7 @@ export default function RecentAppointments(){
 
 
     return(
-        <div className="bg-white rounded-2xl shadow-md p-6 mt-8">
+        <div className="bg-card rounded-2xl shadow-md p-6 mt-8">
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-bold">
                     Recent Appointments
@@ -63,7 +63,7 @@ export default function RecentAppointments(){
 
             <table className="w-full">
                 <thead>
-                    <tr className="text-left text-gray-500 border-b">
+                    <tr className="text-left text-muted-foreground border-b">
                         <th className="pb-3">Patient</th>
                         <th className="pb-3">Doctor</th>
                         <th className="pb-3">Date</th>
@@ -75,7 +75,7 @@ export default function RecentAppointments(){
                     {appointments.map((appointment)=>(
                         <tr
                           key={appointment._id}
-                          className="border-b hover:bg-gray-50"
+                          className="border-b hover:bg-muted/50"
                         >
                             <td className="py-4">
                                 {appointment.patientId

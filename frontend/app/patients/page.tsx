@@ -69,7 +69,7 @@ export default function patientPage(){
 
 
     return(
-        <div className="flex bg-slate-100 min-h-screen">
+        <div className="flex bg-muted/30 min-h-screen">
             <Sidebar/>
 
             <div className="flex-1">
@@ -82,7 +82,7 @@ export default function patientPage(){
                                 Patients
                             </h1>
 
-                            <p className="text-gray-500">
+                            <p className="text-muted-foreground">
                                 Manage all registered patients
                             </p>
 
@@ -95,11 +95,11 @@ export default function patientPage(){
                         </Link>
                     </div>
 
-                    <div className="bg-white rounded-2xl shadow-sm p-6">
+                    <div className="bg-card rounded-2xl shadow-sm p-6">
                         <div className="relative mb-6">
 
                             <Search size={18}
-                            className="absolute left-4 top-4 text-gray-400"/>
+                            className="absolute left-4 top-4 text-muted-foreground"/>
 
                             <input placeholder="Search Patient..."
                             value={search}
@@ -123,7 +123,7 @@ export default function patientPage(){
 
                             <tbody>
                                 {filtered.map((patient,index)=>(
-                                    <tr className="border-b hover:bg-gray-50"
+                                    <tr className="border-b hover:bg-muted/50"
                                     key={patient._id}>
 
                                         <td className="py-4">

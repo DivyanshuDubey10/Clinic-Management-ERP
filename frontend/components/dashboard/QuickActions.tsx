@@ -39,7 +39,7 @@ export default function QuickActions(){
                 {actions.map((action)=>(
                     <Link key={action.title}
                     href={action.href}
-                     className="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 flex flex-col items-center justify-center gap-4 hover:-translate-y-1">
+                     className="bg-card rounded-2xl shadow-md hover:shadow-xl transition p-6 flex flex-col items-center justify-center gap-4 hover:-translate-y-1">
                         <div className="bg-blue-100 text-blue-600 p-4 rounded-full">
                             {action.icon}
                         </div>

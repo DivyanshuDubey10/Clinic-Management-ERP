@@ -38,7 +38,7 @@ export default function FollowUpPage(){
                 <Navbar/>
 
                 <div className="p-6">
-                    <div className="bg-white rounded-xl shadow p-6">
+                    <div className="bg-card rounded-xl shadow p-6">
 
                         <div className="flex items-center gap-3 mb-6">
 

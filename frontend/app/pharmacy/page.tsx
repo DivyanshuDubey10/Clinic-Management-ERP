@@ -133,7 +133,7 @@ export default function PharmacyPage() {
   ).length;
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
+    <div className="flex min-h-screen bg-muted/50">
       <Sidebar />
 
       <div className="min-w-0 flex-1">
@@ -142,16 +142,16 @@ export default function PharmacyPage() {
         <main className="mx-auto max-w-7xl p-5 sm:p-8">
           <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <div className="mb-2 flex items-center gap-2 text-sm text-slate-500">
+              <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
                 <Package size={16} className="text-cyan-600" />
                 Pharmacy
               </div>
 
-              <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+              <h1 className="text-3xl font-bold tracking-tight text-foreground">
                 Pharmacy Inventory
               </h1>
 
-              <p className="mt-2 text-slate-500">
+              <p className="mt-2 text-muted-foreground">
                 Manage medicines, stock levels, and inventory alerts.
               </p>
             </div>
@@ -187,11 +187,11 @@ export default function PharmacyPage() {
             />
           </div>
 
-          <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="mb-6 rounded-2xl border border-border bg-card p-4 shadow-sm">
             <div className="relative">
               <Search
                 size={18}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
               />
 
               <input
@@ -199,15 +199,15 @@ export default function PharmacyPage() {
                 placeholder="Search medicines..."
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
-                className="w-full rounded-xl border border-slate-200 py-3 pl-11 pr-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
+                className="w-full rounded-xl border border-border py-3 pl-11 pr-4 text-sm outline-none transition placeholder:text-muted-foreground focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
               />
             </div>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[920px]">
-                <thead className="bg-slate-50 text-left text-xs uppercase tracking-wider text-slate-500">
+                <thead className="bg-muted/50 text-left text-xs uppercase tracking-wider text-muted-foreground">
                   <tr>
                     <th className="p-4 font-semibold">Medicine ID</th>
                     <th className="p-4 font-semibold">Medicine</th>
@@ -223,7 +223,7 @@ export default function PharmacyPage() {
                 <tbody className="divide-y divide-slate-100">
                   {loading && (
                     <tr>
-                      <td colSpan={8} className="p-10 text-center text-slate-500">
+                      <td colSpan={8} className="p-10 text-center text-muted-foreground">
                         <span className="inline-flex items-center gap-2">
                           <LoaderCircle size={18} className="animate-spin" />
                           Loading medicines...
@@ -242,7 +242,7 @@ export default function PharmacyPage() {
 
                   {!loading && !error && filteredMedicines.length === 0 && (
                     <tr>
-                      <td colSpan={8} className="p-10 text-center text-slate-500">
+                      <td colSpan={8} className="p-10 text-center text-muted-foreground">
                         No medicines found.
                       </td>
                     </tr>
@@ -259,13 +259,13 @@ export default function PharmacyPage() {
                       return (
                         <tr
                           key={medicine._id}
-                          className="transition hover:bg-slate-50/80"
+                          className="transition hover:bg-muted/50/80"
                         >
                           <td className="p-4 font-mono text-xs font-semibold text-slate-600">
                             {medicine._id.slice(-6).toUpperCase()}
                           </td>
 
-                          <td className="p-4 font-semibold text-slate-800">
+                          <td className="p-4 font-semibold text-card-foreground">
                             {medicine.name || "Unnamed medicine"}
                           </td>
 
@@ -277,7 +277,7 @@ export default function PharmacyPage() {
                             {formatDate(batch.expiryDate)}
                           </td>
 
-                          <td className="p-4 font-semibold text-slate-800">
+                          <td className="p-4 font-semibold text-card-foreground">
                             {stock}
                           </td>
 
@@ -342,15 +342,15 @@ export default function PharmacyPage() {
 function StatCard({
   label,
   value,
-  valueClassName = "text-slate-900",
+  valueClassName = "text-foreground",
 }: {
   label: string;
   value: number;
   valueClassName?: string;
 }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-      <p className="text-sm font-medium text-slate-500">{label}</p>
+    <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+      <p className="text-sm font-medium text-muted-foreground">{label}</p>
       <h2 className={`mt-2 text-3xl font-bold ${valueClassName}`}>{value}</h2>
     </div>
   );

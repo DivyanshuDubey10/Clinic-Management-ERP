@@ -82,7 +82,7 @@ export default function ConsultationsPage() {
 };
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex min-h-screen bg-muted/30">
       <Sidebar />
 
       <div className="flex-1 flex flex-col">
@@ -94,11 +94,11 @@ export default function ConsultationsPage() {
           <div className="flex justify-between items-center mb-8">
             <div>
 
-              <h1 className="text-3xl font-bold text-slate-800">
+              <h1 className="text-3xl font-bold text-card-foreground">
                 Consultation Workspace
               </h1>
 
-              <p className="text-slate-500 mt-1">
+              <p className="text-muted-foreground mt-1">
                 Manage consultation notes, prescriptions and lab investigations.
               </p>
 
@@ -115,10 +115,10 @@ export default function ConsultationsPage() {
           </div>
 
           {/* Search */}
-          <div className="bg-white rounded-xl shadow p-5 mb-6">
+          <div className="bg-card rounded-xl shadow p-5 mb-6">
             <div className="relative">
               <Search
-                className="absolute left-3 top-3 text-gray-400"
+                className="absolute left-3 top-3 text-muted-foreground"
                 size={18}
               />
 
@@ -144,7 +144,7 @@ export default function ConsultationsPage() {
           </div>
 
           {/* Table */}
-          <div className="bg-white rounded-xl shadow overflow-hidden">
+          <div className="bg-card rounded-xl shadow overflow-hidden">
             <table className="w-full">
               <thead className="bg-slate-800 text-white">
                 <tr>
@@ -162,7 +162,7 @@ export default function ConsultationsPage() {
                 {consultations.map((consultation) => (
                   <tr
                     key={consultation._id}
-                    className="border-b hover:bg-slate-50"
+                    className="border-b hover:bg-muted/50"
                   >
                     <td className="px-6 py-4 font-medium">
                       {consultation._id}
@@ -183,7 +183,7 @@ export default function ConsultationsPage() {
                     </td>
 
                     <td className="px-6 py-4">
-                      <span className="rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700">
+                      <span className="rounded-full bg-muted/30 px-3 py-1 text-sm font-medium text-slate-700">
                         {consultation.followUpDate ? new Date(consultation.followUpDate).toLocaleDateString() : "Not scheduled"}
                       </span>
                     </td>

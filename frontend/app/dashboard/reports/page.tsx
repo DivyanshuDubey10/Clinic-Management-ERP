@@ -86,7 +86,7 @@ export default function ReportsPage() {
     return (
       <div className="flex min-h-screen">
         <Sidebar />
-        <div className="flex-1 bg-slate-100">
+        <div className="flex-1 bg-muted/30">
           <Navbar />
           <div className="flex items-center justify-center h-[80vh]">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-600"></div>
@@ -100,7 +100,7 @@ export default function ReportsPage() {
     <div className="flex">
       <Sidebar />
 
-      <div className="flex-1 bg-slate-100 min-h-screen">
+      <div className="flex-1 bg-muted/30 min-h-screen">
         <Navbar />
 
         <div className="p-6 space-y-8">
@@ -110,7 +110,7 @@ export default function ReportsPage() {
               Reports & Analytics
             </h1>
 
-            <p className="text-gray-500 mt-1">
+            <p className="text-muted-foreground mt-1">
               Hospital performance overview
             </p>
           </div>
@@ -126,13 +126,13 @@ export default function ReportsPage() {
               return (
                 <div
                   key={item.title}
-                  className="bg-white rounded-2xl shadow-sm p-6"
+                  className="bg-card rounded-2xl shadow-sm p-6"
                 >
                   <div className="flex justify-between">
 
                     <div>
 
-                      <p className="text-gray-500">
+                      <p className="text-muted-foreground">
                         {item.title}
                       </p>
 
@@ -158,7 +158,7 @@ export default function ReportsPage() {
 
           <div className="grid lg:grid-cols-2 gap-6">
 
-            <div className="bg-white rounded-2xl p-6 shadow">
+            <div className="bg-card rounded-2xl p-6 shadow">
 
               <h2 className="text-xl font-semibold mb-6">
                 Appointment Status
@@ -199,7 +199,7 @@ export default function ReportsPage() {
 
             </div>
 
-            <div className="bg-white rounded-2xl shadow p-6">
+            <div className="bg-card rounded-2xl shadow p-6">
 
               <h2 className="text-xl font-semibold mb-6">
                 Department Visits
@@ -233,7 +233,7 @@ export default function ReportsPage() {
 
           {/* Recent Invoices */}
 
-          <div className="bg-white rounded-2xl shadow">
+          <div className="bg-card rounded-2xl shadow">
 
             <div className="p-6 border-b">
 
@@ -275,7 +275,7 @@ export default function ReportsPage() {
 
                   <tr
                     key={invoice.invoiceNumber || invoice._id}
-                    className="border-b hover:bg-gray-50"
+                    className="border-b hover:bg-muted/50"
                   >
 
                     <td className="p-4">

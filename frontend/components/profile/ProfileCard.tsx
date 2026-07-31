@@ -20,7 +20,7 @@
 //   const initial = user?.name?.trim().charAt(0).toUpperCase() || "U";
 
 //   return (
-//     <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+//     <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
 //       <div className="h-24 bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-700" />
 //       <div className="px-6 pb-6 text-center">
 //         <div className="relative -mt-14 mx-auto w-fit">
@@ -28,13 +28,13 @@
 //           <button type="button" aria-label="Change profile photo" className="absolute -bottom-2 -right-2 grid h-9 w-9 place-items-center rounded-xl border-2 border-white bg-slate-900 text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-400"><Camera size={17} /></button>
 //         </div>
 
-//         <h2 className="mt-5 truncate text-xl font-bold tracking-tight text-slate-900">{user?.name || "Your profile"}</h2>
-//         <p className="mt-1 text-sm capitalize text-slate-500">{user?.role || "Clinic user"}</p>
+//         <h2 className="mt-5 truncate text-xl font-bold tracking-tight text-foreground">{user?.name || "Your profile"}</h2>
+//         <p className="mt-1 text-sm capitalize text-muted-foreground">{user?.role || "Clinic user"}</p>
 //         <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700"><CheckCircle2 size={14} /> Active account</div>
 
 //         <div className="mt-6 grid grid-cols-2 divide-x divide-slate-100 border-y border-slate-100 py-4 text-left">
-//           <div className="px-3"><p className="text-xs text-slate-500">Account status</p><p className="mt-1 text-sm font-semibold text-slate-800">Verified</p></div>
-//           <div className="px-3"><div className="flex items-center gap-1.5 text-xs text-slate-500"><CalendarDays size={13} />Member since</div><p className="mt-1 text-sm font-semibold text-slate-800">Jul 2026</p></div>
+//           <div className="px-3"><p className="text-xs text-muted-foreground">Account status</p><p className="mt-1 text-sm font-semibold text-card-foreground">Verified</p></div>
+//           <div className="px-3"><div className="flex items-center gap-1.5 text-xs text-muted-foreground"><CalendarDays size={13} />Member since</div><p className="mt-1 text-sm font-semibold text-card-foreground">Jul 2026</p></div>
 //         </div>
 //       </div>
 //     </section>
@@ -63,7 +63,7 @@ export default function ProfileCard() {
   const initial = user?.name?.trim().charAt(0).toUpperCase() || "U";
 
   return (
-    <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
       <div className="h-24 bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-700" />
       <div className="px-6 pb-6 text-center">
         <div className="relative -mt-14 mx-auto w-fit">
@@ -71,13 +71,13 @@ export default function ProfileCard() {
           <button type="button" aria-label="Change profile photo" className="absolute -bottom-2 -right-2 grid h-9 w-9 place-items-center rounded-xl border-2 border-white bg-slate-900 text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-400"><Camera size={17} /></button>
         </div>
 
-        <h2 className="mt-5 truncate text-xl font-bold tracking-tight text-slate-900">{user?.name || "Your profile"}</h2>
-        <p className="mt-1 text-sm capitalize text-slate-500">{user?.role || "Clinic user"}</p>
+        <h2 className="mt-5 truncate text-xl font-bold tracking-tight text-foreground">{user?.name || "Your profile"}</h2>
+        <p className="mt-1 text-sm capitalize text-muted-foreground">{user?.role || "Clinic user"}</p>
         <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700"><CheckCircle2 size={14} /> Active account</div>
 
         <div className="mt-6 grid grid-cols-2 divide-x divide-slate-100 border-y border-slate-100 py-4 text-left">
-          <div className="px-3"><p className="text-xs text-slate-500">Account status</p><p className="mt-1 text-sm font-semibold text-slate-800">Verified</p></div>
-          <div className="px-3"><div className="flex items-center gap-1.5 text-xs text-slate-500"><CalendarDays size={13} />Member since</div><p className="mt-1 text-sm font-semibold text-slate-800">Jul 2026</p></div>
+          <div className="px-3"><p className="text-xs text-muted-foreground">Account status</p><p className="mt-1 text-sm font-semibold text-card-foreground">Verified</p></div>
+          <div className="px-3"><div className="flex items-center gap-1.5 text-xs text-muted-foreground"><CalendarDays size={13} />Member since</div><p className="mt-1 text-sm font-semibold text-card-foreground">Jul 2026</p></div>
         </div>
       </div>
     </section>

@@ -160,27 +160,27 @@ export default function Sidebar() {
         <div className={`flex min-w-0 items-center gap-3 overflow-hidden transition-all duration-300 ${collapsed ? "w-0 opacity-0" : "flex-1 opacity-100"}`}>
           <div>
             <h1 className="whitespace-nowrap font-semibold tracking-tight">Clinic ERP</h1>
-            <p className="whitespace-nowrap text-xs text-slate-400">Management system</p>
+            <p className="whitespace-nowrap text-xs text-muted-foreground">Management system</p>
           </div>
         </div>
         <button
           type="button"
           onClick={() => setCollapsed((value) => !value)}
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          className="grid h-9 w-9 shrink-0 place-items-center rounded-lg text-slate-400 transition hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/70"
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-lg text-muted-foreground transition hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/70"
         >
           <Menu size={19} />
         </button>
       </header>
 
       <nav aria-label="Primary navigation" className="relative flex-1 space-y-1 overflow-y-auto px-3 py-5">
-        {!collapsed && <p className="mb-3 px-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">Workspace</p>}
+        {!collapsed && <p className="mb-3 px-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">Workspace</p>}
         {menuItems.map((item) => {
           const Icon = item.icon;
           const groupHasActiveChild = item.children?.some((child) => isCurrentRoute(child.href));
           const isOpen = openMenu === item.title;
           const baseClasses = `group flex w-full items-center rounded-xl px-3 py-3 text-sm font-medium outline-none transition-all duration-200 focus:ring-2 focus:ring-cyan-400/70 ${collapsed ? "justify-center" : "gap-3"}`;
-          const stateClasses = isCurrentRoute(item.href) || groupHasActiveChild ? "bg-cyan-400/10 text-cyan-300 shadow-sm shadow-cyan-950/40" : "text-slate-400 hover:bg-slate-800/80 hover:text-slate-100";
+          const stateClasses = isCurrentRoute(item.href) || groupHasActiveChild ? "bg-cyan-400/10 text-cyan-300 shadow-sm shadow-cyan-950/40" : "text-muted-foreground hover:bg-slate-800/80 hover:text-slate-100";
 
           return (
             <div key={item.title}>
@@ -208,7 +208,7 @@ export default function Sidebar() {
                   <div className="overflow-hidden">
                     <div className="relative ml-6 mt-1 space-y-0.5 border-l border-slate-800 py-1 pl-4">
                       {item.children.map((child) => (
-                        <Link key={child.href} href={child.href} className={`relative flex items-center rounded-lg px-3 py-2 text-sm transition-all duration-200 before:absolute before:-left-[21px] before:h-1.5 before:w-1.5 before:rounded-full ${isCurrentRoute(child.href) ? "bg-cyan-400/10 font-medium text-cyan-300 before:bg-cyan-300 before:shadow-[0_0_10px_rgba(103,232,249,0.8)]" : "text-slate-500 before:bg-slate-700 hover:bg-slate-800/70 hover:text-slate-200"}`}>
+                        <Link key={child.href} href={child.href} className={`relative flex items-center rounded-lg px-3 py-2 text-sm transition-all duration-200 before:absolute before:-left-[21px] before:h-1.5 before:w-1.5 before:rounded-full ${isCurrentRoute(child.href) ? "bg-cyan-400/10 font-medium text-cyan-300 before:bg-cyan-300 before:shadow-[0_0_10px_rgba(103,232,249,0.8)]" : "text-muted-foreground before:bg-slate-700 hover:bg-slate-800/70 hover:text-slate-200"}`}>
                           {child.title}
                         </Link>
                       ))}
@@ -225,7 +225,7 @@ export default function Sidebar() {
         <div className={`rounded-xl bg-slate-900/70 transition-all duration-300 ${collapsed ? "p-2" : "p-3"}`}>
           <div className={`flex items-center ${collapsed ? "justify-center" : "gap-3"}`}>
             <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-emerald-400/10 text-emerald-400"><span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_9px_rgba(74,222,128,0.9)]" /></div>
-            {!collapsed && <div className="min-w-0"><p className="text-xs font-medium text-slate-200">System operational</p><p className="text-[11px] text-slate-500">Clinic ERP · v1.0</p></div>}
+            {!collapsed && <div className="min-w-0"><p className="text-xs font-medium text-slate-200">System operational</p><p className="text-[11px] text-muted-foreground">Clinic ERP · v1.0</p></div>}
           </div>
         </div>
       </footer>

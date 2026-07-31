@@ -25,7 +25,7 @@ export default function LoadingOverlay({ visible, message }: LoadingOverlayProps
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="flex flex-col items-center gap-4 rounded-2xl bg-white px-10 py-8 shadow-2xl"
+            className="flex flex-col items-center gap-4 rounded-2xl bg-card px-10 py-8 shadow-2xl"
           >
             <Loader2 size={36} className="animate-spin text-blue-600" />
             <p className="text-sm font-medium text-slate-600">

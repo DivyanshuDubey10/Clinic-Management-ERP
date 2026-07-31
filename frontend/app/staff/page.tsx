@@ -65,7 +65,7 @@ export default function StaffPage() {
     }
 
     return (
-        <div className="flex bg-slate-100 min-h-screen">
+        <div className="flex bg-muted/30 min-h-screen">
             <Sidebar />
 
             <div className="flex-1">
@@ -75,7 +75,7 @@ export default function StaffPage() {
                     <div className="flex justify-between items-center mb-8">
                         <div>
                             <h1 className="text-3xl font-bold">Staff Management</h1>
-                            <p className="text-gray-500">Manage doctors, receptionists, and pharmacists</p>
+                            <p className="text-muted-foreground">Manage doctors, receptionists, and pharmacists</p>
                         </div>
 
                         <Link href="/staff/add"
@@ -85,9 +85,9 @@ export default function StaffPage() {
                         </Link>
                     </div>
 
-                    <div className="bg-white rounded-2xl shadow-sm p-6">
+                    <div className="bg-card rounded-2xl shadow-sm p-6">
                         <div className="relative mb-6">
-                            <Search size={18} className="absolute left-4 top-4 text-gray-400" />
+                            <Search size={18} className="absolute left-4 top-4 text-muted-foreground" />
                             <input
                                 placeholder="Search Staff..."
                                 value={search}
@@ -109,17 +109,17 @@ export default function StaffPage() {
                             <tbody>
                                 {filtered.length === 0 ? (
                                     <tr>
-                                        <td colSpan={5} className="py-12 text-center text-gray-500">
+                                        <td colSpan={5} className="py-12 text-center text-muted-foreground">
                                             <ShieldAlert size={40} className="mx-auto mb-3 text-gray-300" />
                                             No staff members found.
                                         </td>
                                     </tr>
                                 ) : (
                                     filtered.map((staff, index) => (
-                                        <tr className="border-b hover:bg-gray-50" key={staff._id}>
+                                        <tr className="border-b hover:bg-muted/50" key={staff._id}>
                                             <td className="py-4">{index + 1}</td>
                                             <td className="font-medium">{staff.name}</td>
-                                            <td className="text-gray-500">{staff.email}</td>
+                                            <td className="text-muted-foreground">{staff.email}</td>
                                             <td>
                                                 <span className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider
                                                     ${staff.role === 'admin' ? 'bg-purple-100 text-purple-700' :

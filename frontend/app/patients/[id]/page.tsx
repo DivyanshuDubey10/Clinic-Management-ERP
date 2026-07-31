@@ -55,7 +55,7 @@ export default function PatientDetailsPage(){
 
     if (!patient) {
         return (
-            <div className="flex bg-slate-100 min-h-screen">
+            <div className="flex bg-muted/30 min-h-screen">
                 <Sidebar/>
                 <div className="flex-1">
                     <Navbar/>
@@ -67,14 +67,14 @@ export default function PatientDetailsPage(){
     
 
     return(
-        <div className="flex bg-slate-100 min-h-screen">
+        <div className="flex bg-muted/30 min-h-screen">
             <Sidebar/>
 
             <div className="flex-1">
                 <Navbar/>
 
                 <main className="p-8">
-                    <div className="bg-white rounded-2xl shadow p-8">
+                    <div className="bg-card rounded-2xl shadow p-8">
 
                         <h1 className="text-3xl font-bold mb-8">
                             Patient Details
@@ -161,7 +161,7 @@ function Info({
 }){
     return(
         <div>
-            <p className="text-gray-500 text-sm">{title}</p>
+            <p className="text-muted-foreground text-sm">{title}</p>
             <p className="font-semibold text-lg">
                 {value || "-"}
             </p>

@@ -269,22 +269,22 @@ export default function AvailabilityPage() {
         <div className="p-6 space-y-6">
 
             <div>
-            <h1 className="text-3xl font-bold text-gray-800">
+            <h1 className="text-3xl font-bold text-foreground">
                 Doctor Availability
             </h1>
 
-            <p className="text-gray-500 mt-1">
+            <p className="text-muted-foreground mt-1">
                 Manage doctors' working days, timings and leave schedule.
             </p>
             </div>
 
             {loading ? (
-            <div className="bg-white rounded-xl shadow p-6 text-center">
+            <div className="bg-card rounded-xl shadow p-6 text-center">
                 Loading doctors...
             </div>
             ) : (
             <>
-                <div className="bg-white rounded-xl shadow p-6">
+                <div className="bg-card rounded-xl shadow p-6">
                 <label className="block text-sm font-semibold mb-2">
                     Select Doctor
                 </label>
@@ -329,12 +329,12 @@ export default function AvailabilityPage() {
                             {doctor.name}
                         </h2>
 
-                        <p className="text-gray-600">
+                        <p className="text-muted-foreground">
                             {doctor.specialization ||
                             "No specialization"}
                         </p>
 
-                        <p className="text-sm text-gray-500 mt-2">
+                        <p className="text-sm text-muted-foreground mt-2">
                             {doctor.email}
                         </p>
                         </>
@@ -345,7 +345,7 @@ export default function AvailabilityPage() {
 
                 <form
                 onSubmit={handleSubmit}
-                className="bg-white rounded-xl shadow p-6 space-y-6"
+                className="bg-card rounded-xl shadow p-6 space-y-6"
                 >
 
                 <div>
@@ -502,13 +502,13 @@ export default function AvailabilityPage() {
 
                 </form>
 
-                <div className="bg-white rounded-xl shadow p-6">
+                <div className="bg-card rounded-xl shadow p-6">
                 <h2 className="text-xl font-semibold mb-4">
                     Doctors
                 </h2>
 
                 {doctors.length === 0 ? (
-                    <p className="text-gray-500">
+                    <p className="text-muted-foreground">
                     No doctors found.
                     </p>
                 ) : (
@@ -524,7 +524,7 @@ export default function AvailabilityPage() {
                             {doctor.name}
                         </h3>
 
-                        <p className="text-gray-600">
+                        <p className="text-muted-foreground">
                             {doctor.specialization ||
                             "No specialization"}
                         </p>

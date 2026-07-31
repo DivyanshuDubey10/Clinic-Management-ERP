@@ -85,7 +85,7 @@ export default function appointmentPage(){
 
 
     return(
-        <div className="flex bg-slate-100 min-h-screen">
+        <div className="flex bg-muted/30 min-h-screen">
             <Sidebar/>
 
             <div className="flex-1">
@@ -101,7 +101,7 @@ export default function appointmentPage(){
                                 Appointments
                             </h1>
 
-                            <p className="text-gray-500">
+                            <p className="text-muted-foreground">
                                 Manage all clinic appointments
                             </p>
                         </div>
@@ -114,10 +114,10 @@ export default function appointmentPage(){
 
                     </div>
 
-                    <div className="bg-white rounded-2xl shadow-sm p-5">
+                    <div className="bg-card rounded-2xl shadow-sm p-5">
                         <div className="relative mb-5">
 
-                            <Search className="absolute left-4 top-3.5 text-gray-400"
+                            <Search className="absolute left-4 top-3.5 text-muted-foreground"
                                 size={18}
                             />
 
@@ -142,7 +142,7 @@ export default function appointmentPage(){
                                     No Appointments Found
                                 </h2>
 
-                                <p className="text-gray-500 mt-2">
+                                <p className="text-muted-foreground mt-2">
                                     Schedule your first appointment.
                                 </p>
                             </div>
@@ -167,7 +167,7 @@ export default function appointmentPage(){
                                     <tbody>
                                         {filteredAppointments.map((appointment:any)=>(
                                             <tr key={appointment._id}
-                                            className="border-b hover:bg-slate-50">
+                                            className="border-b hover:bg-muted/50">
 
                                                 <td className="py-4">
                                                     {appointment.patientId?.firstName}{" "}
@@ -244,7 +244,7 @@ export default function appointmentPage(){
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto mb-8">
 
                         <Link href="/appointments/calendar"
-                        className="bg-white rounded-2xl shadow-sm border hover:shadow-lg hover:border-blue-500 transition-all p-5">
+                        className="bg-card rounded-2xl shadow-sm border hover:shadow-lg hover:border-blue-500 transition-all p-5">
                             
                             <CalendarDays className="text-blue-600 mb-4" size={34}/>
 
@@ -252,7 +252,7 @@ export default function appointmentPage(){
                                 Calendar
                             </h3>
 
-                            <p className="text-sm text-gray-500 mt-1">
+                            <p className="text-sm text-muted-foreground mt-1">
                                 Monthly & Weekly appointment schedule
                             </p>
                         </Link>
@@ -260,7 +260,7 @@ export default function appointmentPage(){
 
                            <Link
                                 href="/appointments/queue"
-                                className="bg-white rounded-2xl shadow-sm border hover:shadow-lg hover:border-green-500 transition-all p-5"
+                                className="bg-card rounded-2xl shadow-sm border hover:shadow-lg hover:border-green-500 transition-all p-5"
                             >
                                 <Eye className="text-green-600 mb-4" size={34} />
 
@@ -268,14 +268,14 @@ export default function appointmentPage(){
                                     Live Queue
                                 </h3>
 
-                                <p className="text-sm text-gray-500 mt-1">
+                                <p className="text-sm text-muted-foreground mt-1">
                                     Monitor today's patient queue
                                 </p>
                             </Link>
 
                         <Link
                             href="/appointments/waitlist"
-                            className="bg-white rounded-2xl shadow-sm border hover:shadow-lg hover:border-orange-500 transition-all p-5"
+                            className="bg-card rounded-2xl shadow-sm border hover:shadow-lg hover:border-orange-500 transition-all p-5"
                         >
                             <Search className="text-orange-500 mb-4" size={34} />
 
@@ -283,14 +283,14 @@ export default function appointmentPage(){
                                 Waitlist
                             </h3>
 
-                            <p className="text-sm text-gray-500 mt-1">
+                            <p className="text-sm text-muted-foreground mt-1">
                                 Manage patients waiting for slots
                             </p>
                         </Link>
 
                         <Link
                             href="/availability"
-                            className="bg-white rounded-2xl shadow-sm border hover:shadow-lg hover:border-purple-500 transition-all p-5"
+                            className="bg-card rounded-2xl shadow-sm border hover:shadow-lg hover:border-purple-500 transition-all p-5"
                         >
                             <Pencil className="text-purple-600 mb-4" size={34} />
 
@@ -298,7 +298,7 @@ export default function appointmentPage(){
                                 Availability
                             </h3>
 
-                            <p className="text-sm text-gray-500 mt-1">
+                            <p className="text-sm text-muted-foreground mt-1">
                                 Configure doctor schedules
                             </p>
                         </Link>

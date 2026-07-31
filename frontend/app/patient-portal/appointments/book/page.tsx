@@ -97,12 +97,12 @@ export default function BookAppointmentPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex min-h-screen bg-muted/30">
       <Sidebar />
       <div className="flex-1">
         <Navbar />
         <main className="p-8">
-          <div className="bg-white rounded-2xl shadow p-8 max-w-3xl">
+          <div className="bg-card rounded-2xl shadow p-8 max-w-3xl">
             <h1 className="text-3xl font-bold mb-8">Book Appointment</h1>
 
             <form onSubmit={handleSubmit} className="space-y-5">

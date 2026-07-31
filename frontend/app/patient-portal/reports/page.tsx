@@ -61,7 +61,7 @@ export default function ReportPage(){
 
     if(loading){
         return(
-            <div className="flex min-h-screen bg-slate-100">
+            <div className="flex min-h-screen bg-muted/30">
                 <Sidebar/>
 
                 <div className="flex-1">
@@ -74,7 +74,7 @@ export default function ReportPage(){
 
 
    return (
-        <div className="flex min-h-screen bg-slate-100">
+        <div className="flex min-h-screen bg-muted/30">
             <Sidebar/>
 
             <div className="flex-1">
@@ -88,7 +88,7 @@ export default function ReportPage(){
                         Medical Reports
                     </h1>
 
-                    <p className="text-slate-500 mt-2">
+                    <p className="text-muted-foreground mt-2">
                         Access your Prescriptions and Laboratory reports
                     </p>
                   </div>
@@ -101,7 +101,7 @@ export default function ReportPage(){
                     </h2>
 
                     {prescriptions.length === 0 ? (
-                        <div className="bg-white rounded-2xl border p-10 text-center text-slate-500">
+                        <div className="bg-card rounded-2xl border p-10 text-center text-muted-foreground">
                             No prescriptions available
                         </div>
 
@@ -110,7 +110,7 @@ export default function ReportPage(){
                             {prescriptions.map((prescription)=>(
                                 <div
                                   key={prescription._id}
-                                  className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6"
+                                  className="bg-card rounded-2xl border border-border shadow-sm p-6"
                                 >
                                     <div className="flex justify-between items-start">
 
@@ -119,11 +119,11 @@ export default function ReportPage(){
                                                 Dr. {prescription.doctorId?.name}
                                             </h3>
 
-                                            <p className="text-slate-500">
+                                            <p className="text-muted-foreground">
                                                 {prescription.doctorId?.specialization}
                                             </p>
 
-                                            <p className="text-sm text-slate-400 mt-2">
+                                            <p className="text-sm text-muted-foreground mt-2">
                                                 {new Date(
                                                     prescription.createdAt
                                                 ).toLocaleDateString()}
@@ -135,7 +135,7 @@ export default function ReportPage(){
 
                                         <button
                                           onClick={()=> downloadPrescription(prescription._id)}
-                                          className="border border-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 transition"
+                                          className="border border-border px-4 py-2 rounded-lg hover:bg-muted/50 transition"
                                         >
                                             Download PDF
                                         </button>
@@ -166,7 +166,7 @@ export default function ReportPage(){
                                     </div>
 
                                     {prescription.notes && (
-                                        <div className="mt-5 rounded-xl bg-slate-50 p-4">
+                                        <div className="mt-5 rounded-xl bg-muted/50 p-4">
                                             <p className="text-sm font-medium">
                                                 Doctor's Notes
                                             </p>
@@ -196,7 +196,7 @@ export default function ReportPage(){
 
                     {labOrders.length === 0 ? (
 
-                        <div className="bg-white rounded-2xl border p-10 text-center text-center text-slate-500">
+                        <div className="bg-card rounded-2xl border p-10 text-center text-center text-muted-foreground">
                             No Laboratory Reports available
                         </div>
 
@@ -207,7 +207,7 @@ export default function ReportPage(){
 
                                 <div
                                   key={report._id}
-                                  className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6"
+                                  className="bg-card rounded-2xl border border-border shadow-sm p-6"
                                 >
                                     <div className="flex justify-between items-start">
 
@@ -216,11 +216,11 @@ export default function ReportPage(){
                                                 Dr. {report.doctorId?.name}
                                             </h3>
 
-                                            <p className="text-slate-500">
+                                            <p className="text-muted-foreground">
                                                 {report.doctorId?.specialization}
                                             </p>
 
-                                            <p className="text-sm text-slate-400 mt-2">
+                                            <p className="text-sm text-muted-foreground mt-2">
                                                 {new Date(report.createdAt).toLocaleDateString()}
                                             </p>
 
@@ -228,7 +228,7 @@ export default function ReportPage(){
 
                                         <button
                                           onClick={()=> downloadLabReports(report._id)}
-                                          className="border border-slate-300 px-4 py-2 rounded-lg hover:bg-slate-50 transition"
+                                          className="border border-border px-4 py-2 rounded-lg hover:bg-muted/50 transition"
                                         >
                                             Download Report
                                         </button>
@@ -247,7 +247,7 @@ export default function ReportPage(){
 
                                                     <span
                                                       key={index}
-                                                      className="rounded-full bg-slate-100 px-3 py-1 text-sm"
+                                                      className="rounded-full bg-muted/30 px-3 py-1 text-sm"
                                                     >
                                                         {test}
                                                     </span>

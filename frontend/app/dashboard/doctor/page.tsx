@@ -70,11 +70,11 @@ export default function DoctorDashboard(){
                 <div className="p-6 space-y-6">
                     <div className="grid md:grid-cols-3 gap-6">
 
-                        <div className="bg-white rounded-xl shadow p-5">
+                        <div className="bg-card rounded-xl shadow p-5">
 
                             <CalendarDays className="text-blue-600 mb-3" size={28}/>
 
-                            <h2 className="text-gray-500">
+                            <h2 className="text-muted-foreground">
                                 Today's Appointment
                             </h2>
                             <p className="text-3xl font-bold">
@@ -82,10 +82,10 @@ export default function DoctorDashboard(){
                             </p>
                         </div>
 
-                        <div className="bg-white rounded-xl shadow p-5">
+                        <div className="bg-card rounded-xl shadow p-5">
                             <Users className="text-green-600 mb-3" size={28}/>
 
-                            <h2 className="text-gray-500">
+                            <h2 className="text-muted-foreground">
                                 Patients Waitlist
                             </h2>
 
@@ -95,20 +95,20 @@ export default function DoctorDashboard(){
                         </div>
 
 
-                        <div className="bg-white rounded-xl shadow p-5">
+                        <div className="bg-card rounded-xl shadow p-5">
                             <Clock3 className="text-orange-600 mb-3" size={28}/>
 
-                            <h2 className="text-gray-500">Completed Today</h2>
+                            <h2 className="text-muted-foreground">Completed Today</h2>
                             <p className="text-3xl font-bold">
                                 {dashboard?.stats?.completed || 0}
                             </p>
                         </div>
 
-                        <div className="bg-white rounded-xl shadow p-5">
+                        <div className="bg-card rounded-xl shadow p-5">
                             <div className="relative mb-5">
 
                                 <Search size={18}
-                                  className="absolute left-3 top-3 text-gray-400"/>
+                                  className="absolute left-3 top-3 text-muted-foreground"/>
 
                                 <input
                                   type="text"

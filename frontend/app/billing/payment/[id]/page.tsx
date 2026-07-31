@@ -168,7 +168,7 @@ export default function PaymentCollectionPage() {
 
   if (loading)
     return (
-      <div className="flex min-h-screen bg-slate-100">
+      <div className="flex min-h-screen bg-muted/30">
         <Sidebar />
         <div className="flex-1">
           <Navbar />
@@ -180,7 +180,7 @@ export default function PaymentCollectionPage() {
     );
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex min-h-screen bg-muted/30">
 
       <Sidebar />
 
@@ -190,7 +190,7 @@ export default function PaymentCollectionPage() {
 
         <main className="p-8">
 
-          <div className="bg-white rounded-2xl shadow max-w-3xl mx-auto p-8">
+          <div className="bg-card rounded-2xl shadow max-w-3xl mx-auto p-8">
 
             <h1 className="text-3xl font-bold mb-8">
               Collect Payment
@@ -323,7 +323,7 @@ export default function PaymentCollectionPage() {
 
               )}
 
-              <div className="bg-slate-100 rounded-xl p-5">
+              <div className="bg-muted/30 rounded-xl p-5">
 
                 <div className="flex justify-between text-lg">
 

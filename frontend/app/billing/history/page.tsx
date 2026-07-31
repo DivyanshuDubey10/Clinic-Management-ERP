@@ -74,7 +74,7 @@ export default function BillingHistoryPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen bg-slate-100">
+      <div className="flex min-h-screen bg-muted/30">
         <Sidebar />
 
         <div className="flex-1">
@@ -89,7 +89,7 @@ export default function BillingHistoryPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex min-h-screen bg-muted/30">
 
       <Sidebar />
 
@@ -106,7 +106,7 @@ export default function BillingHistoryPage() {
                 Billing History
               </h1>
 
-              <p className="text-gray-500">
+              <p className="text-muted-foreground">
                 View and manage invoices
               </p>
             </div>
@@ -120,7 +120,7 @@ export default function BillingHistoryPage() {
 
           </div>
 
-          <div className="bg-white rounded-xl shadow p-6 mb-6">
+          <div className="bg-card rounded-xl shadow p-6 mb-6">
 
             <div className="grid md:grid-cols-2 gap-4">
 
@@ -128,7 +128,7 @@ export default function BillingHistoryPage() {
 
                 <Search
                   size={18}
-                  className="absolute left-3 top-3.5 text-gray-400"
+                  className="absolute left-3 top-3.5 text-muted-foreground"
                 />
 
                 <input
@@ -161,11 +161,11 @@ export default function BillingHistoryPage() {
 
           </div>
 
-          <div className="bg-white rounded-xl shadow overflow-hidden">
+          <div className="bg-card rounded-xl shadow overflow-hidden">
 
             <table className="w-full">
 
-              <thead className="bg-slate-100">
+              <thead className="bg-muted/30">
 
                 <tr>
 
@@ -208,7 +208,7 @@ export default function BillingHistoryPage() {
 
                     <td
                       colSpan={7}
-                      className="text-center p-8 text-gray-500"
+                      className="text-center p-8 text-muted-foreground"
                     >
                       No invoices found.
                     </td>
@@ -221,7 +221,7 @@ export default function BillingHistoryPage() {
 
                     <tr
                       key={invoice._id}
-                      className="border-t hover:bg-slate-50"
+                      className="border-t hover:bg-muted/50"
                     >
 
                       <td className="p-4 font-medium">
@@ -310,9 +310,9 @@ export default function BillingHistoryPage() {
 
           <div className="grid md:grid-cols-4 gap-6 mt-8">
 
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-card rounded-xl shadow p-6">
 
-              <p className="text-gray-500 text-sm">
+              <p className="text-muted-foreground text-sm">
                 Total Invoices
               </p>
 
@@ -322,9 +322,9 @@ export default function BillingHistoryPage() {
 
             </div>
 
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-card rounded-xl shadow p-6">
 
-              <p className="text-gray-500 text-sm">
+              <p className="text-muted-foreground text-sm">
                 Total Revenue
               </p>
 
@@ -342,9 +342,9 @@ export default function BillingHistoryPage() {
 
             </div>
 
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-card rounded-xl shadow p-6">
 
-              <p className="text-gray-500 text-sm">
+              <p className="text-muted-foreground text-sm">
                 Pending Amount
               </p>
 
@@ -362,9 +362,9 @@ export default function BillingHistoryPage() {
 
             </div>
 
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-card rounded-xl shadow p-6">
 
-              <p className="text-gray-500 text-sm">
+              <p className="text-muted-foreground text-sm">
                 Paid Invoices
               </p>
 

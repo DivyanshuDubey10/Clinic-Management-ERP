@@ -41,17 +41,17 @@ export default function SecuritySettingsPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex min-h-screen bg-muted/30">
       <Sidebar />
       <div className="flex-1 flex flex-col">
         <Navbar />
         <main className="p-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-slate-800">Security</h1>
-            <p className="text-slate-500 mt-2">Update your account password and security settings.</p>
+            <h1 className="text-3xl font-bold text-card-foreground">Security</h1>
+            <p className="text-muted-foreground mt-2">Update your account password and security settings.</p>
           </div>
 
-          <div className="bg-white rounded-xl shadow p-6 max-w-lg">
+          <div className="bg-card rounded-xl shadow p-6 max-w-lg">
             <h2 className="text-xl font-semibold mb-6">Change Password</h2>
 
             {error && <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">{error}</div>}

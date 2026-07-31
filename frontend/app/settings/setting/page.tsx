@@ -38,7 +38,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex min-h-screen bg-muted/30">
       <Sidebar />
 
       <div className="flex-1 flex flex-col">
@@ -52,7 +52,7 @@ export default function SettingsPage() {
               <h1 className="text-3xl font-bold">
                 Settings
               </h1>
-              <p className="text-gray-500">
+              <p className="text-muted-foreground">
                 Manage your account preferences.
               </p>
             </div>
@@ -60,7 +60,7 @@ export default function SettingsPage() {
 
           {/* Profile */}
 
-          <div className="bg-white rounded-xl shadow p-6 mb-6">
+          <div className="bg-card rounded-xl shadow p-6 mb-6">
 
             <div className="flex items-center gap-2 mb-5">
               <User className="text-blue-600" />
@@ -107,7 +107,7 @@ export default function SettingsPage() {
 
           {/* Password */}
 
-          <div className="bg-white rounded-xl shadow p-6 mb-6">
+          <div className="bg-card rounded-xl shadow p-6 mb-6">
 
             <div className="flex items-center gap-2 mb-5">
               <Lock className="text-red-500" />
@@ -151,7 +151,7 @@ export default function SettingsPage() {
 
           {/* Preferences */}
 
-          <div className="bg-white rounded-xl shadow p-6 mb-6">
+          <div className="bg-card rounded-xl shadow p-6 mb-6">
 
             <h2 className="text-xl font-semibold mb-5">
               Preferences

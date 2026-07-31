@@ -76,7 +76,7 @@ function VerifyEmailForm() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 grid lg:grid-cols-2">
+    <main className="min-h-screen bg-muted/50 grid lg:grid-cols-2">
 
       {/* Left Section */}
       <section className="hidden lg:flex flex-col justify-between bg-slate-950 text-white p-16">
@@ -120,7 +120,7 @@ function VerifyEmailForm() {
 
       <section className="flex items-center justify-center px-5 py-10">
 
-        <div className="w-full max-w-md rounded-3xl bg-white shadow-2xl p-8">
+        <div className="w-full max-w-md rounded-3xl bg-card shadow-2xl p-8">
 
           <div className="text-center">
 
@@ -134,7 +134,7 @@ function VerifyEmailForm() {
               Verify Email
             </h2>
 
-            <p className="mt-3 text-gray-500 text-sm">
+            <p className="mt-3 text-muted-foreground text-sm">
               Enter the 6-digit verification code sent to
             </p>
 
@@ -162,7 +162,7 @@ function VerifyEmailForm() {
                 )
               }
               placeholder="Enter 6-digit OTP"
-              className="w-full rounded-xl border border-slate-300 px-4 py-3 text-center text-2xl tracking-[10px] font-semibold outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+              className="w-full rounded-xl border border-border px-4 py-3 text-center text-2xl tracking-[10px] font-semibold outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
             />
 
             {error && (
@@ -192,7 +192,7 @@ function VerifyEmailForm() {
           <button
             onClick={handleResend}
             disabled={resending}
-            className="mt-5 w-full flex items-center justify-center gap-2 rounded-xl border py-3 hover:bg-slate-50 transition"
+            className="mt-5 w-full flex items-center justify-center gap-2 rounded-xl border py-3 hover:bg-muted/50 transition"
           >
             <RotateCcw size={18} />
 
@@ -201,7 +201,7 @@ function VerifyEmailForm() {
               : "Resend Code"}
           </button>
 
-          <p className="text-center text-sm text-slate-500 mt-8">
+          <p className="text-center text-sm text-muted-foreground mt-8">
 
             Already verified?
 

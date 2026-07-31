@@ -59,7 +59,7 @@ export default function BillingDashboard() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen bg-slate-100">
+      <div className="flex min-h-screen bg-muted/30">
         <Sidebar />
         <div className="flex-1">
           <Navbar />
@@ -70,7 +70,7 @@ export default function BillingDashboard() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex min-h-screen bg-muted/30">
       <Sidebar />
 
       <div className="flex-1">
@@ -84,33 +84,33 @@ export default function BillingDashboard() {
 
           <div className="grid md:grid-cols-4 gap-6 mb-8">
 
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-card rounded-xl shadow p-6">
               <FileText className="mb-3 text-blue-600" />
-              <p className="text-gray-500">Invoices</p>
+              <p className="text-muted-foreground">Invoices</p>
               <h2 className="text-3xl font-bold">
                 {stats.totalInvoices}
               </h2>
             </div>
 
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-card rounded-xl shadow p-6">
               <IndianRupee className="mb-3 text-green-600" />
-              <p className="text-gray-500">Revenue</p>
+              <p className="text-muted-foreground">Revenue</p>
               <h2 className="text-3xl font-bold">
                 ₹{stats.totalRevenue.toLocaleString()}
               </h2>
             </div>
 
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-card rounded-xl shadow p-6">
               <Clock className="mb-3 text-yellow-600" />
-              <p className="text-gray-500">Pending Amount</p>
+              <p className="text-muted-foreground">Pending Amount</p>
               <h2 className="text-3xl font-bold">
                 ₹{stats.pendingAmount.toLocaleString()}
               </h2>
             </div>
 
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-card rounded-xl shadow p-6">
               <AlertTriangle className="mb-3 text-red-600" />
-              <p className="text-gray-500">
+              <p className="text-muted-foreground">
                 Outstanding Invoices
               </p>
               <h2 className="text-3xl font-bold">
@@ -120,7 +120,7 @@ export default function BillingDashboard() {
 
           </div>
 
-          <div className="bg-white rounded-xl shadow p-6 mb-8">
+          <div className="bg-card rounded-xl shadow p-6 mb-8">
 
             <h2 className="text-xl font-semibold mb-4">
               Quick Actions
@@ -153,7 +153,7 @@ export default function BillingDashboard() {
 
           </div>
 
-          <div className="bg-white rounded-xl shadow overflow-hidden">
+          <div className="bg-card rounded-xl shadow overflow-hidden">
 
             <div className="p-6 border-b">
               <h2 className="text-xl font-semibold">

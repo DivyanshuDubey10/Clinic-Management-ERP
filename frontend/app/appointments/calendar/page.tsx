@@ -98,7 +98,7 @@ export default function AppointmentCalendar(){
             <div className="flex-1">
                 <Navbar />
 
-                <div className="p-6 bg-white rounded-xl shadow m-6">
+                <div className="p-6 bg-card rounded-xl shadow m-6">
                     <Calendar
                        localizer={localizer}
                        events={events}

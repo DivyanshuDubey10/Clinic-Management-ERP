@@ -132,7 +132,7 @@ export default function PharmacyAlertsPage() {
   }, [medicines]);
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
+    <div className="flex min-h-screen bg-muted/50">
       <Sidebar />
 
       <div className="min-w-0 flex-1">
@@ -140,10 +140,10 @@ export default function PharmacyAlertsPage() {
 
         <main className="mx-auto max-w-7xl space-y-8 p-5 sm:p-8">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground">
               Inventory Alerts
             </h1>
-            <p className="mt-2 text-slate-500">
+            <p className="mt-2 text-muted-foreground">
               Track low-stock medicines and batches nearing expiry.
             </p>
           </div>
@@ -169,7 +169,7 @@ export default function PharmacyAlertsPage() {
           </div>
 
           {loading && (
-            <div className="rounded-2xl border border-slate-200 bg-white p-10 text-center text-slate-500">
+            <div className="rounded-2xl border border-border bg-card p-10 text-center text-muted-foreground">
               <span className="inline-flex items-center gap-2">
                 <LoaderCircle size={18} className="animate-spin" />
                 Loading alerts...
@@ -185,14 +185,14 @@ export default function PharmacyAlertsPage() {
 
           {!loading && !error && (
             <>
-              <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+              <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
                 <div className="flex items-center gap-2 border-b border-slate-100 p-6">
                   <AlertTriangle className="text-rose-600" />
                   <div>
-                    <h2 className="text-xl font-bold text-slate-900">
+                    <h2 className="text-xl font-bold text-foreground">
                       Low Stock Alert
                     </h2>
-                    <p className="mt-1 text-sm text-slate-500">
+                    <p className="mt-1 text-sm text-muted-foreground">
                       Medicines at or below their reorder threshold.
                     </p>
                   </div>
@@ -200,7 +200,7 @@ export default function PharmacyAlertsPage() {
 
                 <div className="overflow-x-auto">
                   <table className="w-full min-w-[760px]">
-                    <thead className="bg-slate-50 text-left text-xs uppercase tracking-wider text-slate-500">
+                    <thead className="bg-muted/50 text-left text-xs uppercase tracking-wider text-muted-foreground">
                       <tr>
                         <th className="p-4">Medicine</th>
                         <th className="p-4">Current Stock</th>
@@ -215,7 +215,7 @@ export default function PharmacyAlertsPage() {
                         <tr>
                           <td
                             colSpan={5}
-                            className="p-8 text-center text-slate-500"
+                            className="p-8 text-center text-muted-foreground"
                           >
                             No low-stock medicines.
                           </td>
@@ -223,8 +223,8 @@ export default function PharmacyAlertsPage() {
                       )}
 
                       {lowStockMedicines.map((medicine) => (
-                        <tr key={medicine._id} className="hover:bg-slate-50">
-                          <td className="p-4 font-semibold text-slate-800">
+                        <tr key={medicine._id} className="hover:bg-muted/50">
+                          <td className="p-4 font-semibold text-card-foreground">
                             {getMedicineName(medicine)}
                           </td>
 
@@ -268,14 +268,14 @@ export default function PharmacyAlertsPage() {
                 </div>
               </section>
 
-              <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+              <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
                 <div className="flex items-center gap-2 border-b border-slate-100 p-6">
                   <Clock className="text-amber-600" />
                   <div>
-                    <h2 className="text-xl font-bold text-slate-900">
+                    <h2 className="text-xl font-bold text-foreground">
                       Expiry Alert
                     </h2>
-                    <p className="mt-1 text-sm text-slate-500">
+                    <p className="mt-1 text-sm text-muted-foreground">
                       Batches expiring within the next 30 days.
                     </p>
                   </div>
@@ -283,7 +283,7 @@ export default function PharmacyAlertsPage() {
 
                 <div className="overflow-x-auto">
                   <table className="w-full min-w-[760px]">
-                    <thead className="bg-slate-50 text-left text-xs uppercase tracking-wider text-slate-500">
+                    <thead className="bg-muted/50 text-left text-xs uppercase tracking-wider text-muted-foreground">
                       <tr>
                         <th className="p-4">Medicine</th>
                         <th className="p-4">Batch</th>
@@ -298,7 +298,7 @@ export default function PharmacyAlertsPage() {
                         <tr>
                           <td
                             colSpan={5}
-                            className="p-8 text-center text-slate-500"
+                            className="p-8 text-center text-muted-foreground"
                           >
                             No batches expiring within 30 days.
                           </td>
@@ -309,9 +309,9 @@ export default function PharmacyAlertsPage() {
                         ({ medicine, batch, daysRemaining }, index) => (
                           <tr
                             key={`${medicine._id}-${batch.batchNumber}-${index}`}
-                            className="hover:bg-slate-50"
+                            className="hover:bg-muted/50"
                           >
-                            <td className="p-4 font-semibold text-slate-800">
+                            <td className="p-4 font-semibold text-card-foreground">
                               {getMedicineName(medicine)}
                             </td>
 
