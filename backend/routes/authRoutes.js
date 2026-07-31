@@ -15,7 +15,7 @@ router.route('/profile')
 
 router.post('/forgot-password', validateBody('email'), forgotPassword);
 router.post('/verify-reset-otp', validateBody('email', 'otp'), verifyResetOTP);
-router.post('/reset-password', validateBody('resetToken', 'newPassword'), resetPassword);
+router.post('/reset-password', validateBody('email', 'otp', 'newPassword'), resetPassword);
 
 
 

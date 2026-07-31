@@ -40,7 +40,7 @@ function VerifyOTPForm(){
 
         } catch (error: any) {
             setError(
-                error.reponse?.data?.message || "Invalid OTP"
+                error.response?.data?.message || "Invalid OTP"
             )
         }finally{
             setLoading(false)
